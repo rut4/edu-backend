@@ -19,12 +19,12 @@ class ProductCollection
 
     public function getSize()
     {
-        return count($this->_products);
+        return $this->_limit;
     }
 
     public function limit($value)
     {
-       $this->_limit = $value;
+       $this->_limit = min($value, count($this->_products));
     }
 
     public function offset($value)
