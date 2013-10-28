@@ -18,11 +18,12 @@ if (assert($products->getSize() == 1, 'error')) {
 }
 
 $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])]);
-$products->limit(1);
-if (assert($products->getSize() == 1)) {
+$products->limit(15);
+if (assert($products->getSize() == 3)) {
     echo '4';
 }
-if (assert($products->getProducts() == [new Product(['sku' => 'fuu'])], '…')) {
+
+if (assert($products->getProducts() == [new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])])) {
     echo '5';
 }
 
@@ -42,3 +43,8 @@ if (assert($products->getProducts() == [new Product(['sku' => 'baz'])], 'error')
     echo '8';
 }
 
+$products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])]);
+$products->limit(1);
+$products->offset(0);
+var_dump($products->getProducts());
+echo $products->getSize();
