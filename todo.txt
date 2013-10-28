@@ -1,0 +1,9 @@
+v sku
+v name
+v image
+v price
+v special price
+v stroked price if special price exists
+
+* list products
+* paging (limit, set offset)
