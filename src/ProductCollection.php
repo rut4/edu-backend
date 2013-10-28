@@ -2,7 +2,7 @@
 
 class ProductCollection
 {
-    private $_products = [];
+    private $_products = array();
     private $_offset = 0;
     private $_limit = 0;
     private $_count = 0;
