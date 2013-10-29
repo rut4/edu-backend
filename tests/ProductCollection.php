@@ -54,3 +54,5 @@ if (assert($products->getProducts() == [new Product(['sku' => 'baz'])])) {
 if (assert($products->getSize() == 1)) {
     echo '10 ';
 }
+
+echo "\n";
