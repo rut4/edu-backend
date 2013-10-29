@@ -5,13 +5,11 @@ class ProductCollection
     private $_products = array();
     private $_offset = 0;
     private $_limit = 0;
-    private $_count = 0;
 
     public function __construct(array $products)
     {
         $this->_products = $products;
-        $this->_count = count($products);
-        $this->_limit = $this->_count;
+        $this->_limit = count($this->_products);
     }
 
     /*
@@ -27,7 +25,7 @@ class ProductCollection
      */
     public function getSize()
     {
-        return min($this->_count - $this->_offset, $this->_limit);
+        return count($this->getProducts());
     }
 
     /*
@@ -35,7 +33,7 @@ class ProductCollection
      */
     public function limit($value)
     {
-       $this->_limit = min($value, $this->_count);
+       $this->_limit = $value;
     }
 
     /*
@@ -43,6 +41,6 @@ class ProductCollection
      */
     public function offset($value)
     {
-        $this->_offset = min($value, $this->_count);
+        $this->_offset = $value;
     }
 }

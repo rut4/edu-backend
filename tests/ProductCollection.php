@@ -43,8 +43,10 @@ if (assert($products->getProducts() == [new Product(['sku' => 'baz'])], 'error')
     echo '8';
 }
 
+echo "\n";
+
 $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])]);
-$products->limit(1);
-$products->offset(0);
+$products->limit(2);
+$products->offset(2);
 var_dump($products->getProducts());
 echo $products->getSize();
