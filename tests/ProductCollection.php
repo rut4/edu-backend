@@ -59,28 +59,28 @@ if (assert($products->getSize() == 1)) {
 $products->limit(-2);
 $products->offset(2);
 if (assert($products->getProducts() == [])) {
-    echo '10 ';
+    echo '11 ';
 }
 if (assert($products->getSize() == 0)) {
-    echo '11 ';
+    echo '12 ';
 }
 
 $products->limit(2);
 $products->offset(-2);
 if (assert($products->getProducts() ==  [new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])])) {
-    echo '12 ';
+    echo '13 ';
 }
 if (assert($products->getSize() == 2)) {
-    echo '13 ';
+    echo '14 ';
 }
 
 $products->limit(-1);
 $products->offset(-1);
 if (assert($products->getProducts() == [])) {
-    echo '14 ';
+    echo '15 ';
 }
 if (assert($products->getSize() == 0)) {
-    echo '15 ';
+    echo '16 ';
 }
 
 echo "\n";
