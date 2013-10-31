@@ -79,7 +79,7 @@ $products->offset(-1);
 if (assert($products->getProducts() == [])) {
     echo '13 ';
 }
-if (assert($products->getSize() == 1)) {
+if (assert($products->getSize() == 0)) {
     echo '14 ';
 }
 
