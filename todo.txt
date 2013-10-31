@@ -5,5 +5,12 @@ v price
 v special price
 v stroked price if special price exists
 
-* list products
-* paging (limit, set offset)
+v list products
+v paging (limit, set offset)
+
+============================
+
+v get products collection
+v get size of products collection
+v set limit of products in the collection
+v set offset in the collection
