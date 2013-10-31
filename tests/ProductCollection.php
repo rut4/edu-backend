@@ -46,6 +46,7 @@ if (assert($products->getProducts() == [new Product(['sku' => 'baz'])])) {
 echo "\n";
 
 $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])]);
+
 $products->limit(2);
 $products->offset(2);
 if (assert($products->getProducts() == [new Product(['sku' => 'baz'])])) {
@@ -53,6 +54,33 @@ if (assert($products->getProducts() == [new Product(['sku' => 'baz'])])) {
 }
 if (assert($products->getSize() == 1)) {
     echo '10 ';
+}
+
+$products->limit(-2);
+$products->offset(2);
+if (assert($products->getProducts() == [])) {
+    echo '9 ';
+}
+if (assert($products->getSize() == 0)) {
+    echo '10 ';
+}
+
+$products->limit(2);
+$products->offset(-2);
+if (assert($products->getProducts() ==  [new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])])) {
+    echo '11 ';
+}
+if (assert($products->getSize() == 2)) {
+    echo '12 ';
+}
+
+$products->limit(-1);
+$products->offset(-1);
+if (assert($products->getProducts() == [])) {
+    echo '13 ';
+}
+if (assert($products->getSize() == 1)) {
+    echo '14 ';
 }
 
 echo "\n";
