@@ -14,3 +14,31 @@ v get products collection
 v get size of products collection
 v set limit of products in the collection
 v set offset in the collection
+
+============================
+
+# Reviews
+    * Review contains
+        v имя пользователя (name)
+        v адрес электронной почты (email)
+        v сам текст обзора (text)
+        v оценку товара (rating) от 1 до 5
+        - привязку к товару (проверка через метод belongsToProduct())
+
+# Коллекция обзоров
+    v ограничение размера коллекции с помощью метода limit($limit)
+    v смещение от начала коллекции через метод offset($offset)
+    - получение среднего рейтинга коллекции через метод getAverageRating()
+    - получение всех обзоров из коллекции, относящихся к определенному товару (через метод каждого обзора belongsToProduct())
+    - сортировка коллекции по какому-либо полю sort($field)
+
+v Задача со звёздочкой. Итерация по объекту коллекции с помощью метода foreach()
+    public function testIterableWithForeachFunction() {
+        $collection = new ReviewCollection([new Review(['name' => 'foo']), new Review(['name' => 'bar']) ]);
+        $expected = array(0=>'foo', 1=>'bar');
+        foreach ($collection as $_key => $review) {
+            $this->assertEquals($expected[$_key], $review->getName());
+        }
+    }
+
+# Предложить идеи по рефакторингу кода

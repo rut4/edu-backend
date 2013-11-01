@@ -24,11 +24,11 @@ class ReviewTest extends PHPUnit_Framework_TestCase
 
     public function testResultingMessageEqualsGivenMessage()
     {
-        $review = new Review(['message' => 'it is good thing']);
-        $this->assertEquals('it is good thing', $review->getMessage());
+        $review = new Review(['text' => 'it is good thing']);
+        $this->assertEquals('it is good thing', $review->getText());
 
-        $review = new Review(['message' => 'it is very awful thing']);
-        $this->assertEquals('it is very awful thing', $review->getMessage());
+        $review = new Review(['text' => 'it is very awful thing']);
+        $this->assertEquals('it is very awful thing', $review->getText());
     }
 
     public function testResultingRatingEqualsGivenRating()
@@ -40,12 +40,39 @@ class ReviewTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, $review->getRating());
     }
 
-    public function testResultingProductEqualsGivenProduct()
+    public function testReturnsProductEqualsGivenProduct()
     {
-        $review = new Review(['product' => new Product(['sku' => '123'])]);
-        $this->assertEquals(new Product(['sku' => '123']), $review->getProduct());
+        $product = new Product(['sku' => 13]);
 
-        $review = new Review(['product' => new Product(['sku' => '22222', 'name' => 'Nokio'])]);
-        $this->assertEquals(new Product(['sku' => '22222', 'name' => 'Nokio']), $review->getProduct());
+        $review = new Review(['product' => $product]);
+        $this->assertEquals(true, $product === $review->getProduct());
+
+        $review = new Review(['product' => new Product(['sku' => 13])]);
+        $this->assertEquals(false, $product === $review->getProduct());
+    }
+
+    public function testGivenRatingMustBeFromOneToFiveAndInteger()
+    {
+        try {
+            $review = new Review(['rating' => 0]);
+        } catch (Exception $ex) {
+            $this->assertEquals(new InvalidArgumentException('Rating value mast be in range [1, 5] and integer'), $ex);
+        }
+
+        try {
+            $review = new Review(['rating' => 1.5]);
+        } catch (Exception $ex) {
+            $this->assertEquals(new InvalidArgumentException('Rating value mast be in range [1, 5] and integer'), $ex);
+        }
+    }
+
+    public function testReturnsTrueIfReviewBelongsToProduct()
+    {
+        $product = new Product(['sku' => 123]);
+        $review = new Review(['product' => $product]);
+        $this->assertEquals(true, $review->belongsToproduct($product));
+
+        $review = new Review(['product' => new Product(['name' => 'Nokio'])]);
+        $this->assertEquals(false, $review->belongsToProduct(new Product(['name' => 'Nokio'])));
     }
 }

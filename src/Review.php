@@ -3,9 +3,9 @@
 class Review
 {
     /*
-     * username
+     * name
      * email
-     * message
+     * text
      * rating
      * product
      */
@@ -13,6 +13,9 @@ class Review
 
     public function __construct(array $data)
     {
+        if (isset($data['rating']) && !in_array($data['rating'], [1, 2, 3, 4, 5])) {
+            throw new InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
+        }
         $this->_data = $data;
     }
 
@@ -26,9 +29,9 @@ class Review
         return $this->_getData('email');
     }
 
-    public function getMessage()
+    public function getText()
     {
-        return $this->_getData('message');
+        return $this->_getData('text');
     }
 
     public function getRating()
@@ -39,6 +42,11 @@ class Review
     public function getProduct()
     {
         return $this->_getData('product');
+    }
+
+    public function belongsToProduct($product)
+    {
+        return $this->_getData('product') === $product;
     }
 
     private function _getData($key)

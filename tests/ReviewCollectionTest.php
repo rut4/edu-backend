@@ -13,8 +13,8 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testResultingReviewsEqualsGivenReviews()
     {
-        $reviewCollection = new ReviewCollection([new Review(['username' => 'vlad']), new Review(['email' => 'f@f.ff'])]);
-        $this->assertEquals([new Review(['username' => 'vlad']), new Review(['email' => 'f@f.ff'])],
+        $reviewCollection = new ReviewCollection([new Review(['name' => 'vlad']), new Review(['email' => 'f@f.ff'])]);
+        $this->assertEquals([new Review(['name' => 'vlad']), new Review(['email' => 'f@f.ff'])],
             $reviewCollection->getReviews());
 
         $reviewCollection = new ReviewCollection([new Review(['message' => 'nice'])]);
