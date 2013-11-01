@@ -68,11 +68,10 @@ class ReviewTest extends PHPUnit_Framework_TestCase
 
     public function testReturnsTrueIfReviewBelongsToProduct()
     {
-        $product = new Product(['sku' => 123]);
-        $review = new Review(['product' => $product]);
-        $this->assertEquals(true, $review->belongsToproduct($product));
+        $review = new Review(['product' => new Product(['sku' => 123])]);
+        $this->assertEquals(true, $review->belongsToproduct(new Product(['sku' => 123])));
 
         $review = new Review(['product' => new Product(['name' => 'Nokio'])]);
-        $this->assertEquals(false, $review->belongsToProduct(new Product(['name' => 'Nokio'])));
+        $this->assertEquals(false, $review->belongsToProduct(new Product(['name' => 'Motorobla'])));
     }
 }

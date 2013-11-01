@@ -47,6 +47,6 @@ class Review extends CollectionElement
 
     public function belongsToProduct($product)
     {
-        return $this->getProduct() === $product;
+        return $this->getProduct() == $product;
     }
 }

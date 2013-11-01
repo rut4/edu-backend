@@ -15,15 +15,19 @@ class ReviewCollection extends Collection
         return parent::getCollection();
     }
 
-    public function getAverangeRating()
+    public function getAverangeRating($product = null)
     {
         $sum = 0;
+        $count = 0;
 
         foreach ($this->_collection as $review) {
-            $sum += $review->getRating();
+            if (!isset($product) || $review->getProduct() == $product) {
+                $sum += $review->getRating();
+                $count++;
+            }
         }
 
-        return $sum === 0 ? $sum : $sum/count($this->_collection);
+        return $count === 0 ? $sum : $sum/$count;
     }
 
     public function reviewsBelongsProduct($product)
