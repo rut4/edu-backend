@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../src/Element.php';
+require_once __DIR__ . '/../src/CollectionElement.php';
 
-class Review extends Element
+class Review extends CollectionElement
 {
     /*
      * name

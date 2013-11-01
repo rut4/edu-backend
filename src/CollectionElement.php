@@ -6,7 +6,7 @@
  * Time: 16:55
  */
 
-class Element implements ArrayAccess
+class CollectionElement implements ArrayAccess
 {
     private $_data = array();
 

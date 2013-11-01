@@ -26,4 +26,13 @@ class ReviewCollection extends Collection
 
         return $sum === 0 ? $sum : $sum/count($reviews);
     }
+
+    public function reviewsBelongsProduct($product)
+    {
+        foreach ($this->_collection as $review) {
+            if ($review->belongsToProduct($product)) {
+                yield $review;
+            }
+        }
+    }
 }

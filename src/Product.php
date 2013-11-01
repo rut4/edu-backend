@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../src/Element.php';
+require_once __DIR__ . '/../src/CollectionElement.php';
 
-class Product extends Element
+class Product extends CollectionElement
 {
     public function getSku()
     {

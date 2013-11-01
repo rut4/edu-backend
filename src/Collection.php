@@ -8,7 +8,7 @@
 
 class Collection implements Iterator
 {
-    private $_collection = array();
+    protected $_collection = array();
     private $_limit = 0;
     private $_offset = 0;
 
@@ -43,7 +43,7 @@ class Collection implements Iterator
     public function sort($field)
     {
         usort($this->_collection,
-            function (&$first, &$second) use ($field)
+            function ($first, $second) use ($field)
             {
                 return $first[$field] > $second[$field];
             });

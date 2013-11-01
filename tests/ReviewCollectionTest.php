@@ -72,4 +72,28 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         $reviewCollection->limit(0);
         $this->assertEquals(0, $reviewCollection->getAverangeRating());
     }
+
+    public function testGivenProductBelongsReturnsReviews()
+    {
+        $product1 = new Product(['sku' => 123]);
+        $product2 = new Product(['sku' => 321]);
+
+        $expected1 = [new Review(['product' => $product1]), new Review(['product' => $product1])];
+        $expected2 = [new Review(['product' => $product2])];
+
+        $reviewCollection = new ReviewCollection([new Review(['product' => $product1]),
+            new Review(['product' => $product2]), new Review(['product' => $product1])]);
+
+        $generatorObject = $reviewCollection->reviewsBelongsProduct($product1);
+        foreach ($generatorObject as $review) {
+            $this->assertEquals(current($expected1)->getProduct(), $review->getProduct());
+            next($expected1);
+        }
+
+        $generatorObject = $reviewCollection->reviewsBelongsProduct($product2);
+        foreach ($generatorObject as $review) {
+            $this->assertEquals(current($expected2)->getProduct(), $review->getProduct());
+            next($expected2);
+        }
+    }
 }
