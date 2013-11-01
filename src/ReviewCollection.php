@@ -17,14 +17,13 @@ class ReviewCollection extends Collection
 
     public function getAverangeRating()
     {
-        $reviews = parent::getCollection();
         $sum = 0;
 
-        foreach ($reviews as $review) {
+        foreach ($this->_collection as $review) {
             $sum += $review->getRating();
         }
 
-        return $sum === 0 ? $sum : $sum/count($reviews);
+        return $sum === 0 ? $sum : $sum/count($this->_collection);
     }
 
     public function reviewsBelongsProduct($product)

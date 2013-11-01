@@ -70,7 +70,7 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, $reviewCollection->getAverangeRating());
 
         $reviewCollection->limit(0);
-        $this->assertEquals(0, $reviewCollection->getAverangeRating());
+        $this->assertEquals(3, $reviewCollection->getAverangeRating());
     }
 
     public function testGivenProductBelongsReturnsReviews()
