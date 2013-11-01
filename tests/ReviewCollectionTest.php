@@ -61,4 +61,15 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         $reviewCollection->offset(-1);
         $this->assertEquals([new Review(['name' => 'Michael'])], $reviewCollection->getReviews());
     }
+
+    public function testReturnsAverangeRatingEqualsRealAverangeRating()
+    {
+        $reviewCollection = new ReviewCollection([new Review(['rating' => 1]), new Review(['rating' => 3]),
+            new Review(['rating' => 5])]);
+
+        $this->assertEquals(3, $reviewCollection->getAverangeRating());
+
+        $reviewCollection->limit(0);
+        $this->assertEquals(0, $reviewCollection->getAverangeRating());
+    }
 }

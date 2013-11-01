@@ -14,4 +14,16 @@ class ReviewCollection extends Collection
     {
         return parent::getCollection();
     }
+
+    public function getAverangeRating()
+    {
+        $reviews = parent::getCollection();
+        $sum = 0;
+
+        foreach ($reviews as $review) {
+            $sum += $review->getRating();
+        }
+
+        return $sum === 0 ? $sum : $sum/count($reviews);
+    }
 }

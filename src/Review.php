@@ -1,6 +1,8 @@
 <?php
 
-class Review
+require_once __DIR__ . '/../src/Element.php';
+
+class Review extends Element
 {
     /*
      * name
@@ -9,14 +11,13 @@ class Review
      * rating
      * product
      */
-    private $_data = array();
 
     public function __construct(array $data)
     {
         if (isset($data['rating']) && !in_array($data['rating'], [1, 2, 3, 4, 5])) {
             throw new InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
         }
-        $this->_data = $data;
+        parent::__construct($data);
     }
 
     public function getName()
@@ -46,11 +47,6 @@ class Review
 
     public function belongsToProduct($product)
     {
-        return $this->_getData('product') === $product;
-    }
-
-    private function _getData($key)
-    {
-        return isset($this->_data[$key]) ? $this->_data[$key] : null;
+        return $this->getProduct() === $product;
     }
 }

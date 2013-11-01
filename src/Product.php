@@ -1,14 +1,9 @@
 <?php
 
-class Product
+require_once __DIR__ . '/../src/Element.php';
+
+class Product extends Element
 {
-    private $_data = array();
-
-    public function __construct(array $data)
-    {
-        $this->_data = $data;
-    }
-
     public function getSku()
     {
         return $this->_getData('sku');
@@ -36,11 +31,6 @@ class Product
 
     public function isSpecialPriceApplied()
     {
-        return (bool) $this->getSpecialPrice();
-    }
-
-    private function _getData($key)
-    {
-        return isset($this->_data[$key]) ? $this->_data[$key] : null;
+        return (bool)$this->getSpecialPrice();
     }
 }

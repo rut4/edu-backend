@@ -102,4 +102,23 @@ class CollectionTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($expected[$_key], $item->getName());
         }
     }
+
+    public function testCollectionSorting()
+    {
+        $productCollection = new ProductCollection([new Product(['sku' => 4, 'name' => 'Nokio']),
+            new Product(['sku' => 2, 'name' => 'Motorobla']), new Product(['sku' => 3, 'name' => 'Sumsang'])]);
+
+        $productCollection->sort('sku');
+        $expected = [new Product(['sku' => 2, 'name' => 'Motorobla']), new Product(['sku' => 3, 'name' => 'Sumsang']),
+            new Product(['sku' => 4, 'name' => 'Nokio'])];
+        $this->assertEquals($expected, $productCollection->getProducts());
+
+
+        $reviewsCollection = new ReviewCollection([new Review(['text' => 'nice']), new Review(['text' => 'awful']),
+            new Review(['text' => 'good'])]);
+
+        $reviewsCollection->sort('text');
+        $expected = [new Review(['text' => 'awful']), new Review(['text' => 'good']), new Review(['text' => 'nice'])];
+        $this->assertEquals($expected, $reviewsCollection->getReviews());
+    }
 }

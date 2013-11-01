@@ -40,6 +40,16 @@ class Collection implements Iterator
         $this->_offset = $value;
     }
 
+    public function sort($field)
+    {
+        usort($this->_collection,
+            function (&$first, &$second) use ($field)
+            {
+                return $first[$field] > $second[$field];
+            });
+
+    }
+
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the current element
