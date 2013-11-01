@@ -27,7 +27,7 @@ class ReviewCollection extends Collection
             }
         }
 
-        return $count === 0 ? $sum : $sum/$count;
+        return $count === 0 ? 0 : $sum/$count;
     }
 
     public function reviewsBelongsProduct($product)
