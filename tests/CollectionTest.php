@@ -55,8 +55,8 @@ class CollectionTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($expected[$_key], $item->getName());
         }
 
-        $collection->offset(-2);
-        $expected = array(0 => 'bar', 1 => 'baz');
+        $collection->offset(-3);
+        $expected = array(0 => 'foo', 1 => 'bar', 2 => 'baz');
         foreach ($collection as $_key => $item) {
             $this->assertEquals($expected[$_key], $item->getName());
         }

@@ -58,7 +58,8 @@ class Collection implements Iterator
      */
     public function current()
     {
-        return $this->_collection[$this->_position + $this->_offset];
+        $delta = $this-> _deltaForPosition();
+        return $this->_collection[$this->_position + $delta];
     }
 
     /**
@@ -92,8 +93,9 @@ class Collection implements Iterator
      */
     public function valid()
     {
-        return $this->_position + $this->_offset < $this->_limit ?
-            isset($this->_collection[$this->_position + $this->_offset]) : false;
+        $delta = $this-> _deltaForPosition();
+        return $this->_position + $delta < $this->_limit ?
+            isset($this->_collection[$this->_position + $delta]) : false;
     }
 
     /**
@@ -104,6 +106,11 @@ class Collection implements Iterator
      */
     public function rewind()
     {
-        $this->_position = 0;
+        $this->_position = $this-> _deltaForPosition();
+    }
+
+    private function _deltaForPosition()
+    {
+        return $this->_offset >= 0 ? $this->_offset : count($this->_collection) + $this->_offset;
     }
 }
