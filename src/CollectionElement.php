@@ -15,7 +15,7 @@ class CollectionElement implements ArrayAccess
         $this->_data = $data;
     }
 
-    protected function _getData($key)
+    private function _getData($key)
     {
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }

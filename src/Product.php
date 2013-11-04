@@ -6,27 +6,27 @@ class Product extends CollectionElement
 {
     public function getSku()
     {
-        return $this->_getData('sku');
+        return $this['sku'];
     }
 
     public function getName()
     {
-        return $this->_getData('name');
+        return $this['name'];
     }
 
     public function getImage()
     {
-        return $this->_getData('image');
+        return $this['image'];
     }
 
     public function getPrice()
     {
-        return $this->_getData('price');
+        return $this['price'];
     }
 
     public function getSpecialPrice()
     {
-        return $this->_getData('special_price');
+        return $this['special_price'];
     }
 
     public function isSpecialPriceApplied()

@@ -22,27 +22,27 @@ class Review extends CollectionElement
 
     public function getName()
     {
-        return $this->_getData('name');
+        return $this['name'];
     }
 
     public function getEmail()
     {
-        return $this->_getData('email');
+        return $this['email'];
     }
 
     public function getText()
     {
-        return $this->_getData('text');
+        return $this['text'];
     }
 
     public function getRating()
     {
-        return $this->_getData('rating');
+        return $this['rating'];
     }
 
     public function getProduct()
     {
-        return $this->_getData('product');
+        return $this['product'];
     }
 
     public function belongsToProduct($product)
