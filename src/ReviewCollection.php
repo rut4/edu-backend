@@ -21,7 +21,7 @@ class ReviewCollection extends Collection
         $count = 0;
 
         foreach ($this->_collection as $review) {
-            if (!isset($product) || $review->getProduct() == $product) {
+            if (!isset($product) || $review->belongsToProduct($product)) {
                 $sum += $review->getRating();
                 $count++;
             }
