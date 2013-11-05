@@ -66,7 +66,7 @@ class CollectionElement implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new Exception('Properties is read only');
+        throw new Exception('Property is read only');
     }
 
     /**
@@ -81,6 +81,6 @@ class CollectionElement implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new Exception('Properties is read only');
+        throw new Exception('Property is read only');
     }
 }
