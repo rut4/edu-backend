@@ -6,7 +6,7 @@
  * Time: 23:27
  */
 
-require_once __DIR__ . '/../src/Collection.php';
+require_once __DIR__ . '/Collection.php';
 
 class ReviewCollection extends Collection
 {
@@ -15,7 +15,7 @@ class ReviewCollection extends Collection
         return parent::getCollection();
     }
 
-    public function getAverangeRating($product = null)
+    public function getAverangeRating(Product $product = null)
     {
         $sum = 0;
         $count = 0;
@@ -30,12 +30,14 @@ class ReviewCollection extends Collection
         return $count === 0 ? 0 : $sum/$count;
     }
 
-    public function reviewsBelongsProduct($product)
+    public function reviewsBelongsProduct(Product $product)
     {
+        $arr = [];
         foreach ($this->_collection as $review) {
             if ($review->belongsToProduct($product)) {
-                yield $review;
+                $arr[] = $review;
             }
         }
+        return $arr;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/Collection.php';
+require_once __DIR__ . '/Collection.php';
 
 class ProductCollection extends Collection
 {

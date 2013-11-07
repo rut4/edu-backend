@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/CollectionElement.php';
+require_once __DIR__ . '/CollectionElement.php';
 
 class Review extends CollectionElement
 {
@@ -45,7 +45,7 @@ class Review extends CollectionElement
         return $this['product'];
     }
 
-    public function belongsToProduct($product)
+    public function belongsToProduct(Product $product)
     {
         return $this->getProduct() == $product;
     }

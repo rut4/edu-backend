@@ -6,8 +6,8 @@
  * Time: 23:26
  */
 
-require_once __DIR__ . '/../src/ReviewCollection.php';
-require_once __DIR__ . '/../src/Review.php';
+require_once __DIR__ . '/../src/models/ReviewCollection.php';
+require_once __DIR__ . '/../src/models/Review.php';
 
 class ReviewCollectionTest extends PHPUnit_Framework_TestCase
 {

@@ -42,3 +42,11 @@ v Задача со звёздочкой. Итерация по объекту �
     }
 
 # Предложить идеи по рефакторингу кода
+
+
+============================================
+
+:router
+* ?page=product_list -> ProductController::listAction
+* ?page=product_view -> ProductController::viewAction
+* ?page=foo_bar -> FooController::barAction

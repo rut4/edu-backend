@@ -5,9 +5,9 @@
  * Date: 01.11.13
  * Time: 10:32
  */
-require_once __DIR__ . '/../src/Collection.php';
-require_once __DIR__ . '/../src/ReviewCollection.php';
-require_once __DIR__ . '/../src/Review.php';
+require_once __DIR__ . '/../src/models/Collection.php';
+require_once __DIR__ . '/../src/models/ReviewCollection.php';
+require_once __DIR__ . '/../src/models/Review.php';
 
 class CollectionTest extends PHPUnit_Framework_TestCase
 {

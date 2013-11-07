@@ -43,7 +43,7 @@ class Collection implements Iterator
     public function sort($field)
     {
         usort($this->_collection,
-            function ($first, $second) use ($field)
+            function (CollectionElement $first, CollectionElement $second) use ($field)
             {
                 return $first[$field] > $second[$field];
             });

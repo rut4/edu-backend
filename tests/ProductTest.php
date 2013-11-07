@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../src/Product.php';
+require_once __DIR__ . '/../src/models/Product.php';
 
 class ProductTest extends PHPUnit_Framework_TestCase
 {
