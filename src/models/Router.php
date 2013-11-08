@@ -13,7 +13,12 @@ class Router
 
     public function __construct($route)
     {
-        list($this->_controller, $this->_action) = explode('_', $route);
+        $arr = explode('_', $route);
+        if (count($arr) != 2) {
+            list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
+            return;
+        }
+        list($this->_controller, $this->_action) = $arr;
 
     }
 

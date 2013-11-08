@@ -1,20 +1,43 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <title>Student Webstore</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/product_list.css">
 </head>
 <body>
+<header class="header">
     <h1>Our Product List</h1>
-    <ul>
+</header>
+<section class="content">
+    <ul class="product-list">
         <?php foreach ($products as $_product): ?>
-            <li>
-                <img src="<?php echo $_product->getImage(); ?>" alt="Img"/>
-                <h2><?php echo $_product->getName(); ?></h2>
-                <span><?php echo $_product->getSku(); ?></span>
-                <span><?php echo $_product->getPrice(); ?></span>
-                <span><?php echo $_product->getSpecialprice(); ?></span>
+
+            <li class="product-item">
+                <a class="link-to-view" href="#">
+                    <div>
+                        <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Img"/>
+
+                        <h2 class="name"><?php echo $_product->getName(); ?></h2>
+
+                        <p class="sku">SKU: <?php echo $_product->getSku(); ?></p>
+
+                        <?php if ($_product->isSpecialPriceApplied()): ?>
+                            <p class="price price-strike">
+                                <s><?php echo $_product->getPrice(); ?>$</s>
+                            </p>
+                            <p class="special-price"><?php echo $_product->getSpecialprice(); ?>$</p>
+                        <?php else: ?>
+                            <p class="price">
+                                <?php echo $_product->getPrice(); ?>$
+                            </p>
+                        <?php endif; ?>
+                    </div>
+                </a>
             </li>
+
         <?php endforeach; ?>
+    </ul>
+</section>
 </body>
 </html>

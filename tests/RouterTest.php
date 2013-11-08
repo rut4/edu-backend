@@ -15,10 +15,10 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $page = 'foo_bar';
         $router = new Router($page);
-        $this -> assertEquals('FooController', $router->getController());
+        $this->assertEquals('FooController', $router->getController());
 
         $router = new Router('product_bar');
-        $this -> assertEquals('ProductController', $router->getController());
+        $this->assertEquals('ProductController', $router->getController());
 
     }
 
@@ -26,10 +26,20 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $page = 'foo_bar';
         $router = new Router($page);
-        $this -> assertEquals('barAction', $router->getAction());
+        $this->assertEquals('barAction', $router->getAction());
 
         $router = new Router('product_baz');
-        $this -> assertEquals('bazAction', $router->getAction());
+        $this->assertEquals('bazAction', $router->getAction());
+    }
 
+    public  function testReturnsControllerEqualsErrorWhenWayIsNotValid()
+    {
+        $page = "asddsa";
+        $router = new Router($page);
+        $this->assertEquals('ErrorController', $router->getController());
+
+        $page = "ee_E_e";
+        $router = new Router($page);
+        $this->assertEquals('ErrorController', $router->getController());
     }
 }
