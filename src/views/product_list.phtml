@@ -3,6 +3,7 @@
 <head>
     <title>Student Webstore</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/layout.css"/>
     <link rel="stylesheet" href="/css/product_list.css">
 </head>
 <body>
@@ -14,7 +15,7 @@
         <?php foreach ($products as $_product): ?>
 
             <li class="product-item">
-                <a class="link-to-view" href="#">
+                <a class="link-to-view" href="?page=product_view">
                     <div>
                         <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Img"/>
 

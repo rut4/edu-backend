@@ -1,26 +1,18 @@
-.content {
-    max-width: 880px;
-    min-width: 220px;
-    margin: auto;
-}
-
 .product-list {
     list-style-type: none;
     padding: 0;
 }
 
 .product-item {
-    background: #ddd;
-    background-image: linear-gradient(#ddd 0%, #eee 100%);
-    box-shadow: 0 0 5px #779;
+    background: #fff;
+    box-shadow: 0 0 5px #444;
     float: left;
-    width: 200px;
+    width: 220px;
     margin-bottom: 20px;
-    border-radius: 10px;
 }
 
 .product-item:hover {
-    box-shadow: 0 0 5px #733;
+    box-shadow: 0 0 10px #eee;
 }
 
 .product-item:not(:last-child) {
@@ -28,23 +20,29 @@
 }
 
 .product-item div {
-    margin: 10px;
+    padding: 10px;
 }
 
 .product-item .name {
-    color: #444;
     font-family: 'Segoe UI Light', sans-serif;
     margin-top: 10px;
+    color: #444;
 }
 
 .product-item p {
-    font-family: 'Segoe UI', sans-serif;
     margin: 10px 0 0;
+    color: #444;
+}
+
+.sku {
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .price,
 .special-price {
     display: inline-block;
+    font-family: 'PT Sans', sans-serif;
+    font-size: 20px;
 }
 
 .price-strike {
@@ -56,8 +54,8 @@
 }
 
 .preview-image {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
 }
 
 .link-to-view {

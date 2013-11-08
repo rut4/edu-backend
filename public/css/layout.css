@@ -1,0 +1,17 @@
+body {
+    background: #ccc url("/images/noisy-texture-200x200.png");
+}
+
+.header {
+    padding-left: 250px;
+    font-family: 'PT Serif', sans-serif;
+    font-size: 25px;
+    color: #eee;
+    text-shadow: 0 0 5px #333;
+}
+
+.content {
+    max-width: 960px;
+    min-width: 240px;
+    margin: auto;
+}

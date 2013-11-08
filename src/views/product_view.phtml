@@ -1,1 +1,49 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Webstore</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/layout.css"/>
+    <link rel="stylesheet" href="/css/product_view.css">
+</head>
+<body>
+<header class="header">
+    <h1>Product Page</h1>
+</header>
+<section class="content">
+    <div class="product-info">
+        <section class="details">
+            <img class="preview-image" src="<?php echo $product->getImage(); ?>" alt="Img"/>
+
+            <h2 class="name"><?php echo $product->getName(); ?></h2>
+
+            <p class="sku">SKU: <?php echo $product->getSku(); ?></p>
+
+            <?php if ($product->isSpecialPriceApplied()): ?>
+                <p class="price price-strike">
+                    <s><?php echo $product->getPrice(); ?>$</s>
+                </p>
+                <p class="special-price"><?php echo $product->getSpecialprice(); ?>$</p>
+            <?php else: ?>
+                <p class="price">
+                    <?php echo $product->getPrice(); ?>$
+                </p>
+            <?php endif; ?>
+        </section>
+        <section class="reviews-list">
+            <ul>
+                <?php foreach ($reviews as $_review): ?>
+                    <li class="review">
+                        <p><?php echo $_review->getName(); ?></p>
+
+                        <p><?php echo $_review->getRating(); ?></p>
+
+                        <p><?php echo $_review->getText(); ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
+    </div>
+</section>
+</body>
+</html>

@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../src/controllers/ProductController.php';
 require_once __DIR__ . '/../src/models/Router.php';
 
-// ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 
 $router = new Router(isset($_GET['page']) ? $_GET['page'] : 'product_list');
 
