@@ -1,0 +1,41 @@
+body {
+    background: #666 url("/images/noisy-texture-200x200.png");
+}
+
+.header {
+    padding-left: 18.8%;
+    font-family: 'PT Serif', sans-serif;
+    font-size: 25px;
+    color: #eee;
+    text-shadow: 0 0 5px #333;
+}
+
+.back-to-main {
+    position: fixed;
+    top: 50px;
+    left: 60px;
+}
+
+.back-to-main a {
+    text-decoration: none;
+    font-family: 'PT Serif', sans-serif;
+    font-size: 25px;
+    color: #eee;
+    text-shadow: 0 0 5px #333;
+}
+
+.back-to-main a:hover {
+    text-shadow: 0 0 10px #eee;
+}
+
+.content {
+    max-width: 940px;
+    margin: auto;
+}
+
+.footer {
+    text-align: center;
+    color: #eee;
+    font-family: 'Verdana', sans-serif;
+    font-size: 10px;
+}

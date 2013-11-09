@@ -11,47 +11,48 @@ class ProductController
     {
         $products = new ProductCollection([
             new Product([
-                'image'         => 'http://thememaker.ru/storage/Image/img_mobile/Nokia_5130.jpg',
+                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
                 'name'          => 'Nokia',
                 'sku'           => '1231241241234234',
                 'price'         => 1000,
                 'special_price' => 99.99
             ]),
             new Product([
-                'image'         => 'http://thememaker.ru/storage/Image/img_mobile/Nokia_5130.jpg',
+                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
                 'name'          => 'Nokia',
                 'sku'           => '1231241241234234',
                 'price'         => 1000,
                 'special_price' => 99.99
             ]),
             new Product([
-                'image'         => 'http://thememaker.ru/storage/Image/img_mobile/Nokia_5130.jpg',
+                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
                 'name'          => 'Nokia',
                 'sku'           => '1231241241234234',
                 'price'         => 1000,
                 'special_price' => 99.99
             ]),
             new Product([
-                'image'         => 'http://cs413626.vk.me/v413626920/1de3/qh7lApBwRCo.jpg',
+                'image'         => 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTGEtrv0AMdgS88Y1e7G0Fr9XWzFKQvOmRjklDmbFvvG0VBi73Z',
                 'name'          => 'Samsung',
                 'sku'           => '12312412123123',
                 'price'         => 1000
             ]),
             new Product([
-                'image'         => 'http://thememaker.ru/storage/Image/img_mobile/Nokia_5130.jpg',
+                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
                 'name'          => 'Nokia',
-                'sku'           => '1231241241234234',
-                'price'         => 1000,
-                'special_price' => 99.99
+                'sku'           => '12312412409094',
+                'price'         => 1000
             ])
         ]);
 
-        require_once __DIR__ . '/../views/product_list.phtml';
+        $headerText = 'Our Product List';
+        $viewName = 'product_list';
+        require_once __DIR__ . '/../views/product_layout.phtml';
     }
     public function viewAction()
     {
         $product = new Product([
-            'image'         => 'http://thememaker.ru/storage/Image/img_mobile/Nokia_5130.jpg',
+            'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
             'name'          => 'Nokia',
             'sku'           => '1231241241234234',
             'price'         => 1000,
@@ -70,8 +71,17 @@ class ProductController
                 'text' => 'awful',
                 'rating' => 2,
                 'product' => $product
+            ]),
+            new Review([
+                'name' => 'Igor',
+                'text' => 'good',
+                'rating' => 4,
+                'product' => $product
             ])
         ]);
-        require_once __DIR__ . '/../views/product_view.phtml';
+
+        $headerText = 'Product View';
+        $viewName = 'product_view';
+        require_once __DIR__ . '/../views/product_layout.phtml';
     }
 }

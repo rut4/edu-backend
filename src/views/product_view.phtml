@@ -1,49 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Student Webstore</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/layout.css"/>
-    <link rel="stylesheet" href="/css/product_view.css">
-</head>
-<body>
-<header class="header">
-    <h1>Product Page</h1>
-</header>
-<section class="content">
-    <div class="product-info">
-        <section class="details">
-            <img class="preview-image" src="<?php echo $product->getImage(); ?>" alt="Img"/>
+<div class="product-info">
+    <section class="product__details">
+        <img class="product__preview-image" src="<?php echo $product->getImage(); ?>" alt="Preview"/>
 
-            <h2 class="name"><?php echo $product->getName(); ?></h2>
+        <h2 class="product__name"><?php echo $product->getName(); ?></h2>
 
-            <p class="sku">SKU: <?php echo $product->getSku(); ?></p>
+        <p class="product__sku">SKU: <?php echo $product->getSku(); ?></p>
 
+        <p class="product__price__wrap">
+            Price:
             <?php if ($product->isSpecialPriceApplied()): ?>
-                <p class="price price-strike">
-                    <s><?php echo $product->getPrice(); ?>$</s>
-                </p>
-                <p class="special-price"><?php echo $product->getSpecialprice(); ?>$</p>
+                <span class="product__price product__price_strike">
+                <s><?php echo $product->getPrice(); ?>$</s>
+            </span>
+                <span class="product__price_special"><?php echo $product->getSpecialprice(); ?>$</span>
             <?php else: ?>
-                <p class="price">
-                    <?php echo $product->getPrice(); ?>$
-                </p>
+                <span class="product__price">
+                <?php echo $product->getPrice(); ?>$
+            </span>
             <?php endif; ?>
-        </section>
-        <section class="reviews-list">
-            <ul>
-                <?php foreach ($reviews as $_review): ?>
-                    <li class="review">
-                        <p><?php echo $_review->getName(); ?></p>
+        </p>
+    </section>
+    <section class="review-list">
+        <header class="review_list__header">
+            <h2>Reviews</h2>
+        </header>
+        <ul class="review-list__i">
+            <?php foreach ($reviews as $_review): ?>
+                <li class="review">
+                    <h3 class="review__header">
+                        <p class="review__name"><?php echo $_review->getName(); ?></p>
 
-                        <p><?php echo $_review->getRating(); ?></p>
-
-                        <p><?php echo $_review->getText(); ?></p>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </section>
-    </div>
-</section>
-</body>
-</html>
+                        <p class="review__rating">
+                            <?php for ($i = 0; $i < $_review->getRating(); $i++): ?>
+                                ★
+                            <?php endfor; ?>
+                            <?php for ($i = 0; $i < 5 - $_review->getRating(); $i++): ?>
+                                ☆
+                            <?php endfor; ?>
+                        </p>
+                    </h3>
+                    <p class="review__text"><?php echo $_review->getText(); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </section>
+</div>

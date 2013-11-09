@@ -13,6 +13,11 @@ class Router
 
     public function __construct($route)
     {
+        if (!isset($route) || $route === '') {
+            list($this->_controller, $this->_action) = ['product', 'list'];
+            return;
+        }
+
         $arr = explode('_', $route);
         if (count($arr) != 2) {
             list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
@@ -20,6 +25,21 @@ class Router
         }
         list($this->_controller, $this->_action) = $arr;
 
+        $controllerName = $this->getController();
+        $actionName = $this->getAction();
+
+        $controllerFilePath = __DIR__ . "/../controllers/{$controllerName}.php";
+
+        if (!file_exists($controllerFilePath)) {
+            list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
+        } else {
+            require_once $controllerFilePath;
+
+            $controllerObject = new $controllerName;
+            if (!class_exists($controllerName) || !method_exists($controllerObject, $actionName)) {
+                list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
+            }
+        }
     }
 
     public function getController()
@@ -29,7 +49,7 @@ class Router
 
     public function getAction()
     {
-        return $this->_action . 'Action';
+        return lcfirst($this->_action) . 'Action';
     }
 
 } 

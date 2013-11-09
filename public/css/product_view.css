@@ -1,3 +1,110 @@
 .product-info {
-    border-bottom: dashed #fff;
+    background: #fff;
+    box-shadow: 0 0 5px #222;
+}
+
+.product__details {
+    border-bottom: 3px dashed #444;
+    padding: 20px;
+}
+
+/*clearfix*/
+.product__details:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.product__details p {
+    color: #333;
+}
+
+.product__preview-image {
+    width: 200px;
+    height: 200px;
+    float: left;
+    margin-right: 20px;
+}
+
+.product__name {
+    font-family: 'Segoe UI Light', sans-serif;
+    color: #444;
+}
+
+.product__sku {
+    font-family: 'PT Sans', sans-serif;
+}
+
+.product__price__wrap {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 20px;
+}
+
+.product__price_strike {
+    opacity: 0.5;
+}
+
+.product__price_special {
+    font-weight: bold;
+}
+
+.review-list {
+    padding: 20px;
+}
+
+.review_list__header {
+    font-family: 'PT Serif', serif;
+    font-size: 23px;
+    color: #444;
+    text-shadow: 0 0 1px #333;
+}
+
+.review_list__header h2 {
+    margin-top: 0;
+}
+.review-list__i {
+    padding: 0;
+    list-style-type: none;
+}
+
+.review {
+    border-bottom: 1px solid #444;
+}
+
+.review:last-child {
+    border: none;
+}
+
+.review__header {
+    background: #666;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+.review__header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.review__name {
+    float: left;
+    font-family: 'PT Serif', serif;
+    color: #eee;
+    margin: 5px 0 5px 10px;
+    display: inline-block;
+}
+
+.review__rating {
+    float: right;
+    font-family: 'Batang', sans-serif;
+    text-shadow: 0 0 2px #fff;
+    color: #fff;
+    font-size: 0.9em;
+    margin: 7px 10px 5px 5px;
+    display: inline-block;
+}
+
+.review__text {
+    font-family: 'PT Sans', sans-serif;
 }

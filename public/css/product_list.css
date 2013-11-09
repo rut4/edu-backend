@@ -1,22 +1,31 @@
 .product-list {
     list-style-type: none;
     padding: 0;
+    clear: left;
+}
+
+/*clearfix*/
+.product-list:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .product-item {
     background: #fff;
-    box-shadow: 0 0 5px #444;
+    box-shadow: 0 0 5px #222;
     float: left;
     width: 220px;
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 .product-item:hover {
     box-shadow: 0 0 10px #eee;
 }
 
-.product-item:not(:last-child) {
-    margin-right: 20px;
+.product-item:nth-child(4n) {
+    margin-right: 0;
 }
 
 .product-item div {
@@ -31,11 +40,11 @@
 
 .product-item p {
     margin: 10px 0 0;
-    color: #444;
+    color: #333;
 }
 
 .sku {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'PT Sans', sans-serif;
 }
 
 .price,

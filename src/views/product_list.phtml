@@ -1,44 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Student Webstore</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/layout.css"/>
-    <link rel="stylesheet" href="/css/product_list.css">
-</head>
-<body>
-<header class="header">
-    <h1>Our Product List</h1>
-</header>
-<section class="content">
-    <ul class="product-list">
-        <?php foreach ($products as $_product): ?>
+<ul class="product-list">
+    <?php foreach ($products as $_product): ?>
 
-            <li class="product-item">
-                <a class="link-to-view" href="?page=product_view">
-                    <div>
-                        <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Img"/>
+        <li class="product-item">
+            <a class="link-to-view" href="?page=product_view">
+                <div>
+                    <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Preview"/>
 
-                        <h2 class="name"><?php echo $_product->getName(); ?></h2>
+                    <h2 class="name"><?php echo $_product->getName(); ?></h2>
 
-                        <p class="sku">SKU: <?php echo $_product->getSku(); ?></p>
+                    <p class="sku">SKU: <?php echo $_product->getSku(); ?></p>
 
-                        <?php if ($_product->isSpecialPriceApplied()): ?>
-                            <p class="price price-strike">
-                                <s><?php echo $_product->getPrice(); ?>$</s>
-                            </p>
-                            <p class="special-price"><?php echo $_product->getSpecialprice(); ?>$</p>
-                        <?php else: ?>
-                            <p class="price">
-                                <?php echo $_product->getPrice(); ?>$
-                            </p>
-                        <?php endif; ?>
-                    </div>
-                </a>
-            </li>
+                    <?php if ($_product->isSpecialPriceApplied()): ?>
+                        <p class="price price-strike">
+                            <s><?php echo $_product->getPrice(); ?>$</s>
+                        </p>
+                        <p class="special-price"><?php echo $_product->getSpecialprice(); ?>$</p>
+                    <?php else: ?>
+                        <p class="price">
+                            <?php echo $_product->getPrice(); ?>$
+                        </p>
+                    <?php endif; ?>
+                </div>
+            </a>
+        </li>
 
-        <?php endforeach; ?>
-    </ul>
-</section>
-</body>
-</html>
+    <?php endforeach; ?>
+</ul>

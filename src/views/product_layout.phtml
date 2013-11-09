@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Webstore</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/product_layout.css"/>
+    <link rel="stylesheet" href="/css/<?php echo $viewName; ?>.css">
+</head>
+<body>
+<header class="header">
+    <h1><?php echo $headerText; ?></h1>
+</header>
+<?php if ($viewName != 'product_list'): ?>
+    <nav class="back-to-main">
+        <a href="/?page=product_list">←</a>
+    </nav>
+<?php endif; ?>
+<section class="content">
+    <?php require_once __DIR__ . '/' . $viewName . '.phtml'; ?>
+</section>
+<footer class="footer">
+    <p class="copyright">© 2013 Eduard Paliy</p>
+</footer>
+</body>
+</html>
