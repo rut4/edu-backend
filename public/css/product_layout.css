@@ -10,13 +10,13 @@ body {
     text-shadow: 0 0 5px #333;
 }
 
-.back-to-main {
+.back-to-product-list {
     position: fixed;
     top: 50px;
     left: 60px;
 }
 
-.back-to-main a {
+.back-to-product-list a {
     text-decoration: none;
     font-family: 'PT Serif', sans-serif;
     font-size: 25px;
@@ -24,7 +24,7 @@ body {
     text-shadow: 0 0 5px #333;
 }
 
-.back-to-main a:hover {
+.back-to-product-list a:hover {
     text-shadow: 0 0 10px #eee;
 }
 
