@@ -17,27 +17,22 @@ class ReviewCollection extends Collection
 
     public function getAverangeRating(Product $product = null)
     {
-        $sum = 0;
         $count = 0;
 
-        foreach ($this->_collection as $review) {
+        $ratings = array_map(function (Review $review) use ($product, &$count) {
             if (!isset($product) || $review->belongsToProduct($product)) {
-                $sum += $review->getRating();
                 $count++;
+                return $review->getRating();
             }
-        }
+        }, $this->_collection);
 
-        return $count === 0 ? 0 : $sum/$count;
+        return $count === 0 ? 0 : array_sum($ratings) / $count;
     }
 
     public function reviewsBelongsProduct(Product $product)
     {
-        $arr = [];
-        foreach ($this->_collection as $review) {
-            if ($review->belongsToProduct($product)) {
-                $arr[] = $review;
-            }
-        }
-        return $arr;
+        return array_filter($this->_collection, function (Review $review) use ($product) {
+            return $review->belongsToProduct($product);
+        });
     }
 }
