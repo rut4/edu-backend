@@ -24,6 +24,7 @@ class ReviewCollection extends Collection
                 $count++;
                 return $review->getRating();
             }
+            return null;
         }, $this->_collection);
 
         return $count === 0 ? 0 : array_sum($ratings) / $count;
