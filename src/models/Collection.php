@@ -11,6 +11,7 @@ class Collection implements Iterator
     protected $_collection = array();
     private $_limit = 0;
     private $_offset = 0;
+    private $_sortField = null;
 
     private $_position = 0;
 
@@ -22,6 +23,14 @@ class Collection implements Iterator
 
     protected function getCollection()
     {
+        if (isset($this->_sortField))
+        {
+            usort($this->_collection,
+                function (CollectionElement $first, CollectionElement $second)
+                {
+                    return $first[$this->_sortField] > $second[$this->_sortField];
+                });
+        }
         return array_slice($this->_collection, $this->_offset, $this->_limit);
     }
 
@@ -42,12 +51,7 @@ class Collection implements Iterator
 
     public function sort($field)
     {
-        usort($this->_collection,
-            function (CollectionElement $first, CollectionElement $second) use ($field)
-            {
-                return $first[$field] > $second[$field];
-            });
-
+        $this->_sortField = $field;
     }
 
     /**
