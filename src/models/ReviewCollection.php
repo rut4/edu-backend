@@ -32,8 +32,13 @@ class ReviewCollection extends Collection
 
     public function reviewsBelongsProduct(Product $product)
     {
-        return array_filter($this->_collection, function (Review $review) use ($product) {
-            return $review->belongsToProduct($product);
-        });
+        return new ReviewCollection(
+            array_values(
+                array_filter($this->_collection, function (Review $review) use ($product) {
+                    return $review->belongsToProduct($product);
+                })
+            )
+        );
+
     }
 }
