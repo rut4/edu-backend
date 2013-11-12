@@ -7,6 +7,7 @@
  */
 
 require_once __DIR__ . '/../src/models/Router.php';
+require_once __DIR__ .'/../src/models/PageNotFoundException.php';
 
 class RouterTest extends PHPUnit_Framework_TestCase
 {
@@ -34,15 +35,19 @@ class RouterTest extends PHPUnit_Framework_TestCase
 
     public function testReturnsPageNotFoundWhenPageDoesNotContainsTwoWords()
     {
-        $page = "asddsa";
-        $router = new Router($page);
-        $this->assertEquals('ErrorController', $router->getController());
-        $this->assertEquals('pageNotFoundAction', $router->getAction());
+        try {
+            $router = new Router('ee_E_e');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(
+                new PageNotFoundException("Expected controller and actions names are separated by '_'"), $ex);
+        }
 
-        $page = "ee_E_e";
-        $router = new Router($page);
-        $this->assertEquals('ErrorController', $router->getController());
-        $this->assertEquals('pageNotFoundAction', $router->getAction());
+        try {
+            $router = new Router('asddsa');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(
+                new PageNotFoundException("Expected controller and actions names are separated by '_'"), $ex);
+        }
     }
 
     public function testReturnsProductListPageWhenPageDoesNotSetOrEmpty()
@@ -58,14 +63,33 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('listAction',$router->getAction());
     }
 
-    public function testReturnsPageNotFoundWhenControllerOrActionAreNotExist()
+    public function testThrowPageNotFoundExceptionWhenControllerFileNotFound()
     {
-        $router = new Router('product_foo');
-        $this->assertEquals('ErrorController', $router->getController());
-        $this->assertEquals('pageNotFoundAction', $router->getAction());
+        try {
+            $router = new Router('products_foo');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(new PageNotFoundException('Controller file is not found'), $ex);
+        }
 
-        $router = new Router('bar_view');
-        $this->assertEquals('ErrorController', $router->getController());
-        $this->assertEquals('pageNotFoundAction', $router->getAction());
+        try {
+            $router = new Router('bar_view');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(new PageNotFoundException('Controller file is not found'), $ex);
+        }
+    }
+
+    public function testThrowPageNotFoundExceptionWhenActionNotFound()
+    {
+        try {
+            $router = new Router('product_foo');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(new PageNotFoundException('Class or method are not found in file'), $ex);
+        }
+
+        try {
+            $router = new Router('product_main');
+        } catch (PageNotFoundException $ex) {
+            $this->assertEquals(new PageNotFoundException('Class or method are not found in file'), $ex);
+        }
     }
 }

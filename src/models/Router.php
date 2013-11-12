@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 07.11.13
- * Time: 19:55
- */
+require_once __DIR__ . '/PageNotFoundException.php';
 
 class Router
 {
@@ -20,8 +15,7 @@ class Router
 
         $arr = explode('_', $route);
         if (count($arr) != 2) {
-            list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
-            return;
+            throw new PageNotFoundException("Expected controller and actions names are separated by '_'");
         }
         list($this->_controller, $this->_action) = $arr;
 
@@ -31,14 +25,13 @@ class Router
         $controllerFilePath = __DIR__ . "/../controllers/{$controllerName}.php";
 
         if (!file_exists($controllerFilePath)) {
-            list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
-        } else {
-            require_once $controllerFilePath;
+            throw new PageNotFoundException('Controller file is not found');
+        }
 
-            $controllerObject = new $controllerName;
-            if (!class_exists($controllerName) || !method_exists($controllerObject, $actionName)) {
-                list($this->_controller, $this->_action) = ['error', 'pageNotFound'];
-            }
+        require_once $controllerFilePath;
+
+        if (!class_exists($controllerName) || !method_exists($controllerName, $actionName)) {
+            throw new PageNotFoundException('Class or method are not found in file');
         }
     }
 

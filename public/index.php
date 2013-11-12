@@ -1,16 +1,24 @@
 <?php
 require_once __DIR__ . '/../src/controllers/ProductController.php';
 require_once __DIR__ . '/../src/models/Router.php';
-
+require_once __DIR__ . '/../src/models/PageNotFoundException.php';
 // ini_set('display_errors', 1);
+try {
+    try {
+        $router = new Router($_GET['page']);
+    } catch (PageNotFoundException $ex) {
+        $router = new Router('error_pageNotFound');
+    } finally {
+        $controllerName = $router->getController();
+        require_once __DIR__ . "/../src/controllers/{$controllerName}.php";
 
-$router = new Router($_GET['page']);
+        $controller = new $controllerName;
 
-$controllerName = $router->getController();
-require_once __DIR__ . "/../src/controllers/{$controllerName}.php";
+        $actionName = $router->getAction();
 
-$controller = new $controllerName;
+        $controller->$actionName();
+    }
+} catch (Exception $ex) {
+    var_dump($ex);
+}
 
-$actionName = $router->getAction();
-
-$controller->$actionName();
