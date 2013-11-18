@@ -78,18 +78,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @expectedException PageNotFoundException
+     * @expectedExceptionMessage Class or method are not found in file
+     */
     public function testThrowPageNotFoundExceptionWhenActionNotFound()
     {
-        try {
-            $router = new Router('product_foo');
-        } catch (PageNotFoundException $ex) {
-            $this->assertEquals(new PageNotFoundException('Class or method are not found in file'), $ex);
-        }
+        $router = new Router('product_foo');
 
-        try {
-            $router = new Router('product_main');
-        } catch (PageNotFoundException $ex) {
-            $this->assertEquals(new PageNotFoundException('Class or method are not found in file'), $ex);
-        }
+        $router = new Router('product_main');
     }
 }
