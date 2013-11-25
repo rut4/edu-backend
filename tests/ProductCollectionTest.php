@@ -1,52 +1,43 @@
 <?php
+
+require_once __DIR__ . '/../src/models/Resource/IResourceCollection.php';
 require_once __DIR__ . '/../src/models/ProductCollection.php';
-require_once __DIR__ . '/../src/models/Product.php';
 
 class ProductCollectionTest extends PHPUnit_Framework_TestCase
 {
-    public function testResultingProductsEqualsGivenProducts()
+    public function testTakesDataFromResource()
     {
-        $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar'])]);
-        $this->assertEquals([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar'])], $products->getProducts());
+        $resource = $this->getMock('IResourceCollection');
+        $resource->expects($this->any())
+            ->method('fetch')
+            ->will($this->returnValue(
+                [
+                    ['name' => 'Nokla']
+                ]
+            ));
 
-        $products = new ProductCollection([new Product(['sku' => 'baz'])]);
-        $this->assertEquals([new Product(['sku' => 'baz'])], $products->getProducts());
+        $collection = new ProductCollection($resource);
+
+        $products = $collection->getProducts();
+        $this->assertEquals('Nokla', $products[0]->getName());
     }
 
-    public function testResultingSizeEqualsGivenProductCollectionSize()
+    public function testIterableWithForeachFunction()
     {
-        $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar'])]);
-        $this->assertEquals(2, $products->getSize());
+        $resource = $this->getMock('IResourceCollection');
+        $resource->expects($this->any())
+            ->method('fetch')
+            ->will($this->returnValue(
+                [
+                    ['sku' => 'foo'],
+                    ['sku' => 'bar']
+                ]
+            ));
 
-        $products = new ProductCollection([]);
-        $this->assertEquals(0, $products->getSize());
-    }
-
-    public function testResultingProductsCountMustBeEqualsOrLessGivenLimit()
-    {
-        $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']),
-            new Product(['sku' => 'baz'])]);
-
-        $products->limit(15);
-        $this->assertEquals(3, $products->getSize());
-
-        $products->limit(1);
-        $this->assertEquals(1, $products->getSize());
-    }
-
-    public function testOffsetMustBeShiftProducts()
-    {
-        $products = new ProductCollection([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']),
-            new Product(['sku' => 'baz'])]);
-
-        $products->offset(0);
-        $this->assertEquals([new Product(['sku' => 'fuu']), new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])],
-            $products->getProducts());
-
-        $products->offset(1);
-        $this->assertEquals([new Product(['sku' => 'bar']), new Product(['sku' => 'baz'])], $products->getProducts());
-
-        $products->offset(-1);
-        $this->assertEquals([new Product(['sku' => 'baz'])], $products->getProducts());
+        $expected = array(0 => 'foo', 1 => 'bar');
+        $collection = new ProductCollection($resource);
+        foreach ($collection as $_key => $item) {
+            $this->assertEquals($expected[$_key], $item->getName());
+        }
     }
 }

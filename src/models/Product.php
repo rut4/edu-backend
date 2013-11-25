@@ -29,8 +29,18 @@ class Product extends CollectionElement
         return $this['special_price'];
     }
 
+    public function getId()
+    {
+        return $this['get_id'];
+    }
+
     public function isSpecialPriceApplied()
     {
         return (bool)$this->getSpecialPrice();
+    }
+
+    public function find(IResourceEntity $resource, $id)
+    {
+        $this->_data = $resource;
     }
 }

@@ -4,46 +4,15 @@ require_once __DIR__ . '/../models/ProductCollection.php';
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/ReviewCollection.php';
 require_once __DIR__ . '/../models/Review.php';
+require_once __DIR__ . '/../models/Resource/DBCollection.php';
 
 class ProductController
 {
     public function listAction()
     {
-        $products = new ProductCollection([
-            new Product([
-                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
-                'name'          => 'Nokia',
-                'sku'           => '1231241241234234',
-                'price'         => 1000,
-                'special_price' => 99.99
-            ]),
-            new Product([
-                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
-                'name'          => 'Nokia',
-                'sku'           => '1231241241234234',
-                'price'         => 1000,
-                'special_price' => 99.99
-            ]),
-            new Product([
-                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
-                'name'          => 'Nokia',
-                'sku'           => '1231241241234234',
-                'price'         => 1000,
-                'special_price' => 99.99
-            ]),
-            new Product([
-                'image'         => 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTGEtrv0AMdgS88Y1e7G0Fr9XWzFKQvOmRjklDmbFvvG0VBi73Z',
-                'name'          => 'Samsung',
-                'sku'           => '12312412123123',
-                'price'         => 1000
-            ]),
-            new Product([
-                'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
-                'name'          => 'Nokia',
-                'sku'           => '12312412409094',
-                'price'         => 1000
-            ])
-        ]);
+        $connection = new PDO('mysql:host=localhost;dbname=student', 'root', 'vagrant');
+        $resource = new DBCollection($connection, 'products');
+        $products = new ProductCollection($resource);
 
         $headerText = 'Our Product List';
         $viewName = 'product_list';
@@ -51,13 +20,12 @@ class ProductController
     }
     public function viewAction()
     {
-        $product = new Product([
-            'image'         => 'http://www.ixbt.com/short/images/2013/Aug/Nokia-Bandit-phablet-to-be-called-Nokia-Lumia-1520.jpg',
-            'name'          => 'Nokia',
-            'sku'           => '1231241241234234',
-            'price'         => 1000,
-            'special_price' => 99.99
-        ]);
+        $product = new Product();
+
+        $connection = new PDO('mysql:host=localhost;dbname=student', 'root', 'vagrant');
+        $resource = new DBEntity($connection, 'products');
+
+        $product->load($resource);
 
         $reviews = new ReviewCollection([
             new Review([
