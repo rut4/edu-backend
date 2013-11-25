@@ -48,55 +48,6 @@ class RouterTest extends PHPUnit_Framework_TestCase
      */
     public function testReturnsPageNotFoundWhenPageDoesNotContainsTwoWordsSecond()
     {
-        new Router('asddsa');
-    }
-
-    public function testReturnsProductListPageWhenPageDoesNotSetOrEmpty()
-    {
-        $page = '';
-        $router = new Router($page);
-        $this->assertEquals('ProductController', $router->getController());
-        $this->assertEquals('listAction', $router->getAction());
-
-        $page = null;
-        $router = new Router($page);
-        $this->assertEquals('ProductController', $router->getController());
-        $this->assertEquals('listAction', $router->getAction());
-    }
-
-    /**
-     * @expectedException PageNotFoundException
-     * @expectedExceptionMessage Controller file is not found
-     */
-    public function testThrowPageNotFoundExceptionWhenControllerFileNotFoundFirst()
-    {
-        new Router('products_foo');
-    }
-
-    /**
-     * @expectedException PageNotFoundException
-     * @expectedExceptionMessage Controller file is not found
-     */
-    public function testThrowPageNotFoundExceptionWhenControllerFileNotFoundSecond()
-    {
-        new Router('bar_view');
-    }
-
-    /**
-     * @expectedException PageNotFoundException
-     * @expectedExceptionMessage Class or method are not found in file
-     */
-    public function testThrowPageNotFoundExceptionWhenActionNotFoundFirst()
-    {
-        new Router('product_foo');
-    }
-
-    /**
-     * @expectedException PageNotFoundException
-     * @expectedExceptionMessage Class or method are not found in file
-     */
-    public function testThrowPageNotFoundExceptionWhenActionNotFoundSecond()
-    {
-        new Router('product_main');
+        new Router('asdsa');
     }
 }
