@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../src/models/Resource/IResourceCollection.php';
 require_once __DIR__ . '/../src/models/ProductCollection.php';
 
@@ -22,7 +21,7 @@ class ProductCollectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Nokla', $products[0]->getName());
     }
 
-    public function testIterableWithForeachFunction()
+    public function testIsIterableWithForeachFunction()
     {
         $resource = $this->getMock('IResourceCollection');
         $resource->expects($this->any())
@@ -34,10 +33,17 @@ class ProductCollectionTest extends PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $expected = array(0 => 'foo', 1 => 'bar');
         $collection = new ProductCollection($resource);
-        foreach ($collection as $_key => $item) {
-            $this->assertEquals($expected[$_key], $item->getName());
+        $expected = array(0 => 'foo', 1 => 'bar');
+        $iterated = false;
+        foreach ($collection as $_key => $_product) {
+            $this->assertEquals($expected[$_key], $_product->getSku());
+            $iterated = true;
+        }
+
+        if (!$iterated) {
+            $this->fail('Iteration did not happen');
         }
     }
+
 }

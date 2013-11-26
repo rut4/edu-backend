@@ -43,4 +43,14 @@ class Product extends CollectionElement
     {
         $this->_data = $resource;
     }
+
+    public function getId()
+    {
+        return $this->_getData('product_id');
+    }
+
+    public function load(IResourceEntity $resource, $id)
+    {
+        $this->_data = $resource->find($id);
+    }
 }

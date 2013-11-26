@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 08.11.13
- * Time: 0:02
- */
 
 class ErrorController
 {

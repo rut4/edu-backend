@@ -1,39 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 25.11.13
- * Time: 19:59
- */
+require_once __DIR__ . '/../../src/models/Resource/DBEntity.php';
 
-class DBEntityTest extends PHPUnit_Extensions_Database_TestCase
+class DBEntityTest
+    extends PHPUnit_Extensions_Database_TestCase
 {
-
-    public function testReturnsFoundDataFromDb()
+    public function testRetunsFoundDataFromDb()
     {
         $resource = new DBEntity(
-            $thi
-        )
-        $this->assertEquals(['id' => 1, 'data' => 'foo'], $resource)
+            $this->getConnection()->getConnection(), 'abstract_collection', 'id'
+        );
+        $this->assertEquals(['id' => 1, 'data' => 'foo'], $resource->find(1));
+        $this->assertEquals(['id' => 2, 'data' => 'bar'], $resource->find(2));
     }
 
-    /**
-     * Returns the test database connection.
-     *
-     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    protected function getConnection()
+    public function getConnection()
     {
-
+        $pdo = new PDO('mysql:host=localhost;dbname=student_unit', 'root', '123123');
+        return $this->createDefaultDBConnection($pdo, 'student_unit');
     }
 
-    /**
-     * Returns the test dataset.
-     *
-     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
-     */
-    protected function getDataSet()
+    public function getDataSet()
     {
-        // TODO: Implement getDataSet() method.
+        return new PHPUnit_Extensions_Database_DataSet_YamlDataSet(
+            __DIR__ . '/DBEntityTest/fixtures/abstract_entity.yaml'
+        );
     }
 }

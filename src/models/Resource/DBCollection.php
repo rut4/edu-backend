@@ -1,12 +1,7 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 25.11.13
- * Time: 19:26
- */
 
-class DBCollection implements  IResourceCollection
+<?php
+class DBCollection
+    implements IResourceCollection
 {
     private $_connection;
     private $_table;
@@ -19,7 +14,7 @@ class DBCollection implements  IResourceCollection
 
     public function fetch()
     {
-        $this->_connection->query("SELECT * FROM {$table}")
+        return $this->_connection->query("SELECT * FROM {$this->_table}")
             ->fetchAll(PDO::FETCH_ASSOC);
     }
-} 
+}

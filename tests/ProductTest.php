@@ -4,15 +4,6 @@ require_once __DIR__ . '/../src/models/Resource/IResourceEntity.php';
 
 class ProductTest extends PHPUnit_Framework_TestCase
 {
-    public function testReturnsIdWhichHasBeenInitialized()
-    {
-        $product = new Product(['product_id' => '12345']);
-        $this->assertEquals('12345', $product->getId());
-
-        $product = new Product(['product_id' => '567890']);
-        $this->assertEquals('567890', $product->getId());
-    }
-
     public function testReturnsSkuWhichHasBeenInitialized()
     {
         $product = new Product(['sku' => '12345']);
@@ -67,7 +58,16 @@ class ProductTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($product->isSpecialPriceApplied());
     }
 
-    public function testLoadDataFromResource()
+    public function testReturnsIdWhichHasBeenInitialized()
+    {
+        $product = new Product(['product_id' => 1]);
+        $this->assertEquals(1, $product->getId());
+
+        $product = new Product(['product_id' => 2]);
+        $this->assertEquals(2, $product->getId());
+    }
+
+    public function testLoadsDataFromResource()
     {
         $resource = $this->getMock('IResourceEntity');
         $resource->expects($this->any())
@@ -78,6 +78,6 @@ class ProductTest extends PHPUnit_Framework_TestCase
         $product = new Product([]);
         $product->load($resource, 42);
 
-        $this->assertEquals('foo', $product);
+        $this->assertEquals('foo', $product->getName());
     }
 }

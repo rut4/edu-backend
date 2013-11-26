@@ -8,7 +8,10 @@ add-apt-repository ppa:ondrej/php5
 apt-get update
 
 # Install PHP
-apt-get install -y php5-cli
+apt-get install -y php5-cli php5-mysql
 
 # Install GIT
 apt-get install -y git
+
+# Install GIT
+apt-get install -y curl
