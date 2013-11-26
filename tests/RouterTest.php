@@ -64,14 +64,4 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $router = new Router('foo_Bar');
         $this->assertEquals('barAction',$router->getAction());
     }
-
-    /**
-     *
-     * @expectedException RouterException
-     * @expectedExceptionMessage Invalid route path
-     */
-    public function testThrowsExceptionIfRouteIsInvalid()
-    {
-        $router = new Router('foo');
-    }
 }

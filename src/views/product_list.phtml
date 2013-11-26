@@ -2,7 +2,7 @@
     <?php foreach ($products as $_product): ?>
 
         <li class="product-item">
-            <a class="link-to-view" href="?page=product_view">
+            <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId()?>">
                 <div>
                     <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Preview"/>
 

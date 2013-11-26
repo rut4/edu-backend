@@ -31,7 +31,7 @@ class Product extends CollectionElement
 
     public function getId()
     {
-        return $this['get_id'];
+        return $this['product_id'];
     }
 
     public function isSpecialPriceApplied()
@@ -42,11 +42,6 @@ class Product extends CollectionElement
     public function find(IResourceEntity $resource, $id)
     {
         $this->_data = $resource;
-    }
-
-    public function getId()
-    {
-        return $this->_getData('product_id');
     }
 
     public function load(IResourceEntity $resource, $id)
