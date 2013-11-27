@@ -12,31 +12,46 @@ class DBCollection
         $this->_table = $table;
     }
 
-    public function fetch($what = '*')
+    public function fetch()
     {
-//        $stmt = $this->_connection->prepare('SELECT * FROM :table');
-//        $stmt->bindParam(':table', $this->_table, PDO::PARAM_STR);
-//        $stmt->execute();
-//        print_r($stmt->fetchAll());
-        return $this->_connection->query("SELECT {$what} FROM {$this->_table}")
+        return $this->_connection->query("SELECT * FROM {$this->_table}")
             ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetchFilter($field, $value, $what = '*')
+    public function fetchFilter($field, $value)
     {
-        return $this->_connection->query("SELECT {$what} FROM {$this->_table} WHERE {$field} = {$value}")
+        $statement = $this->_connection->prepare("SELECT * FROM {$this->_table} WHERE :field = :value");
+        $statement->execute([
+            'field' => $field,
+            'value' => $value
+        ]);
+        // return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $this->_connection->query("SELECT * FROM {$this->_table} WHERE {$field} = {$value}")
             ->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
     public function fetchAvg($field)
     {
+        $statement = $this->_connection->prepare("SELECT AVG(:field) FROM {$this->_table}");
+        $statement->execute(['field' => $field]);
+        // return $statement->fetch(PDO::FETCH_COLUMN);
+
         return $this->_connection->query("SELECT AVG({$field}) FROM {$this->_table}")
             ->fetch(PDO::FETCH_COLUMN);
     }
 
     public function fetchAvgFilter($field, $filterField, $value)
     {
+        $statement = $this->_connection->prepare("SELECT AVG(:field) FROM {$this->_table} WHERE :filterField = :value");
+        $statement->execute([
+            'field' => $field,
+            'filterField' => $filterField,
+            'value' => $value
+        ]);
+        // return $statement->fetch(PDO::FETCH_COLUMN);
+
         return $this->_connection->query("SELECT AVG({$field}) FROM {$this->_table} WHERE {$filterField} = {$value}")
             ->fetch(PDO::FETCH_COLUMN);
     }
