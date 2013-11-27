@@ -13,6 +13,10 @@ class DBCollectionTest
             ['id' => 1, 'data' => 'foo', 'rating' => 4],
             ['id' => 2, 'data' => 'bar', 'rating' => 5]
         ], $collection->fetch());
+
+        $this->assertEquals([
+            ['id' => 1, 'data' => 'foo', 'rating' => 4]
+        ], $collection->fetchFilter('rating', 4));
     }
 
     public function testFetchesAvgValueFromDb()
@@ -21,7 +25,6 @@ class DBCollectionTest
 
         $this->assertEquals(4.5, $collection->fetchAvg('rating'));
 
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
 
         $this->assertEquals(4, $collection->fetchAvgFilter('rating', 'id', 1));
     }
