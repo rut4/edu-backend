@@ -7,38 +7,46 @@
  */
 
 require_once __DIR__ . '/Collection.php';
+require_once __DIR__ . '/Review.php';
 
-class ReviewCollection extends Collection
+class ReviewCollection // extends Collection
+    implements IteratorAggregate
 {
+    private $_resource;
+    private $_product_id;
+
+    public function __construct(IResourceCollection $resource)
+    {
+        $this->_resource = $resource;
+    }
+
     public function getReviews()
     {
-        return parent::getCollection();
-    }
-
-    public function getAverangeRating(Product $product = null)
-    {
-        $count = 0;
-
-        $ratings = array_map(function (Review $review) use ($product, &$count) {
-            if (!isset($product) || $review->belongsToProduct($product)) {
-                $count++;
-                return $review->getRating();
-            }
-            return null;
-        }, $this->_collection);
-
-        return $count === 0 ? 0 : array_sum($ratings) / $count;
-    }
-
-    public function reviewsBelongsProduct(Product $product)
-    {
-        return new ReviewCollection(
-            array_values(
-                array_filter($this->_collection, function (Review $review) use ($product) {
-                    return $review->belongsToProduct($product);
-                })
-            )
+        return array_map(
+            function ($data) {
+                return new Review($data);
+            },
+            !isset($this->_product_id) ? $this->_resource->fetch() :
+                $this->_resource->fetchFilter('product_id', $this->_product_id)
         );
+    }
 
+    public function getAverageRating()
+    {
+        if (!isset($this->_product_id)) {
+            return $this->_resource->fetchAvg('rating');
+        } else {
+            return $this->_resource->fetchAvgFilter('rating', 'product_id', $this->_product_id);
+        }
+    }
+
+    public function filterByProduct(Product $product)
+    {
+        $this->_product_id = $product->getId();
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->getReviews());
     }
 }

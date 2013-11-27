@@ -20,6 +20,11 @@ class CollectionElement implements ArrayAccess
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }
 
+    public function load(IResourceEntity $resource, $id)
+    {
+        $this->_data = $resource->find($id);
+    }
+
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Whether a offset exists

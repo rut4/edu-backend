@@ -38,14 +38,4 @@ class Product extends CollectionElement
     {
         return (bool)$this->getSpecialPrice();
     }
-
-    public function find(IResourceEntity $resource, $id)
-    {
-        $this->_data = $resource;
-    }
-
-    public function load(IResourceEntity $resource, $id)
-    {
-        $this->_data = $resource->find($id);
-    }
 }

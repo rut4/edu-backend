@@ -9,8 +9,8 @@ class DBEntityTest
         $resource = new DBEntity(
             $this->getConnection()->getConnection(), 'abstract_collection', 'id'
         );
-        $this->assertEquals(['id' => 1, 'data' => 'foo'], $resource->find(1));
-        $this->assertEquals(['id' => 2, 'data' => 'bar'], $resource->find(2));
+        $this->assertEquals(['id' => 1, 'data' => 'foo', 'rating' => 1], $resource->find(1));
+        $this->assertEquals(['id' => 2, 'data' => 'bar', 'rating' => 2], $resource->find(2));
     }
 
     public function getConnection()

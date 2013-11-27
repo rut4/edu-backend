@@ -9,7 +9,9 @@ class PDOHelper {
 
     public static function getPdo()
     {
-        return isset(self::$_pdo) ? self::$_pdo :
+        if (!isset(self::$_pdo)) {
             self::$_pdo = new PDO('mysql:host=localhost;dbname=student', 'root', 'vagrant');
+        }
+        return self::$_pdo;
     }
 }

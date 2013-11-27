@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../src/models/Resource/DBCollection.php';
+require_once __DIR__ . '/../../src/models/Resource/PDOHelper.php';
 
 class DBCollectionTest
     extends PHPUnit_Extensions_Database_TestCase
@@ -9,9 +10,20 @@ class DBCollectionTest
         $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
 
         $this->assertEquals([
-            ['id' => 1, 'data' => 'foo'],
-            ['id' => 2, 'data' => 'bar']
+            ['id' => 1, 'data' => 'foo', 'rating' => 4],
+            ['id' => 2, 'data' => 'bar', 'rating' => 5]
         ], $collection->fetch());
+    }
+
+    public function testFetchesAvgValueFromDb()
+    {
+        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
+
+        $this->assertEquals(4.5, $collection->fetchAvg('rating'));
+
+        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
+
+        $this->assertEquals(4, $collection->fetchAvgFilter('rating', 'id', 1));
     }
 
     public function getConnection()
