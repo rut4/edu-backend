@@ -1,4 +1,20 @@
+product reviews:
+* remove sorting/limit/shifting for now
+* use resource to get data from collection
+* implement filtering
+* implement average calculation
+* use resource to load entity
+
+frontend:
+* design product view/list pages
+* display product reviews on product page
+* display pagination on product list
+* escape HTML output
+
+other backend:
 * use autoloader
-* incapsulate DB connection object
-* incapsulate table name and primary key
 * security
+* incapsulate table name and primary key
+* incapsulate DB connection object
+* problem with connection in controller
+* setup phpunit via phpunit.xml
