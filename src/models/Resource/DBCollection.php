@@ -1,3 +1,4 @@
+
 <?php
 
 class DBCollection
@@ -16,17 +17,8 @@ class DBCollection
 
     public function fetch()
     {
-        $sql = "SELECT * FROM {$this->_table}";
-        if ($this->_filters)
-        {
-            $sql .= ' WHERE ' . $this->_prepareFilters();
-        }
-        $statement = $this->_connection->prepare($sql);
-        if ($this->_bind) {
-            $this->_bindParams($statement);
-        }
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->_prepareSql();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function filterBy($column, $value)
@@ -34,20 +26,26 @@ class DBCollection
         $this->_filters[$column] = $value;
     }
 
-
-    public function fetchAvg($column)
+    public function average($column)
     {
-        $sql = "SELECT AVG({$column}) FROM {$this->_table}";
-        if ($this->_filters)
-        {
+        $stmt = $this->_prepareSql("AVG({$column}) as avg");
+        return $stmt->fetchColumn();
+    }
+
+    protected function _prepareSql($columns = '*')
+    {
+        $sql = "SELECT {$columns} FROM {$this->_table}";
+        if ($this->_filters) {
             $sql .= ' WHERE ' . $this->_prepareFilters();
         }
-        $statement = $this->_connection->prepare($sql);
+        $stmt = $this->_connection
+            ->prepare($sql);
         if ($this->_bind) {
-            $this->_bindParams($statement);
+            $this->_bindValues($stmt);
         }
-        $statement->execute();
-        return $statement->fetchColumn();
+        $stmt->execute();
+
+        return $stmt;
     }
 
     private function _prepareFilters()
@@ -61,10 +59,11 @@ class DBCollection
         return implode(' AND ', $conditions);
     }
 
-    private function _bindParams(PDOStatement $stmt)
+    private function _bindValues(PDOStatement $stmt)
     {
-        foreach($this->_bind as $parameter => $value) {
+        foreach ($this->_bind as $parameter => $value) {
             $stmt->bindValue($parameter, $value);
         }
     }
+
 }

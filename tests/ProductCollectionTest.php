@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../src/models/Resource/IResourceCollection.php';
 require_once __DIR__ . '/../src/models/ProductCollection.php';
 
-class ProductCollectionTest extends PHPUnit_Framework_TestCase
+class __ProductCollection extends PHPUnit_Framework_TestCase
 {
     public function testTakesDataFromResource()
     {

@@ -5,6 +5,5 @@ interface IResourceCollection
 
     public function filterBy($column, $value);
 
-    public function fetchAvg($column);
-
+    public function average($column);
 }
