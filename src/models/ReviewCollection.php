@@ -26,23 +26,28 @@ class ReviewCollection // extends Collection
             function ($data) {
                 return new Review($data);
             },
-            !isset($this->_product_id) ? $this->_resource->fetch() :
-                $this->_resource->fetchFilter('product_id', $this->_product_id)
+            $this->_resource->fetch()
         );
     }
 
     public function getAverageRating()
     {
-        if (!isset($this->_product_id)) {
-            return $this->_resource->fetchAvg('rating');
-        } else {
-            return $this->_resource->fetchAvgFilter('rating', 'product_id', $this->_product_id);
+        if (isset($this->_product_id)) {
+            $this->_resource->filterBy('product_id', $this->_product_id);
         }
+        return $this->_resource->fetchAvg('rating');
     }
 
     public function filterByProduct(Product $product)
     {
-        $this->_product_id = $product->getId();
+        $this->_resource->filterBy('product_id', $product->getId());
+        var_dump($product->getId());
+        return array_map(
+            function ($data) {
+                return new Review($data);
+            },
+            $this->_resource->fetch()
+        );
     }
 
     public function getIterator()

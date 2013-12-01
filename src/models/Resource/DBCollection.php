@@ -5,6 +5,8 @@ class DBCollection
 {
     private $_connection;
     private $_table;
+    private $_filters = [];
+    private $_bind = [];
 
     public function __construct(PDO $connection, $table)
     {
@@ -14,45 +16,55 @@ class DBCollection
 
     public function fetch()
     {
-        return $this->_connection->query("SELECT * FROM {$this->_table}")
-            ->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM {$this->_table}";
+        if ($this->_filters)
+        {
+            $sql .= ' WHERE ' . $this->_prepareFilters();
+        }
+        $statement = $this->_connection->prepare($sql);
+        if ($this->_bind) {
+            $this->_bindParams($statement);
+        }
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetchFilter($field, $value)
+    public function filterBy($column, $value)
     {
-        $statement = $this->_connection->prepare("SELECT * FROM {$this->_table} WHERE :field = :value");
-        $statement->execute([
-            'field' => $field,
-            'value' => $value
-        ]);
-        // return $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        return $this->_connection->query("SELECT * FROM {$this->_table} WHERE {$field} = {$value}")
-            ->fetchAll(PDO::FETCH_ASSOC);
+        $this->_filters[$column] = $value;
     }
 
 
-    public function fetchAvg($field)
+    public function fetchAvg($column)
     {
-        $statement = $this->_connection->prepare("SELECT AVG(:field) FROM {$this->_table}");
-        $statement->execute(['field' => $field]);
-        // return $statement->fetch(PDO::FETCH_COLUMN);
-
-        return $this->_connection->query("SELECT AVG({$field}) FROM {$this->_table}")
-            ->fetch(PDO::FETCH_COLUMN);
+        $sql = "SELECT AVG({$column}) FROM {$this->_table}";
+        if ($this->_filters)
+        {
+            $sql .= ' WHERE ' . $this->_prepareFilters();
+        }
+        $statement = $this->_connection->prepare($sql);
+        if ($this->_bind) {
+            $this->_bindParams($statement);
+        }
+        $statement->execute();
+        return $statement->fetchColumn();
     }
 
-    public function fetchAvgFilter($field, $filterField, $value)
+    private function _prepareFilters()
     {
-        $statement = $this->_connection->prepare("SELECT AVG(:field) FROM {$this->_table} WHERE :filterField = :value");
-        $statement->execute([
-            'field' => $field,
-            'filterField' => $filterField,
-            'value' => $value
-        ]);
-        // return $statement->fetch(PDO::FETCH_COLUMN);
+        $conditions = [];
+        foreach ($this->_filters as $column => $value) {
+            $parameter = ':_param_' . $column;
+            $conditions[] = $column . ' = ' . $parameter . '';
+            $this->_bind[$parameter] = $value;
+        }
+        return implode(' AND ', $conditions);
+    }
 
-        return $this->_connection->query("SELECT AVG({$field}) FROM {$this->_table} WHERE {$filterField} = {$value}")
-            ->fetch(PDO::FETCH_COLUMN);
+    private function _bindParams(PDOStatement $stmt)
+    {
+        foreach($this->_bind as $parameter => $value) {
+            $stmt->bindValue($parameter, $value);
+        }
     }
 }

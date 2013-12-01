@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../src/models/ReviewCollection.php';
+require_once __DIR__ . '/../src/models/Product.php';
 
 class ReviewCollectionTest extends PHPUnit_Framework_TestCase
 {
@@ -35,8 +36,8 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         $collection = new ReviewCollection($resource);
         $expected = array(0 => 'Vasya', 1 => 'Petya');
         $iterated = false;
-        foreach ($collection as $_key => $_product) {
-            $this->assertEquals($expected[$_key], $_product->getName());
+        foreach ($collection as $_key => $_review) {
+            $this->assertEquals($expected[$_key], $_review->getName());
             $iterated = true;
         }
 
@@ -55,5 +56,30 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         $collection = new ReviewCollection($resource);
 
         $this->assertEquals(4.5, $collection->getAverageRating());
+    }
+
+    public function __testFiltersCollectionByProduct()
+    {
+        $product = new Product(['product_id' => 2]);
+        $resource = $this->getMock('IResourceCollection');
+        $resource->expects($this->any())
+            ->method('filterBy')
+            ->with($this->equalTo('product_id'), $this->equalTo(2));
+
+        $reviews = new ReviewCollection($resource);
+
+        $reviews->filterByProduct($product);
+    }
+
+    public function testCaclulatesAvgRating()
+    {
+        $resource = $this->getMock('IResourceCollection');
+
+        $resource->expects($this->any())
+            ->method('avg')
+            ->with($this->equalTo('rating'));
+
+        $reviews = new ReviewCollection($resource);
+
     }
 } 
