@@ -21,30 +21,20 @@ class DBCollectionTest
         ], $collection->fetch());
     }
 
-    public function testFetchesAvgValueFromDb()
-    {
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
-
-        $this->assertEquals(4.5, $collection->fetchAvg('rating'));
-
-
-        $collection->filterBy('id', 1);
-        $this->assertEquals(4, $collection->fetchAvg('rating'));
-    }
 
     public function testFetchesFilteredData()
     {
         $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
         $collection->filterBy('id', 1);
         $this->assertEquals([
-            ['id' => 1, 'data' => 'foo']
+            ['id' => 1, 'data' => 'foo', 'rating' => 4]
         ], $collection->fetch());
 
         $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
         $collection->filterBy('data', 'bar');
         $collection->filterBy('id', 2);
         $this->assertEquals([
-            ['id' => 2, 'data' => 'bar']
+            ['id' => 2, 'data' => 'bar', 'rating' => 5]
         ], $collection->fetch());
     }
 

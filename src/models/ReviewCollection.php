@@ -13,7 +13,6 @@ class ReviewCollection // extends Collection
     implements IteratorAggregate
 {
     private $_resource;
-    private $_product_id;
 
     public function __construct(IResourceCollection $resource)
     {
@@ -32,22 +31,12 @@ class ReviewCollection // extends Collection
 
     public function getAverageRating()
     {
-        if (isset($this->_product_id)) {
-            $this->_resource->filterBy('product_id', $this->_product_id);
-        }
-        return $this->_resource->fetchAvg('rating');
+        return $this->_resource->average('rating');
     }
 
     public function filterByProduct(Product $product)
     {
         $this->_resource->filterBy('product_id', $product->getId());
-        var_dump($product->getId());
-        return array_map(
-            function ($data) {
-                return new Review($data);
-            },
-            $this->_resource->fetch()
-        );
     }
 
     public function getIterator()

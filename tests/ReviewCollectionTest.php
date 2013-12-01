@@ -46,40 +46,36 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testTakesAverageRating()
+
+    /**
+     * @dataProvider getProductIds
+     */
+    public function testFiltersCollectionByProduct($productId)
     {
-        $resource = $this->getMock('IResourceCollection');
-        $resource->expects($this->any())
-            ->method('fetchAvg')
-            ->will($this->returnValue(4.5));
-
-        $collection = new ReviewCollection($resource);
-
-        $this->assertEquals(4.5, $collection->getAverageRating());
-    }
-
-    public function __testFiltersCollectionByProduct()
-    {
-        $product = new Product(['product_id' => 2]);
+        $product = new Product(['product_id' => $productId]);
         $resource = $this->getMock('IResourceCollection');
         $resource->expects($this->any())
             ->method('filterBy')
-            ->with($this->equalTo('product_id'), $this->equalTo(2));
+            ->with($this->equalTo('product_id'), $this->equalTo($productId));
 
-        $reviews = new ReviewCollection($resource);
+        $collection = new ReviewCollection($resource);
 
-        $reviews->filterByProduct($product);
+        $collection->filterByProduct($product);
     }
 
-    public function testCaclulatesAvgRating()
+    public function getProductIds()
+    {
+        return [[1], [2]];
+    }
+
+    public function testCalculatesAverageRating()
     {
         $resource = $this->getMock('IResourceCollection');
-
         $resource->expects($this->any())
-            ->method('avg')
+            ->method('average')
             ->with($this->equalTo('rating'));
 
-        $reviews = new ReviewCollection($resource);
-
+        $collection = new ReviewCollection($resource);
+        $collection->getAverageRating();
     }
 } 
