@@ -1,25 +1,23 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 07.11.13
- * Time: 19:53
- */
+namespace Test\Model;
 
-require_once __DIR__ . '/../src/models/Router.php';
-require_once __DIR__ . '/../src/models/PageNotFoundException.php';
+use App\Model\Router;
 
-class RouterTest extends PHPUnit_Framework_TestCase
+class RouterTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testReturnsControllerNameMatchedByRoute()
     {
         $page = 'product_list';
         $router = new Router($page);
-        $this->assertEquals('ProductController', $router->getController());
+        $this->assertEquals(
+            '\App\Controller\ProductController', $router->getController()
+        );
 
         $router = new Router('product_view');
-        $this->assertEquals('ProductController', $router->getController());
+        $this->assertEquals(
+            '\App\Controller\ProductController', $router->getController()
+        );
 
     }
 
@@ -34,7 +32,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PageNotFoundException
+     * @expectedException \App\Model\PageNotFoundException
      * @expectedExceptionMessage Expected controller and actions names are separated by '_'
      */
     public function testReturnsPageNotFoundWhenPageDoesNotContainsTwoWordsFirst()
@@ -43,7 +41,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PageNotFoundException
+     * @expectedException \App\Model\PageNotFoundException
      * @expectedExceptionMessage Expected controller and actions names are separated by '_'
      */
     public function testReturnsPageNotFoundWhenPageDoesNotContainsTwoWordsSecond()
@@ -55,7 +53,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     {
         $router = new Router('foo_bar');
         $this->assertEquals(
-            'FooController', $router->getController()
+            '\App\Controller\FooController', $router->getController()
         );
     }
 

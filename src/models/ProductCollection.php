@@ -1,14 +1,12 @@
 <?php
+namespace App\Model;
 
-require_once __DIR__ . '/Collection.php';
-require_once __DIR__ . '/Resource/IResourceCollection.php';
-
-class ProductCollection // extends Collection
-    implements IteratorAggregate
+class ProductCollection
+    implements \IteratorAggregate
 {
     private $_resource;
 
-    public function __construct(IResourceCollection $resource)
+    public function __construct(Resource\IResourceCollection $resource)
     {
         $this->_resource = $resource;
     }
@@ -25,6 +23,6 @@ class ProductCollection // extends Collection
 
     public function getIterator()
     {
-        return new ArrayIterator($this->getProducts());
+        return new \ArrayIterator($this->getProducts());
     }
 }

@@ -6,15 +6,14 @@
  * Time: 23:27
  */
 
-require_once __DIR__ . '/Collection.php';
-require_once __DIR__ . '/Review.php';
+namespace App\Model;
 
-class ReviewCollection // extends Collection
-    implements IteratorAggregate
+class ReviewCollection
+    implements \IteratorAggregate
 {
     private $_resource;
 
-    public function __construct(IResourceCollection $resource)
+    public function __construct(Resource\IResourceCollection $resource)
     {
         $this->_resource = $resource;
     }
@@ -41,6 +40,6 @@ class ReviewCollection // extends Collection
 
     public function getIterator()
     {
-        return new ArrayIterator($this->getReviews());
+        return new \ArrayIterator($this->getReviews());
     }
 }

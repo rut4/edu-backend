@@ -1,5 +1,5 @@
-
 <?php
+namespace App\Model\Resource;
 
 class DBCollection
     implements IResourceCollection
@@ -9,16 +9,16 @@ class DBCollection
     private $_filters = [];
     private $_bind = [];
 
-    public function __construct(PDO $connection, $table)
+    public function __construct(\PDO $connection, Table\ITable $table)
     {
         $this->_connection = $connection;
-        $this->_table = $table;
+        $this->_table = $table->getName();
     }
 
     public function fetch()
     {
         $stmt = $this->_prepareSql();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function filterBy($column, $value)
@@ -59,7 +59,7 @@ class DBCollection
         return implode(' AND ', $conditions);
     }
 
-    private function _bindValues(PDOStatement $stmt)
+    private function _bindValues(\PDOStatement $stmt)
     {
         foreach ($this->_bind as $parameter => $value) {
             $stmt->bindValue($parameter, $value);

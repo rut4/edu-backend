@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/CollectionElement.php';
+namespace App\Model;
 
 class Review extends CollectionElement
 {
@@ -15,7 +15,7 @@ class Review extends CollectionElement
     public function __construct(array $data)
     {
         if (isset($data['rating']) && !in_array($data['rating'], [1, 2, 3, 4, 5])) {
-            throw new InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
+            throw new \InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
         }
         parent::__construct($data);
     }

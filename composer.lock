@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "68ead5014a9761e469ebc67066821678",
+    "hash": "3919abcc3febe9d1dba17a3f6aa08a56",
     "packages": [
 
     ],
@@ -480,6 +480,46 @@
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
             "time": "2013-10-17 11:48:01"
+        },
+        {
+            "name": "zendframework/zend-loader",
+            "version": "2.2.5",
+            "target-dir": "Zend/Loader",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendLoader.git",
+                "reference": "9e3537a6012dc0b184f66f8668e6c33fd805f0eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendLoader/zipball/9e3537a6012dc0b184f66f8668e6c33fd805f0eb",
+                "reference": "9e3537a6012dc0b184f66f8668e6c33fd805f0eb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Loader\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "keywords": [
+                "loader",
+                "zf2"
+            ],
+            "time": "2013-10-20 06:00:17"
         }
     ],
     "aliases": [

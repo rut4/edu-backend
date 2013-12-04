@@ -1,36 +1,29 @@
 <?php
-require_once __DIR__ . '/../../src/models/Resource/DBCollection.php';
-require_once __DIR__ . '/../../src/models/Resource/PDOHelper.php';
+namespace Test\Model\Resource;
+
+use \App\Model\Resource\DBCollection;
 
 class DBCollectionTest
-    extends PHPUnit_Extensions_Database_TestCase
+    extends \PHPUnit_Extensions_Database_TestCase
 {
     public function testFetchesDataFromDb()
     {
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
-
+        $collection = $this->_getCollection();
         $this->assertEquals([
             ['id' => 1, 'data' => 'foo', 'rating' => 4],
             ['id' => 2, 'data' => 'bar', 'rating' => 5]
         ], $collection->fetch());
-
-        $collection->filterBy('rating', 4);
-        $collection->filterBy('id', 1);
-        $this->assertEquals([
-            ['id' => 1, 'data' => 'foo', 'rating' => 4]
-        ], $collection->fetch());
     }
-
 
     public function testFetchesFilteredData()
     {
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
+        $collection = $this->_getCollection();
         $collection->filterBy('id', 1);
         $this->assertEquals([
             ['id' => 1, 'data' => 'foo', 'rating' => 4]
         ], $collection->fetch());
 
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
+        $collection = $this->_getCollection();
         $collection->filterBy('data', 'bar');
         $collection->filterBy('id', 2);
         $this->assertEquals([
@@ -47,7 +40,7 @@ class DBCollectionTest
             1 => (1+2+3)/3,
             2 => (10+11+12)/3
         ];
-        $collection = new DBCollection($this->getConnection()->getConnection(), 'abstract_collection');
+        $collection = $this->_getCollection();
         $this->assertEquals($expected[$number], $collection->average($column));
 
     }
@@ -59,14 +52,23 @@ class DBCollectionTest
 
     public function getConnection()
     {
-        $pdo = new PDO('mysql:host=localhost;dbname=student_unit', 'root', 'vagrant');
+        $pdo = new \PDO('mysql:host=localhost;dbname=student_unit', 'root', 'vagrant');
         return $this->createDefaultDBConnection($pdo, 'student_unit');
     }
 
     public function getDataSet()
     {
-        return new PHPUnit_Extensions_Database_DataSet_YamlDataSet(
+        return new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(
             __DIR__ . '/DBCollectionTest/fixtures/' . $this->getName(false) . '.yaml'
         );
+    }
+
+    private function _getCollection()
+    {
+        $table = $this->getMock('\App\Model\Resource\Table\ITable');
+        $table->expects($this->any())->method('getName')
+            ->will($this->returnValue('abstract_collection'));
+        $collection = new DBCollection($this->getConnection()->getConnection(), $table);
+        return $collection;
     }
 }

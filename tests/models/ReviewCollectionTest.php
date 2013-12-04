@@ -1,12 +1,14 @@
 <?php
-require_once __DIR__ . '/../src/models/ReviewCollection.php';
-require_once __DIR__ . '/../src/models/Product.php';
+namespace Test\Model;
 
-class ReviewCollectionTest extends PHPUnit_Framework_TestCase
+use \App\Model\ReviewCollection;
+use \App\Model\Product;
+
+class ReviewCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testTakesDataFromResource()
     {
-        $resource = $this->getMock('IResourceCollection');
+        $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
         $resource->expects($this->any())
             ->method('fetch')
             ->will($this->returnValue(
@@ -23,7 +25,7 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testIsIterableWithForeachFunction()
     {
-        $resource = $this->getMock('IResourceCollection');
+        $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
         $resource->expects($this->any())
             ->method('fetch')
             ->will($this->returnValue(
@@ -53,7 +55,7 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
     public function testFiltersCollectionByProduct($productId)
     {
         $product = new Product(['product_id' => $productId]);
-        $resource = $this->getMock('IResourceCollection');
+        $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
         $resource->expects($this->any())
             ->method('filterBy')
             ->with($this->equalTo('product_id'), $this->equalTo($productId));
@@ -70,7 +72,7 @@ class ReviewCollectionTest extends PHPUnit_Framework_TestCase
 
     public function testCalculatesAverageRating()
     {
-        $resource = $this->getMock('IResourceCollection');
+        $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
         $resource->expects($this->any())
             ->method('average')
             ->with($this->equalTo('rating'));

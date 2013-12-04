@@ -1,6 +1,5 @@
 <?php
-
-require_once __DIR__ . '/CollectionElement.php';
+namespace App\Model;
 
 class Product extends CollectionElement
 {
@@ -36,6 +35,6 @@ class Product extends CollectionElement
 
     public function isSpecialPriceApplied()
     {
-        return (bool)$this->getSpecialPrice();
+        return $this->getSpecialPrice() > 0;
     }
 }

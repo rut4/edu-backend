@@ -5,8 +5,10 @@
  * Date: 01.11.13
  * Time: 16:55
  */
+namespace App\Model;
 
-class CollectionElement implements ArrayAccess
+class CollectionElement
+    implements \ArrayAccess
 {
     protected  $_data = array();
 
@@ -20,7 +22,7 @@ class CollectionElement implements ArrayAccess
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }
 
-    public function load(IResourceEntity $resource, $id)
+    public function load(Resource\IResourceEntity $resource, $id)
     {
         $this->_data = $resource->find($id);
     }
@@ -71,7 +73,7 @@ class CollectionElement implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        throw new Exception('Property is read only');
+        throw new \Exception('Property is read only');
     }
 
     /**
@@ -86,6 +88,6 @@ class CollectionElement implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        throw new Exception('Property is read only');
+        throw new \Exception('Property is read only');
     }
 }

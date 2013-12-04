@@ -1,16 +1,20 @@
 <?php
-require_once __DIR__ . '/../models/ProductCollection.php';
-require_once __DIR__ . '/../models/ReviewCollection.php';
-require_once __DIR__ . '/../models/Resource/DBCollection.php';
-require_once __DIR__ . '/../models/Resource/DBEntity.php';
-require_once __DIR__ . '/../models/Product.php';
-require_once __DIR__ . '/../models/Resource/PDOHelper.php';
+namespace App\Controller;
+
+use App\Model\ProductCollection;
+use App\Model\ReviewCollection;
+use App\Model\Resource\DBCollection;
+use App\Model\Resource\DBEntity;
+use App\Model\Product;
+use App\Model\Resource\PDOHelper;
+use App\Model\Resource\Table\Product as ProductTable;
+use App\Model\Resource\Table\Review as ReviewTable;
 
 class ProductController
 {
     public function listAction()
     {
-        $resource = new DBCollection(PDOHelper::getPdo(), 'products');
+        $resource = new DBCollection(PDOHelper::getPdo(), new ProductTable);
         $products = new ProductCollection($resource);
 
         $viewName = 'product_list';
@@ -22,11 +26,11 @@ class ProductController
     {
         $product = new Product([]);
 
-        $resource = new DBEntity(PDOHelper::getPdo(), 'products', 'product_id');
+        $resource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
         $product->load($resource, $_GET['id']);
 
 
-        $resource = new DBCollection(PDOHelper::getPdo(), 'reviews');
+        $resource = new DBCollection(PDOHelper::getPdo(), new ReviewTable);
         $reviews = new ReviewCollection($resource);
         $reviews->filterByProduct($product);
         $reviews = $reviews->getReviews();

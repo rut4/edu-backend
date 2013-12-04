@@ -1,4 +1,4 @@
-abstract_collection:
+abstract_entity:
   - id: 1
     data: foo
     rating: 1

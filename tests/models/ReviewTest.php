@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__ . '/../src/models/Review.php';
-require_once __DIR__ . '/../src/models/Product.php';
+namespace Test\Model;
 
-class ReviewTest extends PHPUnit_Framework_TestCase
+use \App\Model\Review;
+use \App\Model\Product;
+
+class ReviewTest extends \PHPUnit_Framework_TestCase
 {
     public function testResultingUsernameEqualsGivenUsername()
     {
@@ -51,19 +53,22 @@ class ReviewTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $product === $review->getProduct());
     }
 
-    public function testGivenRatingMustBeFromOneToFiveAndInteger()
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Rating value mast be in range [1, 5] and integer
+     */
+    public function testGivenRatingMustBeFromOneToFive()
     {
-        try {
-            $review = new Review(['rating' => 0]);
-        } catch (Exception $ex) {
-            $this->assertEquals(new InvalidArgumentException('Rating value mast be in range [1, 5] and integer'), $ex);
-        }
+        new Review(['rating' => 0]);
+    }
 
-        try {
-            $review = new Review(['rating' => 1.5]);
-        } catch (Exception $ex) {
-            $this->assertEquals(new InvalidArgumentException('Rating value mast be in range [1, 5] and integer'), $ex);
-        }
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Rating value mast be in range [1, 5] and integer
+     */
+    public function testGivenRatingMustBeInteger()
+    {
+        new Review(['rating' => 1.5]);
     }
 
     public function testReturnsTrueIfReviewBelongsToProduct()
@@ -77,7 +82,7 @@ class ReviewTest extends PHPUnit_Framework_TestCase
 
     public function testLoadsDataFromResource()
     {
-        $resource = $this->getMock('IResourceEntity');
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $resource->expects($this->any())
             ->method('find')
             ->with($this->equalTo(42))

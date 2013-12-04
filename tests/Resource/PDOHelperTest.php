@@ -1,10 +1,11 @@
 <?php
-require_once __DIR__ . '/../../src/models/Resource/PDOHelper.php';
+namespace Test\Model\Resource;
+use \App\Model\Resource\PDOHelper;
 
-class PDOHelperTest extends PHPUnit_Framework_TestCase
+class PDOHelperTest extends \PHPUnit_Framework_TestCase
 {
     public function testPdoHelperSingletonReturnsPdoObject()
     {
-        $this->assertEquals(new PDO('mysql:host=localhost;dbname=student', 'root', 'vagrant'), PDOHelper::getPdo());
+        $this->assertEquals(new \PDO('mysql:host=localhost;dbname=student', 'root', 'vagrant'), PDOHelper::getPdo());
     }
 }
