@@ -16,7 +16,7 @@ try {
         }
 
     } catch (Model\PageNotFoundException $ex) {
-        $controllerName = 'ErrorController';
+        $controllerName = '\App\Controller\ErrorController';
         $actionName = 'pageNotFoundAction';
     } finally {
         $controller = new $controllerName;

@@ -1,19 +1,15 @@
 <?php
 namespace App\Controller;
 
-use App\Model\ProductCollection;
-use App\Model\Session;
-use App\Model\Resource\DBCollection;
-use App\Model\Resource\DBEntity;
-use App\Model\Customer;
-use App\Model\Resource\PDOHelper;
-use App\Model\Resource\Table\Customer as CustomerTable;
+use \App\Model\Session;
+use \App\Model\Customer;
+
 
 class CustomerController
 {
     public function loginAction()
     {
-        if (isset($_POST['customer']) && $this->_authorize()) {
+        if (isset($_POST['customer']) && $this->_auth(new Customer($_POST['customer']))) {
             (new ProductController)->listAction();
         } else {
             $cssName = 'customer_auth';
@@ -25,8 +21,9 @@ class CustomerController
 
     public function registerAction()
     {
-        if (isset($_POST['customer'])) {
-            $this->_registerCustomer();
+        $session = new Session();
+        if (isset($_POST['customer']) && $session->register($_POST['customer'])) {
+            $this->loginAction();
         } else {
             $cssName = 'customer_auth';
             $viewName = 'customer_register';
@@ -37,39 +34,16 @@ class CustomerController
 
     public function logoutAction()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        unset($_SESSION['customer']);
+        $session = new Session();
+        $session->logout();
         (new ProductController)->listAction();
     }
 
-    private function _registerCustomer()
+    private function _auth(Customer $customer)
     {
-        $connection = PDOHelper::getPdo();
-        $resource = new DBEntity($connection, new CustomerTable);
-
-        $_POST['customer']['password'] = md5($_POST['customer']['password']);
-
-        $customer = new Customer($_POST['customer']);
-        $customer->save($resource);
-        new Session($customer);
-        (new ProductController)->listAction();
+        $session = new Session();
+        return $session->auth($customer);
     }
 
-    private function _authorize()
-    {
-        $customers = new DBCollection(PDOHelper::getPdo(), new CustomerTable);
-        $customers->filterBy('login', $_POST['customer']['login']);
-        $customers->filterBy('password', md5($_POST['customer']['password']));
 
-        $fetchedCustomers = $customers->fetch();
-        if (count($fetchedCustomers) == 1) {
-            $customer = new Customer(reset($fetchedCustomers));
-            new Session($customer);
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

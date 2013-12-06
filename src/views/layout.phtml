@@ -1,3 +1,4 @@
+<?php $session = new \App\Model\Session(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,17 +10,14 @@
 <body>
 <header class="header">
     <div class="customer-panel">
-        <?php if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        } ?>
-        <span>Hi, <?php echo isset($_SESSION['customer']) ? $_SESSION['customer']->getName() : 'guest' ?>! You can do:</span>
+        <span>Hi, <?php echo $session->isLoggedIn() ? $session->getCustomer()->getName() : 'guest'; ?>!</span>
         <?php if (!isset($_SESSION['customer'])): ?>
             <a href="?page=customer_login">Login</a> |
             <a href="?page=customer_register">Sign Up</a>
         <?php else: ?>
-
             <a href="?page=customer_logout">Logout</a>
         <?php endif; ?>
+        | <a href="?page=cart_list">My Cart</a>
     </div>
     <h1><?php echo $headerText; ?></h1>
 </header>

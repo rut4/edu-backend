@@ -20,4 +20,14 @@ class Customer extends CollectionElement
     {
         return $this['name'];
     }
+
+    public function getLogin()
+    {
+        return $this['login'];
+    }
+
+    public function getPassword()
+    {
+        return $this['password'];
+    }
 }

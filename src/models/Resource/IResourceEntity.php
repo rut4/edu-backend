@@ -5,5 +5,7 @@ interface IResourceEntity
 {
     public function find($id);
 
-    public function save($data);
+    public function save(array $data);
+
+    public function remove($id);
 }

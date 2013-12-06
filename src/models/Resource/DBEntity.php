@@ -22,7 +22,7 @@ class DBEntity
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function save($data)
+    public function save(array $data)
     {
         $fields = array_keys($data);
         if ($this->_itemExists($data)) {
@@ -32,6 +32,14 @@ class DBEntity
         }
         $stmt->execute(array_combine($this->_prepareBind($fields), $data));
         return $this->_connection->lastInsertId($this->_table->getPrimaryKey());
+    }
+
+    public function remove($id)
+    {
+        $stmt = $this
+            ->_connection
+            ->prepare("DELETE FROM {$this->_table->getName()} WHERE {$this->_table->getPrimaryKey()} = :id");
+        $stmt->execute([':id' => $id]);
     }
 
     private function _itemExists($data)
@@ -77,4 +85,6 @@ class DBEntity
             return ":{$field}";
         }, $fields);
     }
+
+
 }
