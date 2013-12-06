@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Webstore</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/layout.css"/>
+    <link rel="stylesheet" href="/css/<?php echo isset($cssName) ? $cssName : $viewName; ?>.css">
+</head>
+<body>
+<header class="header">
+    <div class="customer-panel">
+        <?php if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        } ?>
+        <span>Hi, <?php echo isset($_SESSION['customer']) ? $_SESSION['customer']->getName() : 'guest' ?>! You can do:</span>
+        <?php if (!isset($_SESSION['customer'])): ?>
+            <a href="?page=customer_login">Login</a> |
+            <a href="?page=customer_register">Sign Up</a>
+        <?php else: ?>
+
+            <a href="?page=customer_logout">Logout</a>
+        <?php endif; ?>
+    </div>
+    <h1><?php echo $headerText; ?></h1>
+</header>
+<?php if ($viewName != 'product_list'): ?>
+    <nav class="back-to-product-list">
+        <a href="/?page=product_list">←</a>
+    </nav>
+<?php endif; ?>
+<section class="content">
+    <?php require_once __DIR__ . '/' . $viewName . '.phtml'; ?>
+</section>
+<footer class="footer">
+    <p class="copyright">© 2013 Eduard Paliy</p>
+</footer>
+</body>
+</html>

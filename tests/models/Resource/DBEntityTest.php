@@ -1,5 +1,6 @@
 <?php
 namespace Test\Model\Resource;
+
 use \App\Model\Resource\DBEntity;
 
 class DBEntityTest
@@ -17,6 +18,36 @@ class DBEntityTest
         $resource = $this->_getEntity();
 
         $this->assertEquals(['id' => 2, 'data' => 'bar', 'rating' => 2], $resource->find('2-1'));
+    }
+
+    public function testSavesDataInDb()
+    {
+        $resource = $this->_getEntity();
+        $resource->save(['id' => 3, 'data' => 'baz', 'rating' => 3]);
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            'abstract_entity', 'SELECT * FROM abstract_entity'
+        );
+        $expectedTable = (new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(
+            __DIR__ . '/DBEntityTest/expectations/abstract_entity.yaml'
+        ))->getTable('abstract_entity');
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
+    public function testUpdateEntityIfExists()
+    {
+        $resource = $this->_getEntity();
+        $resource->save(['id' => 2, 'data' => 'bar', 'rating' => 2]);
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            'abstract_entity', 'SELECT * FROM abstract_entity'
+        );
+        $expectedTable = (new \PHPUnit_Extensions_Database_DataSet_YamlDataSet(
+            __DIR__ . '/DBEntityTest/expectations/testUpdateEntityIfExists.yaml'
+        ))->getTable('abstract_entity');
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
     }
 
     public function getConnection()

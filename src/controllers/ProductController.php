@@ -19,7 +19,7 @@ class ProductController
 
         $viewName = 'product_list';
         $headerText = 'Our Product List';
-        require_once __DIR__ . '/../views/product_layout.phtml';
+        require_once __DIR__ . '/../views/layout.phtml';
     }
 
     public function viewAction()
@@ -37,6 +37,6 @@ class ProductController
 
         $viewName = 'product_view';
         $headerText = 'Product View';
-        require_once __DIR__ . '/../views/product_layout.phtml';
+        require_once __DIR__ . '/../views/layout.phtml';
     }
 }
