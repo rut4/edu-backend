@@ -1,5 +1,5 @@
 <ul class="product-list">
-    <?php foreach ($products as $_product): ?>
+    <?php foreach ($products as $_key => $_product): ?>
         <li class="product-item">
             <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId()?>">
                 <div>
@@ -21,8 +21,13 @@
                     <?php endif; ?>
                 </div>
             </a>
+            <?php if (isset($counts[$_key])): ?>
+                <div class="count-view">
+                    <span><?php echo $counts[$_key]; ?></span>
+                </div>
+            <?php endif; ?>
             <form class="entity-doing" action="?page=cart_changeCount" method="POST">
-                <input type="text" name="product_id" value="<?php echo $_product->getId() ?>" hidden>
+                <input type="text" name="product_id" value="<?php echo $_product->getId(); ?>" hidden>
                 <input class="entity-doing__add" type="submit" name="action" value="Add">
                 <input class="entity-doing__count" type="number" name="count" value="1" min="1" max="99">
                 <input class="entity-doing__remove" type="submit" name="action" value="Remove">

@@ -78,13 +78,5 @@
 .add-to-cart-form__submit {
     margin: 0;
     width: 220px;
-    box-shadow: none !important;
-}
-
-.add-to-cart-form__submit:hover {
-    box-shadow: inset 0 0 8px #eee !important;
-}
-
-.add-to-cart-form__submit:active {
-    color: #000;
+    box-shadow: none!important;
 }

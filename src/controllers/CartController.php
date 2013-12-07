@@ -13,9 +13,11 @@ class CartController
 {
     public function listAction()
     {
-        $products = $this->_fetchCartProducts();
+        $counts = [];
+        $products = $this->_fetchCartProducts($counts);
         $viewName = 'cart_list';
         $headerText = 'Shopping Cart';
+
         require_once __DIR__ . '/../views/layout.phtml';
     }
 
@@ -47,21 +49,23 @@ class CartController
                     $cartEntity->save($fetchedCartEntity);
                 }
             }
-            // var_dump($fetchedCartEntity['count']);die;
 
         }
         $this->listAction();
     }
 
-    private function _fetchCartProducts()
+    private function _fetchCartProducts(array &$counts)
     {
         $session = new Session();
         $product = new DBEntity(PDOHelper::getPdo(), new ProductTable);
         $cartEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
         $this->_chooseCustomerIdentifier($session, $cartEntities);
-        $products = array_map(function ($entity) use ($product) {
+        $products = array_map(function ($entity) use ($product, &$counts) {
+            $counts[] = $entity['count'];
+
             return new Product($product->find($entity['product_id']));
         }, $cartEntities->fetch());
+
         return $products;
     }
 

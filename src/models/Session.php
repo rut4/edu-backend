@@ -1,10 +1,11 @@
 <?php
 namespace App\Model;
 
-use App\Model\Resource\DBCollection;
-use App\Model\Resource\DBEntity;
-use App\Model\Resource\PDOHelper;
-use App\Model\Resource\Table\Customer as CustomerTable;
+use \App\Model\Resource\DBCollection;
+use \App\Model\Resource\DBEntity;
+use \App\Model\Resource\PDOHelper;
+use \App\Model\Resource\Table\CartEntity as CartEntityTable;
+use \App\Model\Resource\Table\Customer as CustomerTable;
 
 class Session
 {
@@ -44,6 +45,7 @@ class Session
 
         if (count($fetchedCustomers) == 1) {
             $_SESSION['customer'] = new Customer(reset($fetchedCustomers));
+            $this->_loadProductsToCustomerCart();
             return true;
         } else {
             return false;
@@ -66,5 +68,29 @@ class Session
     public function getCustomer()
     {
         return $this->isLoggedIn() ? $_SESSION['customer'] : null;
+    }
+
+    private function _loadProductsToCustomerCart()
+    {
+        $resource = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);
+        $DbCartEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
+        $DbCartEntities->filterBy('session_id', session_id());
+        foreach ($DbCartEntities->fetch() as $fetchedCartEntity) {
+
+            $alreadyTiedEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
+            $alreadyTiedEntities->filterBy('customer_id', $this->getCustomer()->getId());
+            $alreadyTiedEntities->filterBy('product_id', $fetchedCartEntity['product_id']);
+            $alreadyTiedEntity = reset($alreadyTiedEntities->fetch());
+            if ($alreadyTiedEntity) {
+                $cartEntity = new CartEntity($alreadyTiedEntity);
+                $cartEntity->setCount($alreadyTiedEntity['count'] + $cartEntity->getCount());
+                $cartEntity->save($resource);
+            } else {
+                $fetchedCartEntity['customer_id'] = $this->getCustomer()->getId();
+                $fetchedCartEntity['session_id'] = null;
+                $cartEntity = new CartEntity($fetchedCartEntity);
+                $cartEntity->save($resource);
+            }
+        }
     }
 }
