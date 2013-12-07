@@ -1,8 +1,6 @@
 <?php
 namespace App\Model;
 
-require_once __DIR__ . '/PageNotFoundException.php';
-
 class Router
 {
     private $_controller;

@@ -1,17 +1,11 @@
 <?php
 namespace App\Model;
 
-use App\Model\ProductCollection;
 use App\Model\Resource\Table\CartEntity as CartEntityTable;
-use App\Model\ReviewCollection;
 use App\Model\Resource\DBCollection;
 use App\Model\Resource\DBEntity;
-use App\Model\Product;
 use App\Model\Resource\PDOHelper;
 use App\Model\Resource\Table\Product as ProductTable;
-use App\Model\Resource\Table\Review as ReviewTable;
-use App\Model\Session;
-
 
 class CartHelper
 {

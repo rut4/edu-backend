@@ -2,13 +2,6 @@
 namespace App\Controller;
 
 use App\Model\CartHelper;
-use \App\Model\Resource\DBEntity;
-use \App\Model\Session;
-use \App\Model\Product;
-use \App\Model\Resource\PDOHelper;
-use \App\Model\Resource\Table\Product as ProductTable;
-use \App\Model\Resource\Table\CartEntity as CartEntityTable;
-use \App\Model\Resource\DBCollection;
 
 class CartController
 {
