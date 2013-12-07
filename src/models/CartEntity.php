@@ -33,7 +33,7 @@ class CartEntity
 
     public function setCount($count)
     {
-        $this['count'] = $count;
+        $this->_data['count'] = $count;
     }
 
     public function save(IResourceEntity $resource)
