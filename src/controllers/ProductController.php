@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Model\CartHelper;
 use App\Model\ProductCollection;
 use App\Model\Resource\Table\CartEntity as CartEntityTable;
 use App\Model\ReviewCollection;
@@ -44,38 +45,10 @@ class ProductController
 
     public function addToCartAction()
     {
-        if (!isset($_POST['product_id'])) {
-            $this->listAction();
-            return;
+        if (isset($_POST['product_id'])) {
+            $cartHelper = new CartHelper;
+            $cartHelper->addProduct($_POST['product_id']);
         }
-        $session = new Session;
-        $cartEntity = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);
-        $cart = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
-
-        if ($session->isLoggedIn()) {
-            $identField = 'customer_id';
-            $identValue = $session->getCustomer()->getId();
-        } else {
-            $identField = 'session_id';
-            $identValue = session_id();
-        }
-
-        $cart->filterBy('product_id', $_POST['product_id']);
-        $cart->filterBy($identField, $identValue);
-        $fetchedCartEntity = $cart->fetch();
-
-        if (count($fetchedCartEntity) == 1) {
-            $preparedOrder = reset($fetchedCartEntity);
-            $preparedOrder['count']++;
-        } else {
-            $preparedOrder = [];
-            $preparedOrder['product_id'] = $_POST['product_id'];
-            $preparedOrder[$identField] = $identValue;
-            $preparedOrder['count'] = 1;
-        }
-
-        $cartEntity->save($preparedOrder);
-
         $this->listAction();
     }
 }

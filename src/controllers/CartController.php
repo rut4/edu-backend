@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Model\CartHelper;
 use \App\Model\Resource\DBEntity;
 use \App\Model\Session;
 use \App\Model\Product;
@@ -13,8 +14,9 @@ class CartController
 {
     public function listAction()
     {
+        $cartHelper = new CartHelper;
         $counts = [];
-        $products = $this->_fetchCartProducts($counts);
+        $products = $cartHelper->fetchCartProducts($counts);
         $viewName = 'cart_list';
         $headerText = 'Shopping Cart';
 
@@ -23,65 +25,10 @@ class CartController
 
     public function changeCountAction()
     {
-        if (isset($_POST['action'])) {
-            $session = new Session;
-            $cartEntity = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);
-            $cartEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
-
-            $this->_chooseCustomerIdentifier($session, $cartEntities);
-            $cartEntities->filterBy('product_id', $_POST['product_id']);
-            $fetchedCartEntity = reset($cartEntities->fetch());
-            if (isset($_POST['count']) && $_POST['count'] > 0) {
-                $count = $_POST['count'];
-            } else {
-                $count = 0;
-            }
-            if ($_POST['action'] == 'Add') {
-                $fetchedCartEntity['count'] += $count;
-                $cartEntity->save($fetchedCartEntity);
-            } else if ($_POST['action'] == 'Remove') {
-                $fetchedCartEntity['count'] -= $count < $fetchedCartEntity['count'] ?
-                    $count : $fetchedCartEntity['count'];
-
-                if ($fetchedCartEntity['count'] == 0) {
-                    $cartEntity->remove($fetchedCartEntity['prepared_order_id']);
-                } else {
-                    $cartEntity->save($fetchedCartEntity);
-                }
-            }
-
+        if (isset($_POST['action']) && isset($_POST['count']) && isset($_POST['product_id'])) {
+            $cartHelper = new CartHelper;
+            $cartHelper->changeProductCount($_POST['action'], $_POST['count'], $_POST['product_id']);
         }
         $this->listAction();
-    }
-
-    private function _fetchCartProducts(array &$counts)
-    {
-        $session = new Session();
-        $product = new DBEntity(PDOHelper::getPdo(), new ProductTable);
-        $cartEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
-        $this->_chooseCustomerIdentifier($session, $cartEntities);
-        $products = array_map(function ($entity) use ($product, &$counts) {
-            $counts[] = $entity['count'];
-
-            return new Product($product->find($entity['product_id']));
-        }, $cartEntities->fetch());
-
-        return $products;
-    }
-
-    /**
-     * @param $session
-     * @param $cartEntities
-     */
-    private function _chooseCustomerIdentifier(Session $session, DBCollection $cartEntities)
-    {
-        if ($session->isLoggedIn()) {
-            $column = 'customer_id';
-            $value = $session->getCustomer()->getId();
-        } else {
-            $column = 'session_id';
-            $value = session_id();
-        }
-        $cartEntities->filterBy($column, $value);
     }
 }
