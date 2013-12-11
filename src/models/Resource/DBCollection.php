@@ -27,6 +27,8 @@ class DBCollection
     public function fetch()
     {
         $results = $this->_executeSelect($this->_select);
+        $this->_select->reset(Select::WHERE);
+        $this->_bind = [];
         return \Zend\Stdlib\ArrayUtils::iteratorToArray($results);
     }
 

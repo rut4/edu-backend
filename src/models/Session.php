@@ -45,7 +45,7 @@ class Session
 
         if (count($fetchedCustomers) == 1) {
             $_SESSION['customer'] = new Customer(reset($fetchedCustomers));
-            $this->_loadProductsToCustomerCart();
+
             return true;
         } else {
             return false;
@@ -75,30 +75,5 @@ class Session
         return session_id();
     }
 
-    private function _loadProductsToCustomerCart()
-    {
-        $resource = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);
-        $DbCartEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
-        $DbCartEntities->filterBy('session_id', session_id());
 
-        foreach ($DbCartEntities->fetch() as $fetchedCartEntity) {
-
-            $alreadyTiedEntities = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
-            $alreadyTiedEntities->filterBy('customer_id', $this->getCustomer()->getId());
-            $alreadyTiedEntities->filterBy('product_id', $fetchedCartEntity['product_id']);
-            $alreadyTiedEntity = reset($alreadyTiedEntities->fetch());
-
-            if ($alreadyTiedEntity) {
-                $cartEntity = new CartEntity($alreadyTiedEntity);
-                $cartEntity->setCount($alreadyTiedEntity['count'] + $cartEntity->getCount());
-                (new DBEntity(PDOHelper::getPdo(), new CartEntityTable))->remove($fetchedCartEntity['prepared_order_id']);
-                $cartEntity->save($resource);
-            } else {
-                $fetchedCartEntity['customer_id'] = $this->getCustomer()->getId();
-                $fetchedCartEntity['session_id'] = null;
-                $cartEntity = new CartEntity($fetchedCartEntity);
-                $cartEntity->save($resource);
-            }
-        }
-    }
 }

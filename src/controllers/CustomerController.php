@@ -1,6 +1,10 @@
 <?php
 namespace App\Controller;
 
+use App\Model\Resource\DBCollection;
+use App\Model\Resource\DBEntity;
+use App\Model\Resource\PDOHelper;
+use App\Model\Resource\Table\QuoteItem as QuoteItemTable;
 use \App\Model\Session;
 use \App\Model\Customer;
 
@@ -42,7 +46,38 @@ class CustomerController
     private function _auth(Customer $customer)
     {
         $session = new Session();
-        return $session->auth($customer);
+        if ($session->auth($customer)) {
+            $this->_loadProductsToCustomerCart();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function _loadProductsToCustomerCart()
+    {
+        $session = new Session;
+        $resource = new DBEntity(PDOHelper::getPdo(), new QuoteItemTable);
+        $quoteResource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
+        $quoteResource->filterBy('session_id', $session->getSessionId());
+
+        foreach ($quoteResource->fetch() as $quoteItem) {
+            $quoteResource->filterBy('customer_id', $session->getCustomer()->getId());
+            $quoteResource->filterBy('product_id', $quoteItem['product_id']);
+            $existItem = reset($quoteResource->fetch());
+
+            if ($existItem) {
+                $newItem = new \App\Model\QuoteItem($existItem);
+                $newItem->addQuantity($existItem['quantity']);
+                $resource->remove($existItem['quote_item_id']);
+                $newItem->save($resource);
+            } else {
+                $quoteItem['customer_id'] = $session->getCustomer()->getId();
+                $quoteItem['session_id'] = null;
+                $newItem = new \App\Model\QuoteItem($quoteItem);
+                $newItem->save($resource);
+            }
+        }
     }
 
 
