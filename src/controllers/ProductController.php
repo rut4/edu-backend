@@ -27,6 +27,7 @@ class ProductController
             ->setCurrentPageNumber(isset($_GET['p']) ? $_GET['p'] : 1);
 
         $pages = $paginator->getPages();
+        $currentPage = $paginator->getCurrentPageNumber();
 
         $products = new ProductCollection($resource);
 
@@ -42,11 +43,22 @@ class ProductController
         $resource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
         $product->load($resource, $_GET['id']);
 
-
-        $resource = new DBCollection(PDOHelper::getPdo(), new ReviewTable);
-        $reviews = new ReviewCollection($resource);
+        $reviewsResource = new DBCollection(PDOHelper::getPdo(), new ReviewTable);
+        $reviews = new ReviewCollection($reviewsResource);
         $reviews->filterByProduct($product);
-        $reviews = $reviews->getReviews();
+
+        $paginatorAdapter = new PaginatorAdapter($reviewsResource);
+        $paginator = new ZendPaginator($paginatorAdapter);
+
+
+
+        $paginator
+            ->setItemCountPerPage(2)
+            ->setCurrentPageNumber(isset($_GET['p']) ? $_GET['p'] : 1);
+
+        // var_dump($reviews->getReviews());die;
+        $pages = $paginator->getPages();
+        $currentPage = $paginator->getCurrentPageNumber();
 
         $viewName = 'product_view';
         $headerText = 'Product View';

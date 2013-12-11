@@ -32,7 +32,18 @@
 
     <?php endforeach; ?>
 </ul>
-
-<?php for ($page = 1; $page <= $pages->pageCount; $page++): ?>
-    <a href="/?p=<?php echo $page; ?>"><?php echo $page; ?></a>
-<?php endfor; ?>
+<nav class="pagination">
+    <ul class="pagination__list">
+        <?php for ($page = 1; $page <= $pages->pageCount; $page++): ?>
+            <?php if ($currentPage == $page): ?>
+                <li class="pagination__item pagination__item_current">
+                    <span><?php echo $page; ?></span>
+                </li>
+            <?php else: ?>
+                <li class="pagination__item">
+                    <a href="/?p=<?php echo $page; ?>"><?php echo $page; ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endfor; ?>
+    </ul>
+</nav>

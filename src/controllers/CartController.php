@@ -51,7 +51,6 @@ class CartController
 
         $quoteItemResource = new DBEntity(PDOHelper::getPdo(), new QuoteItemTable);
         $quoteItem = $quote->getItemForProduct($product);
-
         if ($_POST['action'] == 'Add') {
             $quoteItem->addQuantity($_POST['count']);
         } else {

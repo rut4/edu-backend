@@ -46,6 +46,7 @@ class Quote
 
     public function getItemForProduct(Product $product)
     {
+
         $this->_itemsResource->filterBy('product_id', $product->getId());
         if ($this->_customer) {
             $this->_itemsResource->filterBy('customer_id', $this->_customer->getId());
@@ -53,8 +54,9 @@ class Quote
             $this->_itemsResource->filterBy('session_id', $this->_session->getSessionId());
         }
 
-        if (reset($this->_itemsResource->fetch())) {
-            return new QuoteItem(reset($this->_itemsResource->fetch()));
+        $item = reset($this->_itemsResource->fetch());
+        if ($item) {
+            return new QuoteItem($item);
         } else {
             return false;
         }

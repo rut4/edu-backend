@@ -80,3 +80,33 @@
     width: 220px;
     box-shadow: none!important;
 }
+
+.pagination {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.pagination__item {
+    list-style-type: none;
+    display: inline-block;
+    font-size: 24px;
+    font-family: 'PT Serif', serif;
+    color: #eee;
+    text-shadow: 0 0 5px #222;
+
+}
+
+.pagination__item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.pagination__item a:hover {
+    color: #999;
+}
+
+.pagination__item_current {
+    color: #999;
+    text-shadow: none;
+}
