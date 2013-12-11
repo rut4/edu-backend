@@ -14,7 +14,7 @@ class Quote
     private $_session;
     private $_itemsResource;
 
-    public function __construct(IResourceCollection $itemsResource)
+    public function __construct(IResourceCollection $itemsResource = null)
     {
         $this->_itemsResource = $itemsResource;
     }
@@ -69,6 +69,7 @@ class Quote
         } else if ($this->_session) {
             $this->_itemsResource->filterBy('session_id', $this->_session->getSessionId());
         }
+
         return array_map(function ($item) {
             return new QuoteItem($item);
         }, $this->_itemsResource->fetch());
