@@ -70,6 +70,11 @@ class Session
         return $this->isLoggedIn() ? $_SESSION['customer'] : null;
     }
 
+    public function getSessionId()
+    {
+        return session_id();
+    }
+
     private function _loadProductsToCustomerCart()
     {
         $resource = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);

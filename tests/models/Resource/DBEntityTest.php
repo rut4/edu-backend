@@ -6,13 +6,19 @@ use \App\Model\Resource\DBEntity;
 class DBEntityTest
     extends \PHPUnit_Extensions_Database_TestCase
 {
-    public function testReturnsFoundDataFromDb()
+    public function testReturnsFoundDataByIdFromDb()
     {
         $resource = $this->_getEntity();
         $this->assertEquals(['id' => 1, 'data' => 'foo', 'rating' => 1], $resource->find(1));
         $this->assertEquals(['id' => 2, 'data' => 'bar', 'rating' => 2], $resource->find(2));
     }
 
+    public function testReturnsFoundDataFromDb()
+    {
+        $resource = $this->_getEntity();
+        $this->assertEquals(['id' => 1, 'data' => 'foo', 'rating' => 1], $resource->findBy('data', 'foo'));
+        $this->assertEquals(['id' => 2, 'data' => 'bar', 'rating' => 2], $resource->findBy('rating', 2));
+    }
     public function testEscapesFilterParameter()
     {
         $resource = $this->_getEntity();

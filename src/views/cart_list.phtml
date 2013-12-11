@@ -1,5 +1,8 @@
 <ul class="product-list">
-    <?php foreach ($products as $_key => $_product): ?>
+    <?php foreach ($quoteItemsByUser as $_quoteItem): ?>
+    <?php $_product = new \App\Model\Product;
+        $_product->load($productResource, $_quoteItem->getProductId());
+        ?>
         <li class="product-item">
             <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId()?>">
                 <div>
@@ -21,11 +24,9 @@
                     <?php endif; ?>
                 </div>
             </a>
-            <?php if (isset($counts[$_key])): ?>
-                <div class="count-view">
-                    <span><?php echo $counts[$_key]; ?></span>
-                </div>
-            <?php endif; ?>
+            <div class="count-view">
+                <span><?php echo $_quoteItem->getQuantity(); ?></span>
+            </div>
             <form class="entity-doing" action="?page=cart_changeCount" method="POST">
                 <input type="text" name="product_id" value="<?php echo $_product->getId(); ?>" hidden>
                 <input class="entity-doing__add" type="submit" name="action" value="Add">

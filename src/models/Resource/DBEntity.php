@@ -15,10 +15,21 @@ class DBEntity
 
     public function find($id)
     {
+//        $stmt = $this
+//            ->_connection
+//            ->prepare("SELECT * FROM {$this->_table->getName()} WHERE {$this->_table->getPrimaryKey()} = :id");
+//        $stmt->execute([':id' => $id]);
+//        return $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $this->findBy($this->_table->getPrimaryKey(), $id);
+    }
+
+
+    public function findBy($column, $value)
+    {
         $stmt = $this
             ->_connection
-            ->prepare("SELECT * FROM {$this->_table->getName()} WHERE {$this->_table->getPrimaryKey()} = :id");
-        $stmt->execute([':id' => $id]);
+            ->prepare("SELECT * FROM {$this->_table->getName()} WHERE {$column} = :value");
+        $stmt->execute([':value' => $value]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
@@ -30,6 +41,7 @@ class DBEntity
         } else {
             $stmt = $this->_insertItem($fields);
         }
+
         $stmt->execute(array_combine($this->_prepareBind($fields), $data));
         return $this->_connection->lastInsertId($this->_table->getPrimaryKey());
     }
@@ -85,6 +97,4 @@ class DBEntity
             return ":{$field}";
         }, $fields);
     }
-
-
 }

@@ -14,20 +14,17 @@ class CartHelper
         if (!isset($productId)) {
             return;
         }
+
+        // out of class
         $session = new Session;
         $cartEntity = new DBEntity(PDOHelper::getPdo(), new CartEntityTable);
         $cart = new DBCollection(PDOHelper::getPdo(), new CartEntityTable);
 
-        if ($session->isLoggedIn()) {
-            $identField = 'customer_id';
-            $identValue = $session->getCustomer()->getId();
-        } else {
-            $identField = 'session_id';
-            $identValue = session_id();
-        }
+
+        $this->_chooseCustomerIdentifier($session, $cart);
 
         $cart->filterBy('product_id', $productId);
-        $cart->filterBy($identField, $identValue);
+
         $fetchedCartEntity = $cart->fetch();
 
         if (count($fetchedCartEntity) == 1) {

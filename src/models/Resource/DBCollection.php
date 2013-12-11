@@ -1,69 +1,78 @@
 <?php
 namespace App\Model\Resource;
 
+use Zend\Db\Sql\Select;
+
 class DBCollection
     implements IResourceCollection
 {
     private $_connection;
     private $_table;
-    private $_filters = [];
     private $_bind = [];
+    private $_select;
+    private $_sql;
 
     public function __construct(\PDO $connection, Table\ITable $table)
     {
         $this->_connection = $connection;
-        $this->_table = $table->getName();
+        $this->_table = $table;
+
+        $driver = new \Zend\Db\Adapter\Driver\Pdo\Pdo($this->_connection);
+        $adapter = new \Zend\Db\Adapter\Adapter($driver);
+
+        $this->_sql = new \Zend\Db\Sql\Sql($adapter);
+        $this->_select = $this->_sql->select($this->_table->getName());
     }
 
     public function fetch()
     {
-        $stmt = $this->_prepareSql();
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $this->_executeSelect($this->_select);
+        return \Zend\Stdlib\ArrayUtils::iteratorToArray($results);
     }
 
     public function filterBy($column, $value)
     {
-        $this->_filters[$column] = $value;
+        $this->_select->where("{$column} = :{$column}");
+        $this->_bind[$column] = $value;
     }
 
     public function average($column)
     {
-        $stmt = $this->_prepareSql("AVG({$column}) as avg");
-        return $stmt->fetchColumn();
+        $result = $this->_executeSelect(
+            $this->_select,
+            ['avg' => new \Zend\Db\Sql\Predicate\Expression("AVG({$column})")]
+        );
+        return $result->current()['avg'];
     }
 
-    protected function _prepareSql($columns = '*')
+    public function _executeSelect(Select $select, $columns = null)
     {
-        $sql = "SELECT {$columns} FROM {$this->_table}";
-        if ($this->_filters) {
-            $sql .= ' WHERE ' . $this->_prepareFilters();
+        if ($columns) {
+            $select->columns($columns);
         }
-        $stmt = $this->_connection
-            ->prepare($sql);
-        if ($this->_bind) {
-            $this->_bindValues($stmt);
-        }
-        $stmt->execute();
+        $statement = $this->_sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute($this->_bind);
 
-        return $stmt;
+        return $result;
     }
 
-    private function _prepareFilters()
+    public function limit($limit, $offset = 0)
     {
-        $conditions = [];
-        foreach ($this->_filters as $column => $value) {
-            $parameter = ':_param_' . $column;
-            $conditions[] = $column . ' = ' . $parameter . '';
-            $this->_bind[$parameter] = $value;
-        }
-        return implode(' AND ', $conditions);
+        $this->_select
+            ->limit($limit)
+            ->offset($offset);
     }
 
-    private function _bindValues(\PDOStatement $stmt)
+    public function count()
     {
-        foreach ($this->_bind as $parameter => $value) {
-            $stmt->bindValue($parameter, $value);
-        }
+        $select = clone $this->_select;
+        $select
+            ->reset(Select::LIMIT)
+            ->reset(Select::OFFSET);
+        $result = $this->_executeSelect(
+            $select,
+            ['count' => new \Zend\Db\Sql\Predicate\Expression("COUNT(*)")]
+        );
+        return $result->current()['count'];
     }
-
 }

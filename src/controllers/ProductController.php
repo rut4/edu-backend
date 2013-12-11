@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\CartHelper;
 use App\Model\ProductCollection;
+use App\Model\Resource\Paginator as PaginatorAdapter;
 use App\Model\ReviewCollection;
 use App\Model\Resource\DBCollection;
 use App\Model\Resource\DBEntity;
@@ -10,12 +11,23 @@ use App\Model\Product;
 use App\Model\Resource\PDOHelper;
 use App\Model\Resource\Table\Product as ProductTable;
 use App\Model\Resource\Table\Review as ReviewTable;
+use Zend\Paginator\Paginator as ZendPaginator;
 
 class ProductController
 {
     public function listAction()
     {
         $resource = new DBCollection(PDOHelper::getPdo(), new ProductTable);
+
+        $paginatorAdapter = new PaginatorAdapter($resource);
+        $paginator = new ZendPaginator($paginatorAdapter);
+
+        $paginator
+            ->setItemCountPerPage(8)
+            ->setCurrentPageNumber(isset($_GET['p']) ? $_GET['p'] : 1);
+
+        $pages = $paginator->getPages();
+
         $products = new ProductCollection($resource);
 
         $viewName = 'product_list';
@@ -39,14 +51,5 @@ class ProductController
         $viewName = 'product_view';
         $headerText = 'Product View';
         require_once __DIR__ . '/../views/layout.phtml';
-    }
-
-    public function addToCartAction()
-    {
-        if (isset($_POST['product_id'])) {
-            $cartHelper = new CartHelper;
-            $cartHelper->addProduct($_POST['product_id']);
-        }
-        $this->listAction();
     }
 }

@@ -2,7 +2,7 @@
     <?php foreach ($products as $_product): ?>
 
         <li class="product-item">
-            <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId()?>">
+            <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId() ?>">
                 <div>
                     <img class="preview-image" src="<?php echo $_product->getImage(); ?>" alt="Preview"/>
 
@@ -22,11 +22,17 @@
                     <?php endif; ?>
                 </div>
             </a>
-            <form class="add-to-cart-form" action="?page=product_addToCart" method="POST">
-                <input class="add-to-cart-form__product-id" type="text" name="product_id" value="<?php echo $_product->getId()?>" hidden>
+
+            <form class="add-to-cart-form" action="?page=cart_addToCart" method="POST">
+                <input class="add-to-cart-form__product-id" type="text" name="product_id"
+                       value="<?php echo $_product->getId() ?>" hidden>
                 <input class="add-to-cart-form__submit" type="submit" value="Add One To Cart">
             </form>
         </li>
 
     <?php endforeach; ?>
 </ul>
+
+<?php for ($page = 1; $page <= $pages->pageCount; $page++): ?>
+    <a href="/?p=<?php echo $page; ?>"><?php echo $page; ?></a>
+<?php endfor; ?>

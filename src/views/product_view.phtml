@@ -19,7 +19,7 @@
             </span>
             <?php endif; ?>
         </p>
-        <form class="add-to-cart-form" action="?page=product_addToCart" method="POST">
+        <form class="add-to-cart-form" action="?page=cart_addToCart" method="POST">
             <input class="add-to-cart-form__product-id" type="text" name="product_id" value="<?php echo $product->getId()?>" hidden>
             <input class="add-to-cart-form__submit" type="submit" value="Add One To Cart">
         </form>
