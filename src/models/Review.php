@@ -12,12 +12,12 @@ class Review extends CollectionElement
      * product
      */
 
-    public function __construct(array $data)
+    public function __construct(array $data,  Resource\IResourceEntity $resource = null)
     {
         if (isset($data['rating']) && !in_array($data['rating'], [1, 2, 3, 4, 5])) {
             throw new \InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
         }
-        parent::__construct($data);
+        parent::__construct($data, $resource);
     }
 
     public function getName()

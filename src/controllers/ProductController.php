@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Model\CartHelper;
+use App\Model\ModelView;
 use App\Model\ProductCollection;
 use App\Model\Resource\Paginator as PaginatorAdapter;
 use App\Model\ReviewCollection;
@@ -15,12 +16,17 @@ use Zend\Paginator\Paginator as ZendPaginator;
 
 class ProductController
 {
+    private $_di;
+
+    public function __construct(\Zend\Di\Di $di)
+    {
+        $this->_di = $di;
+    }
+
     public function listAction()
     {
-        $resource = new DBCollection(PDOHelper::getPdo(), new ProductTable);
-
-        $paginatorAdapter = new PaginatorAdapter($resource);
-        $paginator = new ZendPaginator($paginatorAdapter);
+        $resource = $this->_di->get('ResourceCollection', ['table' => new \App\Model\Resource\Table\Product]);
+        $paginator = $this->_di->get('Paginator', ['collection' => $resource]);
 
         $paginator
             ->setItemCountPerPage(8)
@@ -29,39 +35,51 @@ class ProductController
         $pages = $paginator->getPages();
         $currentPage = $paginator->getCurrentPageNumber();
 
-        $products = new ProductCollection($resource);
+        $products = $this->_di->get('ProductCollection', ['resource' => $resource]);
 
-        $viewName = 'product_list';
-        $headerText = 'Our Product List';
-        require_once __DIR__ . '/../views/layout.phtml';
+        return $this->_di->get('View', [
+            'template' => 'product_list',
+            'params' => [
+                'products' => $products,
+                'pages' => $pages,
+                'header' => 'Our Product List',
+                'view' => 'product_list',
+                'css' => 'product_list'
+            ]
+        ]);
+
     }
 
     public function viewAction()
     {
-        $product = new Product([]);
+        $resource = $this->_di->get('ResourceEntity', ['table' => new \App\Model\Resource\Table\Product]);
+        $product = $this->_di->get('Product', ['resource' => $resource]);
+        $product->load($_GET['id']);
 
-        $resource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
-        $product->load($resource, $_GET['id']);
+        $reviewResource = $this->_di->get('ResourceCollection', ['table' => new \App\Model\Resource\Table\Review]);
 
-        $reviewsResource = new DBCollection(PDOHelper::getPdo(), new ReviewTable);
-        $reviews = new ReviewCollection($reviewsResource);
+        $reviews = $this->_di->get('ReviewCollection', ['resource' => $reviewResource]);
         $reviews->filterByProduct($product);
 
-        $paginatorAdapter = new PaginatorAdapter($reviewsResource);
-        $paginator = new ZendPaginator($paginatorAdapter);
-
-
+        $paginator = $this->_di->get('Paginator', ['collection' => $reviewResource]);
 
         $paginator
             ->setItemCountPerPage(2)
             ->setCurrentPageNumber(isset($_GET['p']) ? $_GET['p'] : 1);
 
-        // var_dump($reviews->getReviews());die;
-        $pages = $paginator->getPages();
-        $currentPage = $paginator->getCurrentPageNumber();
 
-        $viewName = 'product_view';
-        $headerText = 'Product View';
-        require_once __DIR__ . '/../views/layout.phtml';
+        $pages = $paginator->getPages();
+
+        return $this->_di->get('View', [
+            'template' => 'product_view',
+            'params' => [
+                'product' => $product,
+                'reviews' => $reviews,
+                'pages' => $pages,
+                'header' => 'Our Product List',
+                'view' => 'product_view',
+                'css' => 'product_view'
+            ]
+        ]);
     }
 }

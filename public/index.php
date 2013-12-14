@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Model\Resource\PDOHelper;
+
 require_once __DIR__ . '/../autoloader.php';
 ini_set('display_errors', 1);
 
@@ -18,9 +20,14 @@ try {
     } catch (Model\PageNotFoundException $ex) {
         $controllerName = '\App\Controller\ErrorController';
         $actionName = 'pageNotFoundAction';
-    } finally {
-        $controller = new $controllerName;
-        $controller->$actionName();
+    }
+
+    $di = new \Zend\Di\Di;
+    (new \App\Model\DiC($di))->assemble();
+
+    $controller = new $controllerName($di);
+    if ($view = $controller->$actionName()) {
+        $view->render();
     }
 } catch (\Exception $ex) {
     var_dump($ex);

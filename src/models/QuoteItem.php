@@ -48,8 +48,11 @@ class QuoteItem
         }
     }
 
-    public function save(IResourceEntity $resource)
+    public function save(IResourceEntity $resource = null)
     {
+        if (!$resource) {
+            $resource = $this->_resource;
+        }
         $id = $resource->save($this->_data);
         $this->_data['quote_item_id'] = $id;
     }

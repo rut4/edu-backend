@@ -13,43 +13,53 @@ use App\Model\Session;
 
 class CartController
 {
+    private $_di;
+
+    public function __construct(\Zend\Di\Di $di)
+    {
+        $this->_di = $di;
+    }
+
     public function listAction()
     {
-        $session = new Session;
-        $resource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
+        $session = $this->_di->get('Session');
+        $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
+        $quote = $this->_di->get('Quote');
 
-        $productResource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
-
-        $quote = new Quote($resource);
         if ($session->isLoggedIn()) {
             $quote->loadByCustomer($session->getCustomer());
         } else {
             $quote->loadBySession($session);
         }
+
         $quoteItemsByUser = $quote->getItemsForUser();
 
-        $viewName = 'cart_list';
-        $headerText = 'Shopping Cart';
-
-        require_once __DIR__ . '/../views/layout.phtml';
+        return $this->_di->get('View', [
+            'template' => 'cart_list',
+            'params' => [
+                'productResource' => $productResource,
+                'quoteItemsByUser' => $quoteItemsByUser,
+                'header' => 'Shopping Cart',
+                'view' => 'cart_list',
+                'css' => 'cart_list'
+            ]
+        ]);
     }
 
     public function changeCountAction()
     {
-        $session = new Session;
-        $resource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
-        $productResource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
-
-        $quote = new Quote($resource);
+        $session = $this->_di->get('Session');
+        $quote = $this->_di->get('Quote');
+        $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
         if ($session->isLoggedIn()) {
             $quote->loadByCustomer($session->getCustomer());
         } else {
             $quote->loadBySession($session);
         }
-        $product = new \App\Model\Product;
-        $product->load($productResource, $_POST['product_id']);
+        $product = $this->_di->get('Product', ['resource' => $productResource]);
+        $product->load($_POST['product_id']);
 
-        $quoteItemResource = new DBEntity(PDOHelper::getPdo(), new QuoteItemTable);
+        $quoteItemResource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
         $quoteItem = $quote->getItemForProduct($product);
         if ($_POST['action'] == 'Add') {
             $quoteItem->addQuantity($_POST['count']);
@@ -62,26 +72,31 @@ class CartController
         } else {
             $quoteItem->save($quoteItemResource);
         }
-        $this->listAction();
+
+        $di = new \Zend\Di\Di;
+        (new \App\Model\DiC($di))->assemble();
+        return (new CartController($di))->listAction();
     }
 
     public function addToCartAction()
     {
         if (isset($_POST['product_id'])) {
-            $product = new Product;
-            $productResource = new DBEntity(PDOHelper::getPdo(), new ProductTable);
-            $product->load($productResource, $_POST['product_id']);
+            $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
+            $product = $this->_di->get('Product', ['resource' => $productResource]);
 
-            $session = new Session;
-            $resource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
-            $quote = new Quote($resource);
+            $product->load($_POST['product_id']);
+
+            $session = $this->_di->get('Session');
+            $quote = $this->_di->get('Quote');
+
             if ($session->isLoggedIn()) {
                 $quote->loadByCustomer($session->getCustomer());
             } else {
                 $quote->loadBySession($session);
             }
-            $quote->addItemForProduct($product, new DBEntity(PDOHelper::getPdo(), new QuoteItemTable));
+            $quoteResource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
+            $quote->addItemForProduct($product, $quoteResource);
         }
-        (new ProductController)->listAction();
+        return (new ProductController($this->_di))->listAction();
     }
 }

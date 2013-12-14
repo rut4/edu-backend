@@ -1,5 +1,5 @@
 <ul class="product-list">
-    <?php foreach ($products as $_product): ?>
+    <?php foreach ($this->get('products') as $_product): ?>
 
         <li class="product-item">
             <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId() ?>">
@@ -34,8 +34,8 @@
 </ul>
 <nav class="pagination">
     <ul class="pagination__list">
-        <?php for ($page = 1; $page <= $pages->pageCount; $page++): ?>
-            <?php if ($currentPage == $page): ?>
+        <?php for ($page = 1; $page <= $this->get('pages')->pageCount; $page++): ?>
+            <?php if ($this->get('pages')->current == $page): ?>
                 <li class="pagination__item pagination__item_current">
                     <span><?php echo $page; ?></span>
                 </li>

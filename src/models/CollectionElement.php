@@ -10,10 +10,11 @@ namespace App\Model;
 class CollectionElement
     implements \ArrayAccess
 {
-    protected  $_data = array();
-
-    public function __construct(array $data = [])
+    protected $_data = array();
+    protected $_resource;
+    public function __construct(array $data = [], Resource\IResourceEntity $resource = null)
     {
+        $this->_resource = $resource;
         $this->_data = $data;
     }
 
@@ -22,9 +23,9 @@ class CollectionElement
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
     }
 
-    public function load(Resource\IResourceEntity $resource, $id)
+    public function load($id)
     {
-        $this->_data = $resource->find($id);
+        $this->_data = $this->_resource->find($id);
     }
 
     /**

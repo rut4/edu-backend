@@ -82,8 +82,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(42))
             ->will($this->returnValue(['name' => 'foo']));
 
-        $product = new Product([]);
-        $product->load($resource, 42);
+        $product = new Product([], $resource);
+        $product->load(42);
 
         $this->assertEquals('foo', $product->getName());
     }

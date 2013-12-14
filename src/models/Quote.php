@@ -38,8 +38,7 @@ class Quote
             } else {
                 return false;
             }
-            $newItem = new QuoteItem($newItemInfo);
-
+            $newItem = new QuoteItem($newItemInfo, $itemResource);
             $newItem->save($itemResource);
         }
     }

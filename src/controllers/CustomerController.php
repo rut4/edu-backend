@@ -11,41 +11,66 @@ use \App\Model\Customer;
 
 class CustomerController
 {
+    private $_di;
+
+    public function __construct(\Zend\Di\Di $di)
+    {
+        $this->_di = $di;
+    }
+
     public function loginAction()
     {
-        if (isset($_POST['customer']) && $this->_auth(new Customer($_POST['customer']))) {
-            (new ProductController)->listAction();
+
+        if (isset($_POST['customer'])) {
+            $customer = $this->_di->get('Customer', ['data' => $_POST['customer']]);
+            if ($this->_auth($customer)) {
+                return (new ProductController($this->_di))->listAction();
+            }
         } else {
-            $cssName = 'customer_auth';
-            $viewName = 'customer_login';
-            $headerText = 'Login';
+            return $this->_di->get('View',
+                [
+                    'template' => 'customer_login',
+                    'params' => [
+                        'header' => 'Login',
+                        'view' => 'customer_login',
+                        'css' => 'customer_auth'
+                    ]
+                ]);
         }
-        require_once __DIR__ . '/../views/layout.phtml';
     }
 
     public function registerAction()
     {
-        $session = new Session();
+        $session = $this->_di->get('Session');
+        if ($session->isLoggedIn()) {
+            return (new ProductController($this->_di))->listAction();
+        }
+
         if (isset($_POST['customer']) && $session->register($_POST['customer'])) {
-            $this->loginAction();
+            return $this->loginAction();
         } else {
-            $cssName = 'customer_auth';
-            $viewName = 'customer_register';
-            $headerText = 'Sign Up';
-            require_once __DIR__ . '/../views/layout.phtml';
+            return $this->_di->get('View',
+                [
+                    'template' => 'customer_register',
+                    'params' => [
+                        'header' => 'Sign Up',
+                        'view' => 'customer_register',
+                        'css' => 'customer_auth'
+                    ]
+                ]);
         }
     }
 
     public function logoutAction()
     {
-        $session = new Session();
+        $session = $this->_di->get('Session');
         $session->logout();
-        (new ProductController)->listAction();
+        return (new ProductController($this->_di))->listAction();
     }
 
     private function _auth(Customer $customer)
     {
-        $session = new Session();
+        $session = $this->_di->get('Session');
         if ($session->auth($customer)) {
             $this->_loadProductsToCustomerCart();
             return true;
@@ -56,27 +81,28 @@ class CustomerController
 
     private function _loadProductsToCustomerCart()
     {
-        $session = new Session;
-        $resource = new DBEntity(PDOHelper::getPdo(), new QuoteItemTable);
-        $quoteResource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
-        $quoteResource->filterBy('session_id', $session->getSessionId());
+        $session = $this->_di->get('Session');
+        $resource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
+        $quoteResourceSsid = $this->_di->get('ResourceCollection', ['table' => new QuoteItemTable]);
+        $quoteResourceSsid->filterBy('session_id', $session->getSessionId());
 
-        foreach ($quoteResource->fetch() as $quoteItem) {
-            $quoteResource = new DBCollection(PDOHelper::getPdo(), new QuoteItemTable);
+        foreach ($quoteResourceSsid->fetch() as $quoteItem) {
+
+            $quoteResource = $this->_di->get('ResourceCollection', ['table' => new QuoteItemTable]);
             $quoteResource->filterBy('customer_id', $session->getCustomer()->getId());
             $quoteResource->filterBy('product_id', $quoteItem['product_id']);
             $existItem = reset($quoteResource->fetch());
 
             if ($existItem) {
-                $newItem = new \App\Model\QuoteItem($existItem);
+                $newItem = $this->_di->get('QuoteItem', ['data' => $existItem, 'resource' => $resource]);
                 $newItem->addQuantity($existItem['quantity']);
                 $resource->remove($quoteItem['quote_item_id']);
-                $newItem->save($resource);
+                $newItem->save();
             } else {
                 $quoteItem['customer_id'] = $session->getCustomer()->getId();
                 $quoteItem['session_id'] = null;
-                $newItem = new \App\Model\QuoteItem($quoteItem);
-                $newItem->save($resource);
+                $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem, 'resource' => $resource]);
+                $newItem->save();
             }
         }
     }
