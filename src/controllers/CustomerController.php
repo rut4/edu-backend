@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Model\QuoteItem;
 use App\Model\Resource\DBCollection;
 use App\Model\Resource\DBEntity;
 use App\Model\Resource\PDOHelper;
@@ -101,8 +102,11 @@ class CustomerController
             } else {
                 $quoteItem['customer_id'] = $session->getCustomer()->getId();
                 $quoteItem['session_id'] = null;
-                $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem, 'resource' => $resource]);
-                $newItem->save();
+                // var_dump($quoteItem);
+                // $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem]);
+                 $newItem = new QuoteItem($quoteItem);
+                // var_dump($newItem);
+                $newItem->save($resource);
             }
         }
     }
