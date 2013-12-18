@@ -2,4 +2,4 @@ abstract_collection:
   - id: 1
     data: foo
   - id: 2
-    data: bar
+    data: baz

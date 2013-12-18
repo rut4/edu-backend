@@ -1,20 +1,16 @@
-product reviews:
-* remove sorting/limit/shifting for now
-* use resource to get data from collection
-* implement filtering
-* implement average calculation
-* use resource to load entity
+features:
+* checkout (1 lesson)
+  - address (class)
+  - shipping method (class)
+  - payment method (home)
+* order creation (send email to admin via Zend\Mail) (home)
+* write reviews from frontend + security (class 0.5)
 
-frontend:
-* design product view/list pages
-* display product reviews on product page
-* display pagination on product list
-* escape HTML output
 
-other backend:
-* use autoloader
-* security
-* incapsulate table name and primary key
-* incapsulate DB connection object
-* problem with connection in controller
-* setup phpunit via phpunit.xml
+backend:
+* dbentity test: returns ID after save
+
+misc:
+* advanced git
+* install phpmyadmin
+* install xdebug

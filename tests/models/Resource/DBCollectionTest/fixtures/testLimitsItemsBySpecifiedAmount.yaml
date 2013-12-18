@@ -1,11 +1,7 @@
 abstract_collection:
   - id: 1
     data: foo
-    rating: 4
   - id: 2
     data: bar
-    rating: 5
   - id: 3
     data: baz
-    rating: 5
-

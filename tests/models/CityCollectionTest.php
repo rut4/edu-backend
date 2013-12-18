@@ -1,8 +1,9 @@
 <?php
 namespace Test\Model;
 use \App\Model\ProductCollection;
+use App\Model\RegionCollection;
 
-class ProductCollectionTest extends \PHPUnit_Framework_TestCase
+class RegionCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testTakesDataFromResource()
     {
@@ -11,14 +12,14 @@ class ProductCollectionTest extends \PHPUnit_Framework_TestCase
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['name' => 'Nokla']
+                    ['name' => 'RO']
                 ]
             ));
 
-        $collection = new ProductCollection($resource);
+        $collection = new RegionCollection($resource);
 
-        $products = $collection->getProducts();
-        $this->assertEquals('Nokla', $products[0]->getName());
+        $regions = $collection->getRegions();
+        $this->assertEquals('RO', $regions[0]->getName());
     }
 
     public function testIsIterableWithForeachFunction()
@@ -28,16 +29,16 @@ class ProductCollectionTest extends \PHPUnit_Framework_TestCase
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['sku' => 'foo'],
-                    ['sku' => 'bar']
+                    ['name' => 'foo'],
+                    ['name' => 'bar']
                 ]
             ));
 
-        $collection = new ProductCollection($resource);
+        $collection = new RegionCollection($resource);
         $expected = array(0 => 'foo', 1 => 'bar');
         $iterated = false;
-        foreach ($collection as $_key => $_product) {
-            $this->assertEquals($expected[$_key], $_product->getSku());
+        foreach ($collection as $_key => $_region) {
+            $this->assertEquals($expected[$_key], $_region->getName());
             $iterated = true;
         }
 

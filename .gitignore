@@ -2,3 +2,4 @@
 /.vagrant
 /vendor
 /composer.phar
+/public/media

@@ -1,17 +1,15 @@
 <?php
 namespace App\Model\Resource\Table;
-
-class Customer
-    implements ITable
+class ProductReview implements ITable
 {
     public function getName()
     {
-        return 'customers';
+        return 'product_reviews';
     }
 
     public function getPrimaryKey()
     {
-        return 'customer_id';
+        return 'review_id';
     }
 }
   

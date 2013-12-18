@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 class ModelView
@@ -45,3 +46,4 @@ class ModelView
         return $this->_session;
     }
 }
+ 

@@ -3,20 +3,20 @@ namespace Test\Model;
 
 use App\Model\ModelView;
 
-class ModelViewTest
-    extends \PHPUnit_Framework_TestCase
+class ModelViewTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRendersProviderTemplate()
+    public function testRendersProvidedTemplate()
     {
-        $view = new ModelView(
-            $layoutDir = __DIR__ . '/ModelViewTest/fixtures/layouts/',
-            $templateDir = __DIR__ . '/ModelViewTest/fixtures/templates/',
+        $vew = new ModelView(
+            $layoutDir = __DIR__. '/ModelViewTest/fixtures/layouts/',
+            $templateDir = __DIR__. '/ModelViewTest/fixtures/templates/',
             $layout = 'layout',
             $template = 'template',
             $params = ['foo' => 'bar']
         );
+
         ob_start();
-        $view->render();
+        $vew->render();
         $contents = ob_get_contents();
         ob_end_clean();
 
@@ -28,11 +28,10 @@ class ModelViewTest
         $view = new ModelView(null, null, null, null, []);
         $session = $this->getMockBuilder('App\Model\Session')
             ->disableOriginalConstructor()
-            ->setMethods(['_construct'])
+            ->setMethods(['__construct'])
             ->getMock();
-        $view->setSession($session);
 
+        $view->setSession($session);
         $this->assertSame($session, $view->session());
     }
-
-} 
+}

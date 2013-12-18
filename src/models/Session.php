@@ -77,8 +77,9 @@ class Session
 
     public function generateToken()
     {
-        $_SESSION['token'] = hex2bin(openssl_random_pseudo_bytes(32));
+        $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
     }
+
     public function getToken()
     {
         return isset($_SESSION['token']) ? $_SESSION['token'] : null;
@@ -86,9 +87,8 @@ class Session
 
     public function validateToken($token)
     {
-        $valid = $_SESSION['token'] === $token;
+        $valid = $this->getToken() === $token;
         unset($_SESSION['token']);
         return $valid;
     }
-
 }
