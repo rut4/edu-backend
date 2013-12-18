@@ -2,24 +2,27 @@
 namespace App\Controller;
 
 class ReviewController
-extends ActionController
+    extends ActionController
 {
     public function addAction()
     {
-        if ($this->_validRequest())
-        {
+        if ($this->_validRequest()) {
             $data = $_POST;
+            unset($data['review_id']);
+            unset($data['token']);
 
-            $resource = $this->_di->get('ResourceEntity', ['table' => new \App\Model\Resource\Table\Review]);
-            $review = $this->_di->get('Review', ['data' => $data, 'resource' => $resource]);
+            $review = $this->_di->get('Review', ['data' => $data]);
             $review->save();
 
+            $this->_redirect('product_view', ['id' => $data['product_id']]);
+        } else {
+            $this->_redirect('product_list');
         }
     }
 
     private function _validRequest()
     {
-        return $this->_di->get('Session')
-            ->validateToken($_POST['token']);
+        return isset($_POST['token']) &&
+            $this->_di->get('Session')->validateToken($_POST['token']);
     }
-} 
+}

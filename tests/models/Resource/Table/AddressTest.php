@@ -1,19 +1,19 @@
 <?php
 namespace Test\Model\Resource\Table;
 
-use App\Model\Resource\Table\City;
+use App\Model\Resource\Table\Address;
 
-class CityTest extends \PHPUnit_Framework_TestCase
+class AddressTest extends \PHPUnit_Framework_TestCase
 {
     public function testReturnsProductTableName()
     {
-        $table = new City;
-        $this->assertEquals('cities', $table->getName());
+        $table = new Address;
+        $this->assertEquals('addresses', $table->getName());
     }
 
     public function testReturnsProductTablePrimaryKey()
     {
-        $table = new City;
-        $this->assertEquals('city_id', $table->getPrimaryKey());
+        $table = new Address;
+        $this->assertEquals('address_id', $table->getPrimaryKey());
     }
 }

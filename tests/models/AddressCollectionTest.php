@@ -1,9 +1,9 @@
 <?php
 namespace Test\Model;
 
-use App\Model\CityCollection;
+use App\Model\AddressCollection;
 
-class CityCollectionTest extends \PHPUnit_Framework_TestCase
+class AddressCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testTakesDataFromResource()
     {
@@ -12,14 +12,14 @@ class CityCollectionTest extends \PHPUnit_Framework_TestCase
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['name' => 'Taganrog']
+                    ['city_id' => '1']
                 ]
             ));
 
-        $collection = new CityCollection($resource);
+        $collection = new AddressCollection($resource);
 
-        $cities = $collection->getCities();
-        $this->assertEquals('Taganrog', $cities[0]->getName());
+        $addresses = $collection->getAddresses();
+        $this->assertEquals('1', $addresses[0]->getCityId());
     }
 
     public function testIsIterableWithForeachFunction()
@@ -29,16 +29,16 @@ class CityCollectionTest extends \PHPUnit_Framework_TestCase
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['name' => 'foo'],
-                    ['name' => 'bar']
+                    ['street' => 'foo'],
+                    ['street' => 'bar']
                 ]
             ));
 
-        $collection = new CityCollection($resource);
+        $collection = new AddressCollection($resource);
         $expected = array(0 => 'foo', 1 => 'bar');
         $iterated = false;
-        foreach ($collection as $_key => $_city) {
-            $this->assertEquals($expected[$_key], $_city->getName());
+        foreach ($collection as $_key => $_address) {
+            $this->assertEquals($expected[$_key], $_address->getStreet());
             $iterated = true;
         }
 

@@ -1,14 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Eduard
- * Date: 18.12.13
- * Time: 16:12
- */
-
 namespace Test\Model;
 
+use App\Model\Region;
 
-class RegionTest {
+class RegionTest
+    extends \PHPUnit_Framework_TestCase
+{
+    public function testLoadsDataFromResource()
+    {
+        $resource = $this->getMock('App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('find')
+            ->with($this->equalTo(42))
+            ->will($this->returnValue(['name' => 'RO']));
 
-} 
+        $region = new Region([], $resource);
+        $region->load(42);
+
+        $this->assertEquals('RO', $region->getName());
+    }
+}

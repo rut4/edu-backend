@@ -12,14 +12,8 @@ use App\Model\Resource\Table\QuoteItem as QuoteItemTable;
 use App\Model\Session;
 
 class CartController
+    extends ActionController
 {
-    private $_di;
-
-    public function __construct(\Zend\Di\Di $di)
-    {
-        $this->_di = $di;
-    }
-
     public function listAction()
     {
         $session = $this->_di->get('Session');

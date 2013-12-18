@@ -1,9 +1,9 @@
 <?php
 namespace Test\Model;
-use \App\Model\ProductCollection;
-use App\Model\RegionCollection;
 
-class RegionCollectionTest extends \PHPUnit_Framework_TestCase
+use App\Model\CityCollection;
+
+class CityCollectionTest extends \PHPUnit_Framework_TestCase
 {
     public function testTakesDataFromResource()
     {
@@ -12,14 +12,14 @@ class RegionCollectionTest extends \PHPUnit_Framework_TestCase
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['name' => 'RO']
+                    ['name' => 'Taganrog']
                 ]
             ));
 
-        $collection = new RegionCollection($resource);
+        $collection = new CityCollection($resource);
 
-        $regions = $collection->getRegions();
-        $this->assertEquals('RO', $regions[0]->getName());
+        $cities = $collection->getCities();
+        $this->assertEquals('Taganrog', $cities[0]->getName());
     }
 
     public function testIsIterableWithForeachFunction()
@@ -34,11 +34,11 @@ class RegionCollectionTest extends \PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $collection = new RegionCollection($resource);
+        $collection = new CityCollection($resource);
         $expected = array(0 => 'foo', 1 => 'bar');
         $iterated = false;
-        foreach ($collection as $_key => $_region) {
-            $this->assertEquals($expected[$_key], $_region->getName());
+        foreach ($collection as $_key => $_city) {
+            $this->assertEquals($expected[$_key], $_city->getName());
             $iterated = true;
         }
 

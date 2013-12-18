@@ -1,14 +1,14 @@
 <?php
 namespace App\Model;
 
-class City extends CollectionElement
+class Address extends CollectionElement
 {
-    public function getName()
+    public function getId()
     {
-        return $this['name'];
+        return $this['address_id'];
     }
 
-    public function getId()
+    public function getCityId()
     {
         return $this['city_id'];
     }
@@ -16,5 +16,25 @@ class City extends CollectionElement
     public function getRegionId()
     {
         return $this['region_id'];
+    }
+
+    public function getPostalCode()
+    {
+        return $this['postal_code'];
+    }
+
+    public function getStreet()
+    {
+        return $this['street'];
+    }
+
+    public function getHomeNumber()
+    {
+        return $this['home_number'];
+    }
+
+    public function getFlat()
+    {
+        return $this['flat'];
     }
 }

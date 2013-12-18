@@ -4,7 +4,6 @@ namespace App\Model;
 use \App\Model\Resource\DBCollection;
 use \App\Model\Resource\DBEntity;
 use \App\Model\Resource\PDOHelper;
-use \App\Model\Resource\Table\CartEntity as CartEntityTable;
 use \App\Model\Resource\Table\Customer as CustomerTable;
 
 class Session

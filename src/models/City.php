@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class Region extends CollectionElement
+class City extends CollectionElement
 {
     public function getName()
     {
@@ -9,6 +9,11 @@ class Region extends CollectionElement
     }
 
     public function getId()
+    {
+        return $this['city_id'];
+    }
+
+    public function getRegionId()
     {
         return $this['region_id'];
     }

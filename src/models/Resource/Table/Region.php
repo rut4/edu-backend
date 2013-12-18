@@ -1,17 +1,17 @@
 <?php
 namespace App\Model\Resource\Table;
 
-class Product
+class Region
     implements ITable
 {
     public function getName()
     {
-        return 'products';
+        return 'regions';
     }
 
     public function getPrimaryKey()
     {
-        return 'product_id';
+        return 'region_id';
     }
 }
   

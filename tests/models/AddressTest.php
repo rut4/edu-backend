@@ -1,9 +1,9 @@
 <?php
 namespace Test\Model;
 
-use App\Model\Region;
+use App\Model\Address;
 
-class RegionTest
+class AddressTest
     extends \PHPUnit_Framework_TestCase
 {
     public function testLoadsDataFromResource()
@@ -12,11 +12,11 @@ class RegionTest
         $resource->expects($this->any())
             ->method('find')
             ->with($this->equalTo(42))
-            ->will($this->returnValue(['name' => 'RO']));
+            ->will($this->returnValue(['street' => 'Chekhova']));
 
-        $region = new Region([], $resource);
+        $region = new Address([], $resource);
         $region->load(42);
 
-        $this->assertEquals('RO', $region->getName());
+        $this->assertEquals('Chekhova', $region->getStreet());
     }
 }

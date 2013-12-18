@@ -31,6 +31,8 @@
         </header>
         <div class="form form_review">
             <form action="/?page=review_add" method="post">
+                <?php var_dump($this->session);die; ?>
+                <input type="hidden" name="token" value="<?php echo $this->session()->getToken(); ?>">
                 <input type="hidden" name="product_id" value="<?php echo $_product->getId() ?>">
                 <div class="form__row form__row_name">
                     <input type="text" name="name" placeholder="Name *" required>

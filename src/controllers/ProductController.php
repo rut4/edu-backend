@@ -52,6 +52,8 @@ class ProductController
 
     public function viewAction()
     {
+        $this->_di->get('Session')->generateToken();
+
         $resource = $this->_di->get('ResourceEntity', ['table' => new \App\Model\Resource\Table\Product]);
         $product = $this->_di->get('Product', ['resource' => $resource]);
         $product->load($_GET['id']);

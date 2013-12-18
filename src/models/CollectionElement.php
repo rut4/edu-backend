@@ -12,6 +12,7 @@ class CollectionElement
 {
     protected $_data = array();
     protected $_resource;
+
     public function __construct(array $data = [], Resource\IResourceEntity $resource = null)
     {
         $this->_resource = $resource;

@@ -1,19 +1,19 @@
 <?php
 namespace Test\Model\Resource\Table;
 
-use App\Model\Resource\Table\Region;
+use App\Model\Resource\Table\City;
 
-class RegionTest extends \PHPUnit_Framework_TestCase
+class CityTest extends \PHPUnit_Framework_TestCase
 {
     public function testReturnsProductTableName()
     {
-        $table = new Region;
-        $this->assertEquals('regions', $table->getName());
+        $table = new City;
+        $this->assertEquals('cities', $table->getName());
     }
 
     public function testReturnsProductTablePrimaryKey()
     {
-        $table = new Product;
-        $this->assertEquals('region_id', $table->getPrimaryKey());
+        $table = new City;
+        $this->assertEquals('city_id', $table->getPrimaryKey());
     }
 }

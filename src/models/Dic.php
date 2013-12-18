@@ -26,11 +26,6 @@ class DiC
         }
     }
 
-//    private function _assembleSession()
-//    {
-//        $this->_im->setParameters('App\Model\Session', []);
-//        $this->_im->addAlias('Session', 'App\Model\Session');
-//    }
     private function _assembleDbConnection()
     {
         $this->_im->setParameters('App\Model\Resource\DBCollection', ['connection' => PDOHelper::getPdo()]);
@@ -97,7 +92,7 @@ class DiC
         $this->_im->addAlias('View', 'App\Model\ModelView');
     }
 
-    public function _assembleSession()
+    private function _assembleSession()
     {
         $this->_im->addAlias('Session', 'App\Model\Session');
         $this->_im->setParameters('App\Model\ISessionUser', [

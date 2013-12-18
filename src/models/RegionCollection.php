@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class ProductCollection
+class RegionCollection
     implements \IteratorAggregate
 {
     private $_resource;
@@ -11,11 +11,11 @@ class ProductCollection
         $this->_resource = $resource;
     }
 
-    public function getProducts()
+    public function getRegions()
     {
         return array_map(
             function ($data) {
-                return new Product($data);
+                return new Region($data);
             },
             $this->_resource->fetch()
         );
@@ -23,6 +23,6 @@ class ProductCollection
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->getProducts());
+        return new \ArrayIterator($this->getRegions());
     }
 }
