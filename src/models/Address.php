@@ -1,6 +1,8 @@
 <?php
 namespace App\Model;
 
+use App\Model\Resource\IResourceEntity;
+
 class Address extends CollectionElement
 {
     public function getId()
@@ -36,5 +38,14 @@ class Address extends CollectionElement
     public function getFlat()
     {
         return $this['flat'];
+    }
+
+    public function save(IResourceEntity $resource = null)
+    {
+        if (!$resource) {
+            $resource = $this->_resource;
+        }
+        $id = $resource->save($this->_data);
+        $this->_data['address_id'] = $id;
     }
 }

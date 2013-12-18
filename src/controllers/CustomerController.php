@@ -102,10 +102,8 @@ class CustomerController
             } else {
                 $quoteItem['customer_id'] = $session->getCustomer()->getId();
                 $quoteItem['session_id'] = null;
-                var_dump($quoteItem);
                 // $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem]);
                   $newItem = new QuoteItem($quoteItem);
-                var_dump($newItem);
                 $newItem->save($resource);
             }
         }

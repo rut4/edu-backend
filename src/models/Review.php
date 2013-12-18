@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use App\Model\Resource\IResourceEntity;
+
 class Review extends CollectionElement
 {
     /*
@@ -48,5 +50,14 @@ class Review extends CollectionElement
     public function belongsToProduct(Product $product)
     {
         return $this->getProduct() == $product;
+    }
+
+    public function save(IResourceEntity $resource = null)
+    {
+        if (!$resource) {
+            $resource = $this->_resource;
+        }
+        $id = $resource->save($this->_data);
+        $this->_data['review_id'] = $id;
     }
 }

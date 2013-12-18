@@ -82,6 +82,24 @@ class DiC
         $this->_im->addAlias('Customer', 'App\Model\Customer');
     }
 
+    private function _assembleCity()
+    {
+        $this->_im->setParameters('App\Model\City', ['table' => 'App\Model\Resource\Table\City']);
+        $this->_im->addAlias('City', 'App\Model\City');
+    }
+
+    private function _assembleRegion()
+    {
+        $this->_im->setParameters('App\Model\Region', ['table' => 'App\Model\Resource\Table\Region']);
+        $this->_im->addAlias('Region', 'App\Model\Region');
+    }
+
+    private function _assembleAddress()
+    {
+        $this->_im->setParameters('App\Model\Address', ['table' => 'App\Model\Resource\Table\Address']);
+        $this->_im->addAlias('Address', 'App\Model\Address');
+    }
+
     private function _assembleView()
     {
         $this->_im->setParameters('App\Model\ModelView', [
