@@ -138,3 +138,18 @@
     color: #999;
     text-shadow: none;
 }
+
+.form__row {
+    margin: 5px;
+}
+
+.form__row_email,
+.form__row_name,
+.form__row_rating {
+    display: inline-block;
+}
+.input_area {
+    height: 70px;
+    width: 100%;
+    resize: none;
+}

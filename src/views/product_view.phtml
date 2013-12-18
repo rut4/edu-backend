@@ -29,6 +29,32 @@
         <header class="review_list__header">
             <h2>Reviews</h2>
         </header>
+        <div class="form form_review">
+            <form action="/?page=review_add" method="post">
+                <input type="hidden" name="product_id" value="<?php echo $_product->getId() ?>">
+                <div class="form__row form__row_name">
+                    <input type="text" name="name" placeholder="Name *" required>
+                </div>
+                <div class="form__row form__row_email">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form__row form__row_rating">
+                    <select name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form__row form__row_area">
+                    <textarea class="input_area" name="text" id="formReviewText" cols="30" rows="10"></textarea>
+                </div>
+                <div class="form__row">
+                    <input type="submit" value="Send">
+                </div>
+            </form>
+        </div>
         <ul class="review-list__i">
             <?php foreach ($this->get('reviews') as $_review): ?>
                 <li class="review">
@@ -44,7 +70,7 @@
                             <?php endfor; ?>
                         </p>
                     </h3>
-                    <p class="review__text"><?php echo $_review->getText(); ?></p>
+                    <p class="review__text"><?php echo htmlentities($_review->getText()); ?></p>
                 </li>
             <?php endforeach; ?>
         </ul>

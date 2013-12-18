@@ -75,5 +75,20 @@ class Session
         return session_id();
     }
 
+    public function generateToken()
+    {
+        $_SESSION['token'] = hex2bin(openssl_random_pseudo_bytes(32));
+    }
+    public function getToken()
+    {
+        return isset($_SESSION['token']) ? $_SESSION['token'] : null;
+    }
+
+    public function validateToken($token)
+    {
+        $valid = $_SESSION['token'] === $token;
+        unset($_SESSION['token']);
+        return $valid;
+    }
 
 }
