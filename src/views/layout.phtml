@@ -10,7 +10,7 @@
 <body>
 <header class="header">
     <div class="customer-panel">
-        <span>Hi, <?php echo $session->isLoggedIn() ? $session->getCustomer()->getName() : 'guest'; ?>!</span>
+        <span>Hi, <?php echo $session->isLoggedIn() ? htmlentities($session->getCustomer()->getName()) : 'guest'; ?>!</span>
         <?php if (!isset($_SESSION['customer'])): ?>
             <a href="?page=customer_login">Login</a> |
             <a href="?page=customer_register">Sign Up</a>

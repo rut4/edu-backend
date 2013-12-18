@@ -11,13 +11,8 @@ use \App\Model\Customer;
 
 
 class CustomerController
+    extends ActionController
 {
-    private $_di;
-
-    public function __construct(\Zend\Di\Di $di)
-    {
-        $this->_di = $di;
-    }
 
     public function loginAction()
     {
@@ -25,6 +20,7 @@ class CustomerController
         if (isset($_POST['customer'])) {
             $customer = $this->_di->get('Customer', ['data' => $_POST['customer']]);
             if ($this->_auth($customer)) {
+                $this->_redirect('product_list');
                 return (new ProductController($this->_di))->listAction();
             }
         } else {
@@ -66,6 +62,7 @@ class CustomerController
     {
         $session = $this->_di->get('Session');
         $session->logout();
+        $this->_redirect('product_list');
         return (new ProductController($this->_di))->listAction();
     }
 
@@ -103,7 +100,7 @@ class CustomerController
                 $quoteItem['customer_id'] = $session->getCustomer()->getId();
                 $quoteItem['session_id'] = null;
                 // $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem]);
-                  $newItem = new QuoteItem($quoteItem);
+                $newItem = new QuoteItem($quoteItem);
                 $newItem->save($resource);
             }
         }

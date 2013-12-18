@@ -60,7 +60,7 @@
             <?php foreach ($this->get('reviews') as $_review): ?>
                 <li class="review">
                     <h3 class="review__header">
-                        <p class="review__name"><?php echo $_review->getName(); ?></p>
+                        <p class="review__name"><?php echo htmlentities($_review->getName()); ?></p>
 
                         <p class="review__rating">
                             <?php for ($i = 0; $i < $_review->getRating(); $i++): ?>

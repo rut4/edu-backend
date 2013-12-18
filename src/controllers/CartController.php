@@ -69,6 +69,7 @@ class CartController
 
         $di = new \Zend\Di\Di;
         (new \App\Model\DiC($di))->assemble();
+        $this->_redirect('cart_list');
         return (new CartController($di))->listAction();
     }
 
@@ -91,6 +92,7 @@ class CartController
             $quoteResource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
             $quote->addItemForProduct($product, $quoteResource);
         }
+        $this->_redirect('product_list');
         return (new ProductController($this->_di))->listAction();
     }
 }
