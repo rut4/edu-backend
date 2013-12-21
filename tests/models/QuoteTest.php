@@ -80,4 +80,37 @@ class QuoteTest
         $this->assertEquals([new QuoteItem($expected)], $quote->getItemsForUser());
     }
 
+    public function testRetunrsAssignedAddress()
+    {
+        $address = $this->getMock('App\Model\Address', ['load']);
+        $address->expects($this->once())
+            ->method('load')
+            ->with($this->equalTo(42));
+
+        $quote = new Quote(null, ['address_id' => 42], $address);
+        $quote->getAddress();
+
+        $this->assertSame($address, $quote->getAddress());
+    }
+
+    public function testCreatesNewAddressIfNotAssigned()
+    {
+        $address = $this->getMock('App\Model\Address', ['getId', 'save']);
+        $address->expects($this->once())
+            ->method('save');
+        $address->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(42));
+
+        $quoteResource = $this->getMock('App\Model\Resource\IResourceEntity', []);
+
+        $quote = new Quote($quoteResource, [], $address);
+        $quoteResource->expects($this->once())
+            ->method('save')
+            ->with($this->equalTo(['address_id' => 42]));
+
+        $quote->getAddress();
+    }
+
+
 }

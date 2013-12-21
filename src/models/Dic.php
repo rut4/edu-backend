@@ -24,6 +24,9 @@ class DiC
                 $_method->invoke($this);
             }
         }
+
+        $this->_im->setShared('App\Model\Resource\DBCollection', false);
+        $this->_im->setShared('App\Model\Resource\DBEntity', false);
     }
 
     private function _assembleDbConnection()

@@ -99,8 +99,8 @@ class CustomerController
             } else {
                 $quoteItem['customer_id'] = $session->getCustomer()->getId();
                 $quoteItem['session_id'] = null;
-                // $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem]);
-                $newItem = new QuoteItem($quoteItem);
+                $newItem = $this->_di->get('QuoteItem', ['data' => $quoteItem]);
+                /// $newItem = new QuoteItem($quoteItem);
                 $newItem->save($resource);
             }
         }

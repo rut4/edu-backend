@@ -13,10 +13,14 @@ class Quote
     private $_customer;
     private $_session;
     private $_itemsResource;
+    private $_data;
+    private $_address;
 
-    public function __construct(IResourceCollection $itemsResource = null)
+    public function __construct(IResourceCollection $itemsResource = null, $data = [], Address $address = null)
     {
         $this->_itemsResource = $itemsResource;
+        $this->_data = $data;
+        $this->_address = $address;
     }
 
     public function addItemForProduct(Product $product, IResourceEntity $itemResource)
@@ -88,5 +92,22 @@ class Quote
     public function removeItem(QuoteItem $quoteItem, IResourceEntity $resource)
     {
         $resource->remove($quoteItem->getId());
+    }
+
+    public function getAddress()
+    {
+        if ($addressId = $this->_data['address_id']) {
+            $this->_address->load($this->_data['address_id']);
+        } else {
+            $this->_address->save();
+            $this->_assignAddress();
+
+        }
+        return $this->_address;
+    }
+
+    protected function _assignAddress()
+    {
+
     }
 }
