@@ -13,4 +13,3 @@ class TableRate implements IMethod
         
     }
 }
-

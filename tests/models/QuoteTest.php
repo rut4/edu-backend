@@ -105,7 +105,6 @@ class QuoteTest
     }
 
     public function testReturnsAssginedAddress()
-
     {
         $address = $this->getMock('App\Model\Address', ['load']);
         $address->expects($this->once())
@@ -113,7 +112,6 @@ class QuoteTest
             ->with($this->equalTo(42))
         ;
         $quote = new Quote(['address_id' => 42], null, null, $address);
-
 
         $this->assertSame($address, $quote->getAddress());
     }

@@ -161,3 +161,4 @@ class QuoteItemCollectionTest
         $this->assertEquals(2, $itemBar->getProduct()->getId());
     }
 }
+

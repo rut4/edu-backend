@@ -2,7 +2,6 @@
 
 namespace App\Model\Shipping;
 
-
 class Fixed implements IMethod
 {
     private $_price = 42;
@@ -18,4 +17,3 @@ class Fixed implements IMethod
         return $this->_code;
     }
 }
-
