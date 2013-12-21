@@ -27,7 +27,6 @@ class Product extends CollectionElement
     {
         return $this['special_price'];
     }
-
     public function getId()
     {
         return $this['product_id'];

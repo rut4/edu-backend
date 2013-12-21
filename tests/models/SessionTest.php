@@ -6,44 +6,56 @@ namespace Test\Model;
 class SessionTest
     extends \PHPUnit_Framework_TestCase
 {
-    public function testGeneratesRandomToken()
+    private $_session;
+
+    public function setUp()
     {
-        $session = $this->getMockBuilder('App\Model\Session')
+        $this->_session = $this->getMockBuilder('App\Model\Session')
             ->disableOriginalConstructor()
             ->setMethods(['__construct'])
             ->getMock();
+    }
 
-        $session->generateToken();
-        $tokenFoo = $session->getToken();
+    public function testGeneratesRandomToken()
+    {
+        $this->_session->generateToken();
+        $tokenFoo = $this->_session->getToken();
 
-        $session->generateToken();
-        $tokenBar = $session->getToken();
+        $this->_session->generateToken();
+        $tokenBar = $this->_session->getToken();
 
         $this->assertNotEquals($tokenFoo, $tokenBar);
     }
 
     public function testValidatesTokenWithSession()
     {
-        $session = $this->getMockBuilder('App\Model\Session')
-            ->disableOriginalConstructor()
-            ->setMethods(['__construct'])
-            ->getMock();
-
-        $session->generateToken();
-        $token = $session->getToken();
-        $this->assertTrue($session->validateToken($token));
-        $this->assertFalse($session->validateToken('asdasd'));
+        $this->_session->generateToken();
+        $token = $this->_session->getToken();
+        $this->assertTrue($this->_session->validateToken($token));
+        $this->assertFalse($this->_session->validateToken('asdasd'));
     }
 
     public function testClearsTokenAfterValidation()
     {
-        $session = $this->getMockBuilder('App\Model\Session')
+        $this->_session = $this->getMockBuilder('App\Model\Session')
             ->disableOriginalConstructor()
             ->setMethods(['__construct'])
             ->getMock();
-        $session->generateToken();
-        $session->validateToken('123123');
+        $this->_session->generateToken();
+        $this->_session->validateToken('123123');
 
-        $this->assertNull($session->getToken());
+        $this->assertNull($this->_session->getToken());
+    }
+
+    public function testReturnsQuoteIdIfExists()
+    {
+        $_SESSION['quote_id'] = 42;
+        $this->assertEquals(42, $this->_session->getQuoteId());
+    }
+
+    public function testSetsQuoteIdToSession()
+    {
+        $this->_session->setQuoteId(42);
+        $this->assertEquals(42, $_SESSION['quote_id']);
     }
 }

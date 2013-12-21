@@ -1,94 +1,119 @@
 <?php
-
 namespace Test\Model;
 
-use App\Model\Customer;
-use App\Model\Product;
 use App\Model\Quote;
-use App\Model\QuoteItem;
-use App\Model\Session;
 
 class QuoteTest
     extends \PHPUnit_Framework_TestCase
 {
-
-    public function testAppliedChoiceAsToIdentifyUser()
+    public function testLoadsItselfFromSession()
     {
-        $resource = $this->getMock('App\Model\Resource\IResourceCollection');
-        $resource->expects($this->any())
-            ->method('fetch')
-            ->will(
-                $this->returnValue([['quantity' => 1, 'product_id' => 32, 'customer_id' => 1]])
-            );
-        $customer = new Customer(['customer_id', 1]);
-        $quote = new Quote($resource);
-        $quote->loadByCustomer($customer);
-        $product = new Product(['name' => 'Nokla', 'product_id' => 32]);
+        $quote = $this->getMock('App\Model\Quote', ['load']);
+        $quote->expects($this->once())->method('load')
+            ->with($this->equalTo(42));
 
+        $session = $this->getMockBuilder('App\Model\Session')
+            ->disableOriginalConstructor()->setMethods(['getQuoteId'])->getMock();
+        $session->expects($this->any())->method('getQuoteId')
+            ->will($this->returnValue(42));
 
-        $quoteItem = new QuoteItem(['quantity' => 1, 'product_id' => 32, 'customer_id' => 1]);
-
-        $this->assertEquals($quoteItem, $quote->getItemForProduct($product));
-
+        $quote->loadBySession($session);
     }
 
-    public function testReturnsQuoteItemForProduct()
+    public function testSetsNewQuoteIdToSessionIfQuoteDoesNotExist()
     {
-        $resource = $this->getMock('App\Model\Resource\IResourceCollection');
-        $resource->expects($this->any())
-            ->method('fetch')
-            ->will(
-                $this->returnValue([['quantity' => 1, 'product_id' => 32, 'customer_id' => 1]])
-            );
-        $quote = new Quote($resource);
-        $product = new Product(['name' => 'Nokla', 'product_id' => 32]);
-        $quoteItem = new QuoteItem(['quantity' => 1, 'product_id' => 32, 'customer_id' => 1]);
+        $quote = $this->getMock('App\Model\Quote', ['save', 'getId']);
+        $quote->expects($this->once())->method('save');
+        $quote->expects($this->any())->method('getId')
+            ->will($this->returnValue(42));
 
-        $this->assertEquals($quoteItem, $quote->getItemForProduct($product));
+        $session = $this->getMockBuilder('App\Model\Session')
+            ->disableOriginalConstructor()->setMethods(['getQuoteId', 'setQuoteId'])->getMock();
+        $session->expects($this->any())->method('getQuoteId')
+            ->will($this->returnValue(null));
+        $session->expects($this->once())->method('setQuoteId')
+            ->will($this->returnValue(42));
 
+        $quote->loadBySession($session);
     }
 
-    public function testRemoveQuoteItemFromQuote()
+    public function testLoadsDataFromResource()
     {
-        $quote = new Quote;
-        $quoteItem = new QuoteItem(['quote_item_id' => 1, 'product_id' => 32, 'quantity' => 1]);
-        $resource = $this->getMock('App\Model\Resource\IResourceEntity');
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $resource->expects($this->any())
-            ->method('remove')
-            ->with(
-                $this->equalTo(1)
-            );
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('quote_id'));
+        $resource->expects($this->any())
+            ->method('find')
+            ->with($this->equalTo(42))
+            ->will($this->returnValue(['quote_id' => 42]));
 
-        $quote->removeItem($quoteItem, $resource);
+        $quote = new Quote([], $resource);
+        $quote->load(42);
+
+        $this->assertEquals(42, $quote->getId());
     }
 
-    public function testReturnsUserItems()
+    public function testSavesDataInResource()
     {
-        $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $resource->expects($this->any())
-            ->method('fetch')
-            ->will(
-                $this->returnValue([[
-                    'product_id' => 1,
-                    'customer_id' => 1
-                ]])
-            );
-        $quote = new Quote($resource);
-        $quote->loadByCustomer(new Customer(['customer_id' => 1]));
-        $expected = ['product_id' => 1, 'customer_id' => 1];
+            ->method('save')
+            ->with($this->equalTo(['quote_id' => 42]));
 
-        $this->assertEquals([new QuoteItem($expected)], $quote->getItemsForUser());
+        $quote = new Quote(['quote_id' => 42], $resource);
+        $quote->save();
     }
 
-    public function testRetunrsAssignedAddress()
+    public function testGetsIdFromResourceAfterSave()
+    {
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('save')
+            ->with($this->equalTo(['foo' => 'bar']))
+            ->will($this->returnValue(42));
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('quote_id'));
+
+        $quote = new Quote(['foo' => 'bar'], $resource);
+        $quote->save();
+        $this->assertEquals(42, $quote->getId());
+    }
+
+    public function testReturnsIdWhichHasBeenInitialized()
+    {
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('quote_id'));
+
+        $quote = new Quote(['quote_id' => 42], $resource);
+        $this->assertEquals(42, $quote->getId());
+    }
+
+    public function testReturunsFilteredItemsCollection()
+    {
+        $itemsCollection = $this->getMockBuilder('\App\Model\QuoteItemCollection')
+            ->disableOriginalConstructor()->setMethods(['filterByQuote'])->getMock();
+        $quote = new Quote([], null, $itemsCollection);
+
+        $itemsCollection->expects($this->once())->method('filterByQuote')
+            ->with($this->equalTo($quote));
+
+        $this->assertEquals($itemsCollection, $quote->getItems());
+    }
+
+    public function testReturnsAssginedAddress()
+
     {
         $address = $this->getMock('App\Model\Address', ['load']);
         $address->expects($this->once())
             ->method('load')
-            ->with($this->equalTo(42));
+            ->with($this->equalTo(42))
+        ;
+        $quote = new Quote(['address_id' => 42], null, null, $address);
 
-        $quote = new Quote(null, ['address_id' => 42], $address);
-        $quote->getAddress();
 
         $this->assertSame($address, $quote->getAddress());
     }
@@ -102,15 +127,13 @@ class QuoteTest
             ->method('getId')
             ->will($this->returnValue(42));
 
-        $quoteResource = $this->getMock('App\Model\Resource\IResourceEntity', []);
-
-        $quote = new Quote($quoteResource, [], $address);
+        $quoteResource = $this->getMock('App\Model\Resource\IResourceEntity');
+        $quote = new Quote([], $quoteResource, null, $address);
         $quoteResource->expects($this->once())
             ->method('save')
-            ->with($this->equalTo(['address_id' => 42]));
-
-        $quote->getAddress();
+            ->with($this->equalTo(['address_id' => 42]))
+        ;
+        $this->assertSame($address, $quote->getAddress());
     }
-
-
 }
+

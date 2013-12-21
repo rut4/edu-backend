@@ -13,6 +13,9 @@ class Factory
 
     public function getMethods()
     {
-        return [new Fixed($this->_address), new TableRate($this->_address)];
+        return [
+            new Fixed($this->_address),
+            new TableRate($this->_address)
+        ];
     }
 }

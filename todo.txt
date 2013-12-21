@@ -4,11 +4,12 @@ features:
   - shipping method (class)
   - payment method (home)
 * order creation (send email to admin via Zend\Mail) (home)
-* write reviews from frontend + security (class 0.5)
 
 
 backend:
 * dbentity test: returns ID after save
+* request model in controllers
+* controller tests
 
 misc:
 * advanced git

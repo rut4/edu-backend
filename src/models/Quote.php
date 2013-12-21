@@ -96,6 +96,7 @@ class Quote
 
     public function getAddress()
     {
+
         if ($addressId = $this->_data['address_id']) {
             $this->_address->load($this->_data['address_id']);
         } else {
@@ -108,6 +109,7 @@ class Quote
 
     protected function _assignAddress()
     {
-
+        $this->_data['address_id'] = $this->_address->getId();
+        $this->save();
     }
 }

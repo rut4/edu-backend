@@ -54,7 +54,12 @@ class ReviewCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFiltersCollectionByProduct($productId)
     {
-        $product = new Product(['product_id' => $productId]);
+        $productResource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $productResource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('product_id'));
+        $product = new Product(['product_id' => $productId], $productResource);
+
         $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
         $resource->expects($this->any())
             ->method('filterBy')

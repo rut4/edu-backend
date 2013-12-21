@@ -35,7 +35,8 @@ class ProductController
         $pages = $paginator->getPages();
         $currentPage = $paginator->getCurrentPageNumber();
 
-        $products = $this->_di->get('ProductCollection', ['resource' => $resource]);
+        $product = $this->_di->get('Product');
+        $products = $this->_di->get('ProductCollection', ['resource' => $resource, 'productPrototype' => $product]);
 
         return $this->_di->get('View', [
             'template' => 'product_list',

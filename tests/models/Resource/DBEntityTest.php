@@ -49,6 +49,12 @@ class DBEntityTest
         $this->assertTablesEqual($expectedTable, $queryTable);
     }
 
+    public function testRetrievesPrimaryKeyFromTable()
+    {
+        $resource = $this->_getResource();
+        $this->assertEquals('id', $resource->getPrimaryKeyField());
+    }
+
     public function getConnection()
     {
         $pdo = new \PDO('mysql:host=localhost;dbname=student_unit', 'root', 'vagrant');

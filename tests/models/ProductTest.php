@@ -67,10 +67,15 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsIdWhichHasBeenInitialized()
     {
-        $product = new Product(['product_id' => 1]);
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('product_id'));
+
+        $product = new Product(['product_id' => 1], $resource);
         $this->assertEquals(1, $product->getId());
 
-        $product = new Product(['product_id' => 2]);
+        $product = new Product(['product_id' => 2], $resource);
         $this->assertEquals(2, $product->getId());
     }
 
@@ -86,5 +91,21 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $product->load(42);
 
         $this->assertEquals('foo', $product->getName());
+    }
+
+    public function testGetsIdFromResourceAfterSave()
+    {
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('save')
+            ->with($this->equalTo(['name' => 'foo']))
+            ->will($this->returnValue(42));
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('product_id'));
+
+        $product = new Product(['name' => 'foo'], $resource);
+        $product->save();
+        $this->assertEquals(42, $product->getId());
     }
 }

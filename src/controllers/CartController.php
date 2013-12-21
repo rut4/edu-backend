@@ -16,6 +16,7 @@ class CartController
 {
     public function listAction()
     {
+
         $session = $this->_di->get('Session');
         $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
         $quote = $this->_di->get('Quote');

@@ -90,4 +90,14 @@ class Session
         unset($_SESSION['token']);
         return $valid;
     }
+
+    public function getQuoteId()
+    {
+        return isset($_SESSION['quote_id']) ? $_SESSION['quote_id'] : null;
+    }
+
+    public function setQuoteId($id)
+    {
+        $_SESSION['quote_id'] = $id;
+    }
 }

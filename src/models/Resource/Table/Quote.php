@@ -1,15 +1,15 @@
 <?php
 namespace App\Model\Resource\Table;
-class QuoteItem implements ITable
+class Quote implements ITable
 {
     public function getName()
     {
-        return 'quote_items';
+        return 'quotes';
     }
 
     public function getPrimaryKey()
     {
-        return 'quote_item_id';
+        return 'quote_id';
     }
 }
-
+  

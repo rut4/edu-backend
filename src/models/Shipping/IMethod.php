@@ -7,4 +7,5 @@ interface IMethod
     public function getPrice();
 
     public function getCode();
+
 }

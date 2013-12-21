@@ -1,68 +1,90 @@
 <?php
-
 namespace Test\Model;
+use App\Model\Product;
+use \App\Model\QuoteItem;
 
-use App\Model\QuoteItem;
-
-class QuoteItemTest
-    extends \PHPUnit_Framework_TestCase
+class QuoteItemTest extends \PHPUnit_Framework_TestCase
 {
     public function testReturnsIdWhichHasBeenInitialized()
     {
-        $quoteItem = new QuoteItem(['quote_item_id' => 123123123]);
-        $this->assertEquals(123123123, $quoteItem->getId());
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('item_id'));
 
-        $quoteItem = new QuoteItem(['quote_item_id' => 1]);
-        $this->assertEquals(1, $quoteItem->getId());
+        $item = new QuoteItem(['item_id' => 1], $resource);
+        $this->assertEquals(1, $item->getId());
+
+        $item = new QuoteItem(['item_id' => 2], $resource);
+        $this->assertEquals(2, $item->getId());
     }
 
+    public function testReturnsQtyWhichHasBeenInitialized()
+    {
+        $item = new QuoteItem(['qty' => 10]);
+        $this->assertEquals(10, $item->getQty());
+    }
+
+    public function testReceivesDataAsArray()
+    {
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('getPrimaryKeyField')
+            ->will($this->returnValue('item_id'));
+
+        $item = new QuoteItem([], $resource);
+        $item->setData(['item_id' => 42]);
+        $this->assertEquals(42, $item->getId());
+    }
 
     public function testReturnsProductIdWhichHasBeenInitialized()
     {
-        $quoteItem = new QuoteItem(['product_id' => 123123123]);
-        $this->assertEquals(123123123, $quoteItem->getProductId());
-
-        $quoteItem = new QuoteItem(['product_id' => 1]);
-        $this->assertEquals(1, $quoteItem->getProductId());
+        $item = new QuoteItem(['product_id' => 42]);
+        $this->assertEquals(42, $item->getProductId());
     }
 
-    public function testReturnsCustomerIdWhichHasBeenInitialized()
+    public function testBelongsToProductIfHasSameProductId()
     {
-        $quoteItem = new QuoteItem(['customer_id' => 123123123]);
-        $this->assertEquals(123123123, $quoteItem->getCustomerId());
+        $productFoo = $this->getMock('App\Model\Product', ['getId']);
+        $productFoo->expects($this->any())->method('getId')
+            ->will($this->returnValue(42));
 
-        $quoteItem = new QuoteItem(['customer_id' => 1]);
-        $this->assertEquals(1, $quoteItem->getCustomerId());
+        $productBar = $this->getMock('App\Model\Product', ['getId']);
+        $productBar->expects($this->any())->method('getId')
+            ->will($this->returnValue(11));
+
+        $item = new QuoteItem(['product_id' => 42]);
+        $this->assertTrue($item->belongsToProduct($productFoo));
+        $this->assertFalse($item->belongsToProduct($productBar));
     }
 
-    public function testReturnsQuantityWhichHasBeenInitialized()
+    public function testAddsQtyToCurrentValue()
     {
-        $quoteItem = new QuoteItem(['quantity' => 123123123]);
-        $this->assertEquals(123123123, $quoteItem->getQuantity());
+        $item = new QuoteItem(['qty' => 10]);
+        $item->addQty(1);
 
-        $quoteItem = new QuoteItem(['quantity' => 1]);
-        $this->assertEquals(1, $quoteItem->getQuantity());
+        $this->assertEquals(11, $item->getQty());
     }
 
-    public function testAddQuantityInQuoteItem()
+    public function testAssignProductSetsProductId()
     {
-        $quoteItem = new QuoteItem(['quantity' => 1]);
-        $quoteItem->addQuantity(1);
-        $this->assertEquals(2, $quoteItem->getQuantity());
+        $product = $this->getMock('App\Model\Product', ['getId']);
+        $product->expects($this->any())->method('getId')
+            ->will($this->returnValue(42));
+        $item = new QuoteItem;
+        $item->assignToProduct($product);
+
+        $this->assertEquals(42, $item->getProductId());
     }
 
-    public function testDeleteQuantityInQuoteItem()
+    public function testAssignProductSetsProductInstance()
     {
-        $quoteItem = new QuoteItem(['quantity' => 1]);
-        $quoteItem->deleteQuantity(1);
-        $this->assertEquals(0, $quoteItem->getQuantity());
-    }
+        $product = $this->getMock('App\Model\Product', ['getId']);
+        $product->expects($this->any())->method('getId')
+            ->will($this->returnValue(42));
+        $item = new QuoteItem;
+        $item->assignToProduct($product);
 
-    public function testUpdateQuantityInQuoteItem()
-    {
-        $quoteItem = new QuoteItem(['quantity' => 1]);
-        $quoteItem->updateQuantity(3);
-        $this->assertEquals(3, $quoteItem->getQuantity());
+        $this->assertEquals($product, $item->getProduct());
     }
-
-} 
+}

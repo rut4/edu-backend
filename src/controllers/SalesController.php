@@ -1,14 +1,18 @@
 <?php
-
 namespace App\Controller;
 
-
-use App\Model\QuoteItem;
-
 class SalesController
-    extends ActionController
+extends ActionController
 {
-    protected function _initQuoteItem(QuoteItem $quote)
+
+    protected function _initQuote()
     {
+        $quote   = $this->_di->get('Quote');
+        $session = $this->_di->get('Session');
+
+        $quote->loadBySession($session);
+
+        return $quote;
     }
 }
+
