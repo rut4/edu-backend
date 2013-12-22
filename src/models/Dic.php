@@ -15,6 +15,7 @@ class DiC
         $this->_di = $di;
         $this->_im = $di->instanceManager();
     }
+
     public function assemble()
     {
         $reflection = new \ReflectionClass($this);
@@ -69,14 +70,20 @@ class DiC
 
     private function _assembleQuote()
     {
-        $this->_im->setParameters('App\Model\Quote', ['table' => 'App\Model\Resource\Table\QuoteItem']);
-        $this->_im->addAlias('Quote', 'App\Model\Quote');
-    }
-
-    private function _assembleQuoteItem()
-    {
         $this->_im->setParameters('App\Model\QuoteItem', ['table' => 'App\Model\Resource\Table\QuoteItem']);
         $this->_im->addAlias('QuoteItem', 'App\Model\QuoteItem');
+
+        $this->_im->setParameters('App\Model\QuoteItemCollection', [
+            'table' => 'App\Model\Resource\Table\QuoteItem',
+            'itemPrototype' => 'App\Model\QuoteItem'
+        ]);
+
+        $this->_im->setParameters('App\Model\Quote', [
+            'table' => 'App\Model\Resource\Table\Quote',
+            'items' => $this->_di->get('App\Model\QuoteItemCollection'),
+            'address' => $this->_di->get('App\Model\Address')
+        ]);
+        $this->_im->addAlias('Quote', 'App\Model\Quote');
     }
 
     private function _assembleCustomer()
@@ -89,12 +96,18 @@ class DiC
     {
         $this->_im->setParameters('App\Model\City', ['table' => 'App\Model\Resource\Table\City']);
         $this->_im->addAlias('City', 'App\Model\City');
+
+        $this->_im->setParameters('App\Model\CityCollection', ['table' => 'App\Model\Resource\Table\City']);
+        $this->_im->addAlias('CityCollection', 'App\Model\CityCollection');
     }
 
     private function _assembleRegion()
     {
         $this->_im->setParameters('App\Model\Region', ['table' => 'App\Model\Resource\Table\Region']);
         $this->_im->addAlias('Region', 'App\Model\Region');
+
+        $this->_im->setParameters('App\Model\RegionCollection', ['table' => 'App\Model\Resource\Table\Region']);
+        $this->_im->addAlias('RegionCollection', 'App\Model\RegionCollection');
     }
 
     private function _assembleAddress()
@@ -119,5 +132,11 @@ class DiC
         $this->_im->setParameters('App\Model\ISessionUser', [
             'session' => $this->_di->get('Session')
         ]);
+    }
+
+    private function _assembleFactory()
+    {
+        $this->_im->addAlias('Factory', 'App\Model\Shipping\Factory');
+
     }
 }
