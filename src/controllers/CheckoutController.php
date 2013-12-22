@@ -44,7 +44,8 @@ class CheckoutController
             $quote->assignMethod($_POST['method_code']);
         } else {
             $quote = $this->_initQuote();
-            $factory = $this->_di->get('Factory', ['address' => $quote->getAddress()]);
+            $cityResource = $this->_di->get('ResourceEntity', ['table' => new \App\Model\Resource\Table\City]);
+            $factory = $this->_di->get('Factory', ['address' => $quote->getAddress(), 'cityResource' => $cityResource]);
 
             return $this->_di->get('View', [
                 'template' => 'checkout_shipping',
