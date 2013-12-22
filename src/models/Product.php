@@ -1,6 +1,8 @@
 <?php
 namespace App\Model;
 
+use App\Model\Resource\IResourceEntity;
+
 class Product extends CollectionElement
 {
     public function getSku()
@@ -35,5 +37,14 @@ class Product extends CollectionElement
     public function isSpecialPriceApplied()
     {
         return $this->getSpecialPrice() > 0;
+    }
+
+    public function save(IResourceEntity $resource = null)
+    {
+        if (!$resource) {
+            $resource = $this->_resource;
+        }
+        $id = $resource->save($this->_data);
+        $this->_data['product_id'] = $id;
     }
 }

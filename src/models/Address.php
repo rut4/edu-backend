@@ -5,6 +5,11 @@ use App\Model\Resource\IResourceEntity;
 
 class Address extends CollectionElement
 {
+    public function getCity(IResourceEntity $cityResource)
+    {
+        return $cityResource->find($this['city_id']);
+    }
+
     public function getId()
     {
         return $this['address_id'];
@@ -48,4 +53,10 @@ class Address extends CollectionElement
         $id = $resource->save($this->_data);
         $this->_data['address_id'] = $id;
     }
+
+    public function setData($data)
+    {
+        $this->_data = $data;
+    }
+
 }

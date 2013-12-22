@@ -12,28 +12,20 @@ use App\Model\Resource\Table\QuoteItem as QuoteItemTable;
 use App\Model\Session;
 
 class CartController
-    extends ActionController
+    extends SalesController
 {
     public function listAction()
     {
 
-        $session = $this->_di->get('Session');
-        $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
-        $quote = $this->_di->get('Quote');
+        $quote = $this->_initQuote();
+        $items = $quote->getItems();
 
-        if ($session->isLoggedIn()) {
-            $quote->loadByCustomer($session->getCustomer());
-        } else {
-            $quote->loadBySession($session);
-        }
-
-        $quoteItemsByUser = $quote->getItemsForUser();
+        $items->assignProducts($this->_di->get('Product'));
 
         return $this->_di->get('View', [
             'template' => 'cart_list',
             'params' => [
-                'productResource' => $productResource,
-                'quoteItemsByUser' => $quoteItemsByUser,
+                'items' => $items,
                 'header' => 'Shopping Cart',
                 'view' => 'cart_list',
                 'css' => 'cart_list'
@@ -77,23 +69,22 @@ class CartController
     public function addToCartAction()
     {
         if (isset($_POST['product_id'])) {
-            $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
-            $product = $this->_di->get('Product', ['resource' => $productResource]);
-
-            $product->load($_POST['product_id']);
-
-            $session = $this->_di->get('Session');
-            $quote = $this->_di->get('Quote');
-
-            if ($session->isLoggedIn()) {
-                $quote->loadByCustomer($session->getCustomer());
-            } else {
-                $quote->loadBySession($session);
-            }
-            $quoteResource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
-            $quote->addItemForProduct($product, $quoteResource);
+            $quoteItem = $this->_initQuoteItem();
+            $quoteItem->addQuantity(1);
+            $quoteItem->save();
         }
         $this->_redirect('product_list');
         return (new ProductController($this->_di))->listAction();
+    }
+
+    private function _initQuoteItem()
+    {
+        $quote = $this->_initQuote();
+
+        $product = $this->_di->get('Product');
+        $product->load($_POST['product_id']);
+
+        $item = $quote->getItems()->forProduct($product);
+        return $item;
     }
 }

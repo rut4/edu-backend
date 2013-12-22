@@ -2,12 +2,12 @@
 namespace App\Controller;
 
 class SalesController
-extends ActionController
+    extends ActionController
 {
 
     protected function _initQuote()
     {
-        $quote   = $this->_di->get('Quote');
+        $quote = $this->_di->get('Quote');
         $session = $this->_di->get('Session');
 
         $quote->loadBySession($session);

@@ -6,105 +6,58 @@ use App\Model\Resource\IResourceEntity;
 use App\Model\Customer;
 use App\Model\QuoteItem;
 use App\Model\Resource\Table\QuoteItem as QuoteItemTable;
+use App\Model\Shipping\IMethod;
 use Test\Model\QuoteTest;
 
-class Quote
+class Quote extends CollectionElement
 {
-    private $_customer;
-    private $_session;
-    private $_itemsResource;
-    private $_data;
+    private $_items;
     private $_address;
 
-    public function __construct(IResourceCollection $itemsResource = null, $data = [], Address $address = null)
+    public function __construct(
+        array $data = [],
+        Resource\IResourceEntity $resource = null,
+        QuoteItemCollection $items = null,
+        Address $address = null
+    )
     {
-        $this->_itemsResource = $itemsResource;
-        $this->_data = $data;
+        $this->_items = $items;
         $this->_address = $address;
-    }
-
-    public function addItemForProduct(Product $product, IResourceEntity $itemResource)
-    {
-        $existItem = $this->getItemForProduct($product);
-
-        if ($existItem) {
-            $existItem->addQuantity(1);
-            $existItem->save($itemResource);
-        } else {
-            $newItemInfo = [
-                'product_id' => $product->getId(),
-                'quantity' => 1
-            ];
-            if ($this->_customer) {
-                $newItemInfo['customer_id'] = $this->_customer->getId();
-            } else if ($this->_session) {
-                $newItemInfo['session_id'] = $this->_session->getSessionId();
-            } else {
-                return false;
-            }
-            $newItem = new QuoteItem($newItemInfo, $itemResource);
-            $newItem->save($itemResource);
-        }
-    }
-
-    public function getItemForProduct(Product $product)
-    {
-
-        $this->_itemsResource->filterBy('product_id', $product->getId());
-        if ($this->_customer) {
-            $this->_itemsResource->filterBy('customer_id', $this->_customer->getId());
-        } else if ($this->_session) {
-            $this->_itemsResource->filterBy('session_id', $this->_session->getSessionId());
-        }
-
-        $item = reset($this->_itemsResource->fetch());
-        if ($item) {
-            return new QuoteItem($item);
-        } else {
-            return false;
-        }
-    }
-
-    public function getItemsForUser()
-    {
-        if ($this->_customer) {
-            $this->_itemsResource->filterBy('customer_id', $this->_customer->getId());
-        } else if ($this->_session) {
-            $this->_itemsResource->filterBy('session_id', $this->_session->getSessionId());
-        }
-
-        return array_map(function ($item) {
-            return new QuoteItem($item);
-        }, $this->_itemsResource->fetch());
-
-    }
-
-    public function loadByCustomer(Customer $customer)
-    {
-        $this->_customer = $customer;
+        parent::__construct($data, $resource);
     }
 
     public function loadBySession(Session $session)
     {
-        $this->_session = $session;
+        if ($quoteId = $session->getQuoteId()) {
+            $this->load($session->getQuoteId());
+        } else {
+            $this->save();
+            $session->setQuoteId($this->getId());
+        }
     }
 
-    public function removeItem(QuoteItem $quoteItem, IResourceEntity $resource)
+    public function getItems()
     {
-        $resource->remove($quoteItem->getId());
+        $this->_items->filterByQuote($this);
+
+        return $this->_items;
     }
 
     public function getAddress()
     {
-
-        if ($addressId = $this->_data['address_id']) {
-            $this->_address->load($this->_data['address_id']);
+        if ($addressId = $this['address_id']) {
+            $this->_address->load($this['address_id']);
         } else {
             $this->_address->save();
             $this->_assignAddress();
-
         }
         return $this->_address;
+    }
+
+    public function assignMethod($code)
+    {
+        $this->_data['method_code'] = $code;
+        $this->save();
     }
 
     protected function _assignAddress()

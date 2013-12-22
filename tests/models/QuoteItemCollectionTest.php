@@ -59,7 +59,7 @@ class QuoteItemCollectionTest
     {
         $itemResource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $itemResource->expects($this->any())->method('getPrimaryKeyField')
-            ->will($this->returnValue('item_id'));
+            ->will($this->returnValue('quote_item_id'));
         $item = new QuoteItem([], $itemResource);
 
         $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
@@ -67,7 +67,7 @@ class QuoteItemCollectionTest
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['item_id' => 42]
+                    ['quote_item_id' => 42]
                 ]
             ));
         $collection = new QuoteItemCollection($resource, $item);
@@ -80,7 +80,7 @@ class QuoteItemCollectionTest
     {
         $itemResource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $itemResource->expects($this->any())->method('getPrimaryKeyField')
-            ->will($this->returnValue('item_id'));
+            ->will($this->returnValue('quote_item_id'));
         $item = new QuoteItem([], $itemResource);
 
         $resource = $this->getMock('\App\Model\Resource\IResourceCollection');
@@ -88,8 +88,8 @@ class QuoteItemCollectionTest
             ->method('fetch')
             ->will($this->returnValue(
                 [
-                    ['item_id' => 10],
-                    ['item_id' => 20]
+                    ['quote_item_id' => 10],
+                    ['quote_item_id' => 20]
                 ]
             ));
 

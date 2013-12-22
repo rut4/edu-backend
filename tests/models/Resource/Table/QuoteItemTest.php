@@ -14,6 +14,6 @@ class QuoteItemTest extends \PHPUnit_Framework_TestCase
     public function testReturnsQuoteItemPrimaryKey()
     {
         $table = new QuoteItem;
-        $this->assertEquals('item_id', $table->getPrimaryKey());
+        $this->assertEquals('quote_item_id', $table->getPrimaryKey());
     }
 }

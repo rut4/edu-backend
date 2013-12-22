@@ -10,22 +10,13 @@ class City extends CollectionElement
         return $this['name'];
     }
 
-    public function getId()
-    {
-        return $this['city_id'];
-    }
-
     public function getRegionId()
     {
         return $this['region_id'];
     }
 
-    public function save(IResourceEntity $resource = null)
+    public function getPrice()
     {
-        if (!$resource) {
-            $resource = $this->_resource;
-        }
-        $id = $resource->save($this->_data);
-        $this->_data['city_id'] = $id;
+        return $this['shipping_price'];
     }
 }

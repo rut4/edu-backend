@@ -19,15 +19,39 @@ class CollectionElement
         $this->_data = $data;
     }
 
-    private function _getData($key)
+    public function getId()
     {
-        return isset($this->_data[$key]) ? $this->_data[$key] : null;
+        return $this[$this->_resource->getPrimaryKeyField()];
+    }
+
+
+    public function setData($data)
+    {
+        $this->_data = $data;
     }
 
     public function load($id)
     {
         $this->_data = $this->_resource->find($id);
     }
+
+    public function save()
+    {
+        $id = $this->_resource->save($this->_data);
+        $this->_data[$this->_resource->getPrimaryKeyField()] = $id;
+    }
+
+    public function remove()
+    {
+        $this->_resource->remove($this->getId());
+    }
+
+
+    private function _getData($key)
+    {
+        return isset($this->_data[$key]) ? $this->_data[$key] : null;
+    }
+
 
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>

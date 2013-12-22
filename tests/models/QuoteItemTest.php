@@ -10,19 +10,19 @@ class QuoteItemTest extends \PHPUnit_Framework_TestCase
         $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $resource->expects($this->any())
             ->method('getPrimaryKeyField')
-            ->will($this->returnValue('item_id'));
+            ->will($this->returnValue('quote_item_id'));
 
-        $item = new QuoteItem(['item_id' => 1], $resource);
+        $item = new QuoteItem(['quote_item_id' => 1], $resource);
         $this->assertEquals(1, $item->getId());
 
-        $item = new QuoteItem(['item_id' => 2], $resource);
+        $item = new QuoteItem(['quote_item_id' => 2], $resource);
         $this->assertEquals(2, $item->getId());
     }
 
     public function testReturnsQtyWhichHasBeenInitialized()
     {
-        $item = new QuoteItem(['qty' => 10]);
-        $this->assertEquals(10, $item->getQty());
+        $item = new QuoteItem(['quantity' => 10]);
+        $this->assertEquals(10, $item->getQuantity());
     }
 
     public function testReceivesDataAsArray()
@@ -30,10 +30,10 @@ class QuoteItemTest extends \PHPUnit_Framework_TestCase
         $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
         $resource->expects($this->any())
             ->method('getPrimaryKeyField')
-            ->will($this->returnValue('item_id'));
+            ->will($this->returnValue('quote_item_id'));
 
         $item = new QuoteItem([], $resource);
-        $item->setData(['item_id' => 42]);
+        $item->setData(['quote_item_id' => 42]);
         $this->assertEquals(42, $item->getId());
     }
 
@@ -60,10 +60,10 @@ class QuoteItemTest extends \PHPUnit_Framework_TestCase
 
     public function testAddsQtyToCurrentValue()
     {
-        $item = new QuoteItem(['qty' => 10]);
-        $item->addQty(1);
+        $item = new QuoteItem(['quantity' => 10]);
+        $item->addQuantity(1);
 
-        $this->assertEquals(11, $item->getQty());
+        $this->assertEquals(11, $item->getQuantity());
     }
 
     public function testAssignProductSetsProductId()

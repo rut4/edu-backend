@@ -6,6 +6,8 @@ use App\Model\Resource\IResourceEntity;
 class QuoteItem
     extends CollectionElement
 {
+    private $_product;
+
     public function getId()
     {
         return $this['quote_item_id'];
@@ -47,12 +49,24 @@ class QuoteItem
         }
     }
 
-    public function save(IResourceEntity $resource = null)
+    public function assignToQuote(Quote $quote)
     {
-        if (!$resource) {
-            $resource = $this->_resource;
-        }
-        $id = $resource->save($this->_data);
-        $this->_data['quote_item_id'] = $id;
+        $this->_data['quote_id'] = $quote->getId();
+    }
+
+    public function assignToProduct(Product $product)
+    {
+        $this->_data['product_id'] = $product->getId();
+        $this->_product = $product;
+    }
+
+    public function belongsToProduct(Product $product)
+    {
+        return $this->getProductId() == $product->getId();
+    }
+
+    public function getProduct()
+    {
+        return $this->_product;
     }
 }

@@ -10,4 +10,6 @@ interface IResourceEntity
     public function save(array $data);
 
     public function remove($id);
+
+    public function getPrimaryKeyField();
 }

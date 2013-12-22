@@ -126,11 +126,12 @@ class QuoteTest
             ->will($this->returnValue(42));
 
         $quoteResource = $this->getMock('App\Model\Resource\IResourceEntity');
-        $quote = new Quote([], $quoteResource, null, $address);
         $quoteResource->expects($this->once())
             ->method('save')
-            ->with($this->equalTo(['address_id' => 42]))
-        ;
+            ->with($this->equalTo(['address_id' => 42]));
+
+        $quote = new Quote([], $quoteResource, null, $address);
+
         $this->assertSame($address, $quote->getAddress());
     }
 }

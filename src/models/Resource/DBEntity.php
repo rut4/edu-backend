@@ -54,6 +54,11 @@ class DBEntity
         $stmt->execute([':id' => $id]);
     }
 
+    public function getPrimaryKeyField()
+    {
+        return $this->_table->getPrimaryKey();
+    }
+
     private function _itemExists($data)
     {
         if (isset($data[$this->_table->getPrimaryKey()])) {
