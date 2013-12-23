@@ -1,6 +1,7 @@
 <?php
 namespace Test\Model;
 use \App\Model\ProductCollection;
+use App\Model\Region;
 use App\Model\RegionCollection;
 
 class RegionCollectionTest extends \PHPUnit_Framework_TestCase
@@ -16,7 +17,7 @@ class RegionCollectionTest extends \PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $collection = new RegionCollection($resource);
+        $collection = new RegionCollection($resource, new Region);
 
         $regions = $collection->getRegions();
         $this->assertEquals('RO', $regions[0]->getName());
@@ -34,7 +35,7 @@ class RegionCollectionTest extends \PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $collection = new RegionCollection($resource);
+        $collection = new RegionCollection($resource, new Region);
         $expected = array(0 => 'foo', 1 => 'bar');
         $iterated = false;
         foreach ($collection as $_key => $_region) {
