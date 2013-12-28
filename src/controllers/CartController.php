@@ -19,7 +19,7 @@ class CartController
 
         $quote = $this->_initQuote();
         $items = $quote->getItems();
-
+var_dump($this->_di->get('Product'));die;
         $items->assignProducts($this->_di->get('Product'));
 
         return $this->_di->get('View', [
