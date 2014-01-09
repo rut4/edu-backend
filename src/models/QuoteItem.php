@@ -31,7 +31,11 @@ class QuoteItem
     public function addQuantity($quantity)
     {
         if ($quantity > 0) {
-            $this->_data['quantity'] += $quantity;
+            if (isset($this->_data['quantity'])) {
+                $this->_data['quantity'] += $quantity;
+            } else {
+                $this->_data['quantity'] = $quantity;
+            }
         }
     }
 

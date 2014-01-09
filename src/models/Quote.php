@@ -31,6 +31,7 @@ class Quote extends CollectionElement
 
     public function loadBySession(Session $session)
     {
+
         if ($quoteId = $session->getQuoteId()) {
             $this->load($session->getQuoteId());
         } else {
@@ -57,9 +58,20 @@ class Quote extends CollectionElement
         return $this->_address;
     }
 
-    public function assignMethod($code)
+    public function assignShippingMethod($code)
     {
-        $this->_data['method_code'] = $code;
+        $this->_data['shipping_method_code'] = $code;
+        $this->save();
+    }
+
+    public function getShippingMethodCode()
+    {
+        return isset($this['shipping_method_code']) ? $this['shipping_method_code'] : null;
+    }
+
+    public function assignPaymentMethod($code)
+    {
+        $this->_data['payment_method_code'] = $code;
         $this->save();
     }
 

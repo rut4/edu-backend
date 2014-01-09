@@ -1,6 +1,6 @@
 <?php
-namespace App\Model\Payment;
 
+namespace App\Model\Payment;
 
 class Factory
 {

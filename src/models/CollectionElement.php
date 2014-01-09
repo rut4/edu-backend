@@ -27,7 +27,12 @@ class CollectionElement
 
     public function setData($data)
     {
+        $id = $this->getId();
         $this->_data = $data;
+        if ($this->_resource && $id) {
+            $this->_data[$this->_resource->getPrimaryKeyField()] = $id;
+        }
+
     }
 
     public function load($id)

@@ -1,9 +1,8 @@
 
 <ul class="product-list">
-    <?php foreach ($this->get('quoteItemsByUser') as $_quoteItem): ?>
-    <?php $_product = new \App\Model\Product([], $this->get('productResource'));
-        $_product->load($_quoteItem->getProductId());
-        ?>
+    <?php if ($this->get('items') != null): ?>
+    <?php foreach ($this->get('items') as $_quoteItem): ?>
+    <?php $_product = $_quoteItem->getProduct(); ?>
         <li class="product-item">
             <a class="link-to-view" href="?page=product_view&id=<?php echo $_product->getId()?>">
                 <div>
@@ -37,6 +36,7 @@
         </li>
 
     <?php endforeach; ?>
+    <?php endif; ?>
 </ul>
 <a href="/?page=checkout_address">
     <input type="submit" value="Checkout">

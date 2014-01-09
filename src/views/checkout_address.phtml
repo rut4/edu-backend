@@ -1,7 +1,7 @@
 <form class="form" action="/?page=checkout_address" method="post">
     <div class="form__row">
         <label for="region">Region:</label>
-        <select name="address[region]" id="region">
+        <select name="address[region_id]" id="region">
             <?php foreach($this->get('regions') as $_region): ?>
             <option value="<?php echo $_region->getId(); ?>"><?php echo $_region->getName(); ?></option>
             <?php endforeach; ?>
@@ -9,7 +9,7 @@
     </div>
     <div class="form__row">
         <label for="city">City:</label>
-        <select name="address[city]" id="city">
+        <select name="address[city_id]" id="city">
             <?php foreach($this->get('cities') as $_city): ?>
                 <option value="<?php echo $_city->getId(); ?>"><?php echo $_city->getName(); ?></option>
             <?php endforeach; ?>
@@ -29,7 +29,7 @@
     </div>
     <div class="form__row">
         <label for="flat">Flat:</label>
-        <input type="text" name="address[flat]" id="flat">
+        <input type="number" name="address[flat]" id="flat">
     </div>
     <div class="form__row">
         <input type="submit" value="Send">

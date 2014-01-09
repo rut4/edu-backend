@@ -9,7 +9,9 @@ class CheckoutController
     public function addressAction()
     {
         if (isset($_POST['address'])) {
+
             $quote = $this->_di->get('Quote');
+
             $this->_initQuote($quote);
             $address = $quote->getAddress();
             $address->setData($_POST['address']);
@@ -39,13 +41,13 @@ class CheckoutController
 
     public function shippingAction()
     {
+        $quote = $this->_initQuote();
         if (isset($_POST['method_code'])) {
-            $quote = $this->_initQuote();
-            $quote->assignMethod($_POST['method_code']);
+            $quote->assignShippingMethod($_POST['method_code']);
+            $this->_redirect('checkout_payment');
         } else {
-            $quote = $this->_initQuote();
             $cityResource = $this->_di->get('ResourceEntity', ['table' => new \App\Model\Resource\Table\City]);
-            $factory = $this->_di->get('Factory', ['address' => $quote->getAddress(), 'cityResource' => $cityResource]);
+            $factory = $this->_di->get('ShippingFactory', ['address' => $quote->getAddress(), 'cityResource' => $cityResource]);
 
             return $this->_di->get('View', [
                 'template' => 'checkout_shipping',
@@ -60,13 +62,25 @@ class CheckoutController
 
     public function paymentAction()
     {
-        if ($_POST['payment']) {
 
+        if (isset($_POST['method_code'])) {
+            $quote = $this->_initQuote();
+            $quote->assignPaymentMethod($_POST['method_code']);
+            $this->_redirect('checkout_order');
         } else {
             $quote = $this->_initQuote();
             $methods = $this->_di->get('PaymentFactory')
                 ->getMethods()
                 ->available($quote->getAddress());
+
+            return $this->_di->get('View', [
+                'template' => 'checkout_payment',
+                'params' => [
+                    'methods' => $methods,
+                    'header' => 'Checkout - Payment',
+                    'view' => 'checkout_payment'
+                ]
+            ]);
         }
     }
 
@@ -83,7 +97,16 @@ class CheckoutController
             $order->save();
             $order->sendEmail();
         } else {
-
+            return $this->_di->get('View', [
+                'template' => 'checkout_order',
+                'params' => [
+                    'productsCost' => $quote->getSubtotal(),
+                    'shippingCost' => $quote->getShipping(),
+                    'totalCost' => $quote->getGrandTotal(),
+                    'header' => 'Checkout - Order',
+                    'view' => 'checkout_payment'
+                ]
+            ]);
         }
     }
 

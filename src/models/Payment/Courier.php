@@ -9,16 +9,16 @@ class Courier implements IMethod
 
     public function getCode()
     {
-        // TODO: Implement getCode() method.
+        return 'courier';
     }
 
     public function isAvailable(Address $address)
     {
-        // TODO: Implement isAvailable() method.
+        return $address->getCityId() === 1;
     }
 
     public function getLabel()
     {
-        // TODO: Implement getLabel() method.
+        return 'Courier';
     }
 }

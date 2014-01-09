@@ -45,18 +45,4 @@ class Address extends CollectionElement
         return $this['flat'];
     }
 
-    public function save(IResourceEntity $resource = null)
-    {
-        if (!$resource) {
-            $resource = $this->_resource;
-        }
-        $id = $resource->save($this->_data);
-        $this->_data['address_id'] = $id;
-    }
-
-    public function setData($data)
-    {
-        $this->_data = $data;
-    }
-
 }

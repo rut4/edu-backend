@@ -11,7 +11,6 @@ class SalesController
         $session = $this->_di->get('Session');
 
         $quote->loadBySession($session);
-
         return $quote;
     }
 }

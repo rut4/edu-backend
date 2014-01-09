@@ -1,0 +1,22 @@
+<form action="/?page=checkout_order" method="post">
+    <ul>
+        <li>
+            <div>
+                <h3>Products cost: <span><?php echo $this->get('productsCost'); ?></span></h3>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h3>Shipping cost: <span><?php echo $this->get('shippingCost'); ?></span></h3>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h3>Total cost: <span><?php echo $this->get('totalCost'); ?></span></h3>
+            </div>
+        </li>
+    </ul>
+    <div class="form__row">
+        <input type="submit" value="Confirm order">
+    </div>
+</form>

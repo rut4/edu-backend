@@ -2,8 +2,10 @@
 
 namespace App\Model\Payment;
 
+use App\Model\Address;
 
-class Collection implements \IteratorAggregate
+class Collection
+    implements \IteratorAggregate
 {
     private $_methods;
 
@@ -15,5 +17,15 @@ class Collection implements \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->_methods);
+    }
+
+    public function available(Address $address)
+    {
+        return array_filter(
+            $this->_methods,
+            function (IMethod $method) use ($address) {
+                return $method->isAvailable($address);
+            }
+        );
     }
 }

@@ -10,18 +10,21 @@ class TableRate implements IMethod
 {
     private $_code = 'table_rate';
     private $_address;
-    private $_cityResource;
+    private $_priceTable = [
+        1 => 12,
+        2 => 9,
+        3 => 34.5,
+        4 => 50
+    ];
 
-    public function __construct(Address $address, IResourceEntity $cityResource)
+    public function __construct(Address $address)
     {
         $this->_address = $address;
-        $this->_cityResource = $cityResource;
     }
 
     public function getPrice()
     {
-        $city = new City($this->_address->getCity($this->_cityResource));
-        return $city->getPrice() ? $city->getPrice() : 'none';
+        return $this->_priceTable[$this->_address->getCityId()];
     }
 
     public function getCode()

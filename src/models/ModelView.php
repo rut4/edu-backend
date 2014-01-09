@@ -33,7 +33,7 @@ class ModelView
 
     public function get($param)
     {
-        return $this->_params[$param];
+        return isset($this->_params[$param]) ? $this->_params[$param] : null;
     }
 
     public function setSession(Session $session)

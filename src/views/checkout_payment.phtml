@@ -1,0 +1,13 @@
+<form action="/?page=checkout_payment" method="post">
+    <?php foreach ($this->get('methods') as $_method): ?>
+        <div class="form__row">
+            <label>
+                <input type="radio" name="method_code" value="<?php echo $_method->getCode(); ?>">
+                <span><?php echo $_method->getCode(); ?></span>
+            </label>
+        </div>
+    <?php endforeach; ?>
+    <div class="form__row">
+        <input type="submit" value="Choose">
+    </div>
+</form>

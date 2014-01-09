@@ -38,12 +38,13 @@ class DBEntity
         $fields = array_keys($data);
         if ($this->_itemExists($data)) {
             $stmt = $this->_updateItem($fields);
+            $id = $data[$this->_table->getPrimaryKey()];
         } else {
             $stmt = $this->_insertItem($fields);
         }
 
         $stmt->execute(array_combine($this->_prepareBind($fields), $data));
-        return $this->_connection->lastInsertId($this->_table->getPrimaryKey());
+        return $id ? $id : $this->_connection->lastInsertId($this->_table->getPrimaryKey());
     }
 
     public function remove($id)
