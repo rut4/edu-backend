@@ -75,10 +75,10 @@ class Quote extends CollectionElement
         $this->save();
     }
 
-    protected function _assignAddress()
+
+    public function getPaymentMethodCode()
     {
-        $this->_data['address_id'] = $this->_address->getId();
-        $this->save();
+        return isset($this['payment_method_code']) ? $this['payment_method_code'] : null;
     }
 
     public function collectTotals()
@@ -101,5 +101,11 @@ class Quote extends CollectionElement
     public function getGrandTotal()
     {
         return $this['grand_total'];
+    }
+
+    protected function _assignAddress()
+    {
+        $this->_data['address_id'] = $this->_address->getId();
+        $this->save();
     }
 }

@@ -1,9 +1,8 @@
 <?php
 namespace App\Model;
 
-use App\Model\Resource\IResourceEntity;
-
-class City extends CollectionElement
+class City
+    extends CollectionElement
 {
     public function getName()
     {

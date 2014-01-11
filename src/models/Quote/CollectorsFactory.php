@@ -23,9 +23,9 @@ class CollectorsFactory
     public function getCollectors()
     {
         return [
-            new SubtotalCollector($this->_product),
-            new ShippingCollector,
-            new GrandTotalCollector
+            'subtotal' => new SubtotalCollector($this->_product),
+            'shipping' => new ShippingCollector,
+            'grand_total' => new GrandTotalCollector
         ];
     }
 }

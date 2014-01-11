@@ -5,9 +5,42 @@ use App\Model\Resource\IResourceEntity;
 
 class Address extends CollectionElement
 {
-    public function getCity(IResourceEntity $cityResource)
+    private $_region;
+    private $_city;
+
+    public function __construct(Region $region = null, City $city = null)
     {
-        return $cityResource->find($this['city_id']);
+        $this->_region = $region;
+        $this->_city = $city;
+        parent::__construct();
+    }
+
+    public function getCity()
+    {
+        if (!$this->_city) {
+            return null;
+        }
+
+        if (isset($this['city_id'])) {
+            $this->_city->load($this['city_id']);
+            return $this->_city;
+        } else {
+            return $this->_city;
+        }
+    }
+
+    public function getRegion()
+    {
+        if (!$this->_region) {
+            return null;
+        }
+
+        if (isset($this['region_id'])) {
+            $this->_region->load($this['region_id']);
+            return $this->_region;
+        } else {
+            return $this->_region;
+        }
     }
 
     public function getId()

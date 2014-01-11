@@ -16,6 +16,11 @@ class Customer extends CollectionElement
         return $this['customer_id'];
     }
 
+    public function getEmail()
+    {
+        return $this['email'];
+    }
+
     public function getName()
     {
         return $this['name'];

@@ -89,7 +89,6 @@ class CheckoutController
         $quote = $this->_initQuote();
         $quote->collectTotals();
         $quote->save();
-
         if ($this->_isPost()) {
             $order = $this->_di->get('Order');
             $this->_di->get('QuoteConverter')
@@ -115,6 +114,6 @@ class CheckoutController
      */
     private function _isPost()
     {
-        return strtolower($_SERVER['REQUEST_METHOD']) == 'POST';
+        return strtoupper($_SERVER['REQUEST_METHOD']) == 'POST';
     }
 }
