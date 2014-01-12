@@ -38,6 +38,11 @@ class ReviewCollection
         $this->_resource->filterBy('product_id', $product->getId());
     }
 
+    public function filterBy($field, $value)
+    {
+        $this->_resource->filterBy($field, $value);
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->getReviews());

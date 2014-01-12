@@ -64,32 +64,72 @@ class DiC
         $this->_im->setParameters('App\Model\ReviewCollection', ['table' => 'App\Model\Resource\Table\Review']);
         $this->_im->addAlias('ReviewCollection', 'App\Model\ReviewCollection');
 
-        $this->_im->setParameters('App\Model\Review', ['table' => 'App\Model\Resource\Table\Review']);
+        $this->_im->setParameters('App\Model\Review', [
+            'table' => 'App\Model\Resource\Table\Review',
+            'product' => $this->_di->get('App\Model\Product')
+        ]);
         $this->_im->addAlias('Review', 'App\Model\Review');
+
+        $this->_im->addAlias('ReviewTable', 'App\Model\Resource\Table\Review');
     }
 
-    private function _assembleQuote()
+    private function _assembleQuoteItem()
     {
         $this->_im->setParameters('App\Model\QuoteItem', ['table' => 'App\Model\Resource\Table\QuoteItem']);
         $this->_im->addAlias('QuoteItem', 'App\Model\QuoteItem');
 
         $this->_im->setParameters('App\Model\QuoteItemCollection', [
             'table' => 'App\Model\Resource\Table\QuoteItem',
-            'itemPrototype' => 'App\Model\QuoteItem'
+            'itemPrototype' => $this->_di->get('App\Model\QuoteItem')
+        ]);
+        $this->_im->addAlias('QuoteItemCollection', 'App\Model\QuoteItemCollection');
+    }
+
+    private function _assembleAddress()
+    {
+        $this->_im->setParameters('App\Model\Address', [
+            'table' => 'App\Model\Resource\Table\Address',
+            'region' => 'App\Model\Region',
+            'city' => 'App\Model\City'
         ]);
 
+        $this->_im->addAlias('Address', 'App\Model\Address');
+    }
+
+    private function _assembleQuote()
+    {
         $this->_im->setParameters('App\Model\Quote', [
+            'address' => $this->_di->get('App\Model\Address'),
             'table' => 'App\Model\Resource\Table\Quote',
             'items' => $this->_di->get('App\Model\QuoteItemCollection'),
-            'address' => $this->_di->get('App\Model\Address')
+            'collectorsFactory' => $this->_di->get('App\Model\Quote\CollectorsFactory')
         ]);
         $this->_im->addAlias('Quote', 'App\Model\Quote');
+    }
+
+    private function _assembleCollectors()
+    {
+        $this->_im->setParameters('App\Model\Quote\CollectorsFactory', [
+            'product' => $this->_di->get('App\Model\Product')
+        ]);
+    }
+
+    private function _assembleOrder()
+    {
+        $this->_im->setParameters('App\Model\Order', ['orderItemCollection' => 'App\Model\OrderItemCollection']);
+        $this->_im->addAlias('Order', 'App\Model\Order');
     }
 
     private function _assembleCustomer()
     {
         $this->_im->setParameters('App\Model\Customer', ['table' => 'App\Model\Resource\Table\Customer']);
         $this->_im->addAlias('Customer', 'App\Model\Customer');
+    }
+
+    private function _assembleAdmin()
+    {
+        $this->_im->setParameters('App\Model\Admin', ['table' => 'App\Model\Resource\Table\Admin']);
+        $this->_im->addAlias('Admin', 'App\Model\Admin');
     }
 
     private function _assembleCity()
@@ -101,6 +141,15 @@ class DiC
         $this->_im->addAlias('CityCollection', 'App\Model\CityCollection');
     }
 
+    private function _assembleOrderItem()
+    {
+        $this->_im->setParameters('App\Model\OrderItem', ['table' => 'App\Model\Resource\Table\OrderItem']);
+        $this->_im->addAlias('OrderItem', 'App\Model\OrderItem');
+
+        $this->_im->setParameters('App\Model\OrderItemCollection', ['table' => 'App\Model\Resource\Table\OrderItem']);
+        $this->_im->addAlias('OrderItemCollection', 'App\Model\OrderItemCollection');
+    }
+
     private function _assembleRegion()
     {
         $this->_im->setParameters('App\Model\Region', ['table' => 'App\Model\Resource\Table\Region']);
@@ -110,11 +159,6 @@ class DiC
         $this->_im->addAlias('RegionCollection', 'App\Model\RegionCollection');
     }
 
-    private function _assembleAddress()
-    {
-        $this->_im->setParameters('App\Model\Address', ['table' => 'App\Model\Resource\Table\Address']);
-        $this->_im->addAlias('Address', 'App\Model\Address');
-    }
 
     private function _assembleView()
     {
@@ -136,7 +180,8 @@ class DiC
 
     private function _assembleFactory()
     {
-        $this->_im->addAlias('Factory', 'App\Model\Shipping\Factory');
+        $this->_im->addAlias('ShippingFactory', 'App\Model\Shipping\Factory');
 
+        $this->_im->addAlias('PaymentFactory', 'App\Model\Payment\Factory');
     }
 }

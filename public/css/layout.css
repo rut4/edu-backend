@@ -10,6 +10,10 @@ body {
     text-shadow: 0 0 5px #333;
 }
 
+.admin-panel {
+    position: absolute;
+}
+
 .back-to-product-list {
     position: fixed;
     top: 50px;

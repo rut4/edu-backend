@@ -1,0 +1,65 @@
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Rating</th>
+    </tr>
+    <?php foreach ($this->get('reviewCollection') as $_review): ?>
+        <tr>
+            <td>
+                <a href="/?page=admin_reviewEdit&review_id=<?php echo $_review->getId(); ?>">
+                    <?php echo $_review->getProduct()->getName(); ?>
+                </a>
+            </td>
+            <td>
+                <a href="/?page=admin_reviewEdit&review_id=<?php echo $_review->getId(); ?>">
+                    <?php echo $_review->getName(); ?>
+                </a>
+            </td>
+            <td>
+                <a href="/?page=admin_reviewEdit&review_id=<?php echo $_review->getId(); ?>">
+                    <?php echo $_review->getEmail(); ?>
+                </a>
+            </td>
+            <td>
+                <a href="/?page=admin_reviewEdit&review_id=<?php echo $_review->getId(); ?>">
+                    <?php echo $_review->getRating(); ?>
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<nav class="pagination">
+    <ul class="pagination__list">
+        <?php for ($page = 1; $page <= $this->get('pages')->pageCount; $page++): ?>
+            <?php if ($this->get('pages')->current == $page): ?>
+                <li class="pagination__item pagination__item_current">
+                    <span><?php echo $page; ?></span>
+                </li>
+            <?php else: ?>
+                <li class="pagination__item">
+                    <a href="/?p=<?php echo $page; ?>"><?php echo $page; ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endfor; ?>
+    </ul>
+</nav>
+<form class="form" action="/?page=admin_reviews" method="post">
+    <div class="form__row">
+        <label for="filterField">Filter By</label>
+        <select name="filter[field]" id="filterField">
+            <option value="product_name">Product Name</option>
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="rating">Rating</option>
+        </select>
+    </div>
+    <div class="form__row">
+        <label for="filterValue">Filter Value</label>
+        <input type="text" name="filter[value]" id="filterValue"/>
+    </div>
+    <div class="form__row">
+        <input type="submit" value="Accept filter">
+    </div>
+</form>

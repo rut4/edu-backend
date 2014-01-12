@@ -4,6 +4,7 @@ namespace App\Model;
 use \App\Model\Resource\DBCollection;
 use \App\Model\Resource\DBEntity;
 use \App\Model\Resource\PDOHelper;
+use \App\Model\Resource\Table\Admin as AdminTable;
 use \App\Model\Resource\Table\Customer as CustomerTable;
 
 class Session
@@ -51,12 +52,39 @@ class Session
         }
     }
 
+    public function authAdmin(Admin $admin)
+    {
+        $admins = new DBCollection(PDOHelper::getPdo(), new AdminTable);
+        $admins->filterBy('login', $admin->getLogin());
+        $admins->filterBy('password', md5($admin->getPassword()));
+
+        try {
+            $fetchedAdmins = $admins->fetch();
+        } catch (\Exception $ex) {
+            $fetchedAdmins = [];
+            var_dump($ex);
+        }
+
+        if (count($fetchedAdmins) == 1) {
+            $_SESSION['admin'] = reset($fetchedAdmins);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function logout()
     {
         if (isset($_SESSION['customer'])) {
             unset($_SESSION['customer']);
         }
+    }
 
+    public function logoutAdmin()
+    {
+        if (isset($_SESSION['admin'])) {
+            unset($_SESSION['admin']);
+        }
     }
 
     public function isLoggedIn()
@@ -64,9 +92,20 @@ class Session
         return isset($_SESSION['customer']);
     }
 
+    public function isAdminLoggedIn()
+    {
+        return isset($_SESSION['admin']);
+    }
+
+
     public function getCustomer()
     {
         return $this->isLoggedIn() ? $_SESSION['customer'] : null;
+    }
+
+    public function getAdmin()
+    {
+        return $this->isAdminLoggedIn() ? $_SESSION['admin'] : null;
     }
 
     public function getSessionId()
