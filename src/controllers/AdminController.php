@@ -56,8 +56,11 @@ class AdminController
         $this->_isAdminLoggedIn();
 
         if ($_POST['review']) {
-
+            //TODO: save or delete review
+        } else {
+            //TODO: show edit review page
         }
+
     }
 
     private function _isAdminLoggedIn()
