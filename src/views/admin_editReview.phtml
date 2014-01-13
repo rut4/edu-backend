@@ -4,10 +4,15 @@
         <label for="product">Product</label>
         <select name="review[product_id]" id="product">
             <?php foreach ($this->get('productCollection') as $_product): ?>
-                <option value="<?php echo $_product->getId(); ?>"><?php echo $_product->getName(); ?></option>
+                <option
+                    value="<?php echo $_product->getId(); ?>" <?php if ($_product->getId() == $review->getProductId()) echo 'selected'; ?>>
+                    <?php echo $_product->getName(); ?>
+                </option>
             <?php endforeach; ?>
         </select>
     </div>
+    <input name="review[review_id]" type="hidden" value="<?php $review->getId(); ?>">
+
     <div class="form__row">
         <label for="name">Name</label>
         <input type="text" name="review[name]" id="name" value="<?php $review->getName(); ?>">

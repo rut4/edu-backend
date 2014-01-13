@@ -8,7 +8,7 @@
     <?php foreach ($this->get('reviewCollection') as $_review): ?>
         <tr>
             <td>
-                <a href="/?page=admin_reviewEdit&review_id=<?php echo $_review->getId(); ?>">
+                <a href="/?page=admin_editReview&review_id=<?php echo $_review->getId(); ?>">
                     <?php echo $_review->getProduct()->getName(); ?>
                 </a>
             </td>

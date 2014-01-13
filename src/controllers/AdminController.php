@@ -55,10 +55,32 @@ class AdminController
     {
         $this->_isAdminLoggedIn();
 
-        if ($_POST['review']) {
-            //TODO: save or delete review
+        if (isset($_POST['review'])) {
+            if (isset($_POST['action']) && $_POST['action'] == 'Save') {
+                $review = $this->_di->get('Review', ['data' => $_POST['review']]);
+                $review->save();
+                $this->_redirect('admin_reviews');
+            } elseif (isset($_POST['action']) && $_POST['action'] == 'Remove') {
+                $review = $this->_di->get('Review');
+                $review->load($_POST['review[review_id']);
+                $review->remove();
+                $this->_redirect('admin_reviews');
+            }
         } else {
-            //TODO: show edit review page
+            $review = $this->_di->get('Review');
+            $review->load($_GET['review_id']);
+            $productResource = $this->_di->get('ResourceCollection', ['table' => new \App\Model\Resource\Table\Product]);
+            $productCollection = $this->_di->get('ProductCollection', ['resource' => $productResource]);
+
+            return $this->_di->get('View', [
+                'template' => 'admin_editReview',
+                'params' => [
+                    'review' => $review,
+                    'productCollection' => $productCollection,
+                    'header' => 'Admin Panel - Edit Review',
+                    'view' => 'admin_editReview'
+                ]
+            ]);
         }
 
     }
