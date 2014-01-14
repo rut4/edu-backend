@@ -20,7 +20,7 @@ class AddressConverter
             'city_name' => $city->getName(),
             'postal_code' => $address->getPostalCode(),
             'street' => $address->getStreet(),
-            'house_number' => $address->getHomeNumber(),
+            'home_number' => $address->getHomeNumber(),
             'flat' => $address->getFlat()
         ]);
     }
