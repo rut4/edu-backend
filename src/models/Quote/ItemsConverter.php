@@ -22,6 +22,7 @@ class ItemsConverter
                 'sku' => $product->getSku(),
                 'cost' => $product->isSpecialPriceApplied() ? $product->getSpecialPrice() : $product->getPrice()
             ]);
+            $orderItem->save();
         }
     }
 }
