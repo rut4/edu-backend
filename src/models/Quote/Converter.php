@@ -15,10 +15,8 @@ class Converter
     }
     public function toOrder(Quote $quote, Order $order)
     {
-        foreach ($this->_converterFactory->getCoverters() as $converter) {
+        foreach ($this->_converterFactory->getConverters() as $converter) {
             $converter->toOrder($quote, $order);
         }
     }
-
-
 }

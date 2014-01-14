@@ -3,6 +3,8 @@ namespace Test\Model;
 
 use App\Model\City;
 use App\Model\CityCollection;
+use App\Model\Resource\DBEntity;
+use App\Model\Resource\PDOHelper;
 
 class CityCollectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +19,7 @@ class CityCollectionTest extends \PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $collection = new CityCollection($resource, new City);
+        $collection = new CityCollection($resource, new City([], new DBEntity(PDOHelper::getPdo(), new \App\Model\Resource\Table\City)));
 
         $cities = $collection->getCities();
         $this->assertEquals('Taganrog', $cities[0]->getName());
@@ -35,7 +37,7 @@ class CityCollectionTest extends \PHPUnit_Framework_TestCase
                 ]
             ));
 
-        $collection = new CityCollection($resource, new City);
+        $collection = new CityCollection($resource, new City([], new DBEntity(PDOHelper::getPdo(), new \App\Model\Resource\Table\City)));
         $expected = array(0 => 'foo', 1 => 'bar');
         $iterated = false;
         foreach ($collection as $_key => $_city) {
