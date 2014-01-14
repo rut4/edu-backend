@@ -3,6 +3,9 @@
 namespace Test\Model\Quote;
 
 
+use App\Model\OrderItem;
+use App\Model\Session;
+
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
     public function testConverterQuoteToOrderUsingConverters()
@@ -22,7 +25,12 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $converter = new \App\Model\Quote\Converter($converterFactory);
 
-        $converter->toOrder($quote, $order);
+        $session = $this->getMockBuilder('App\Model\Session', ['__construct'])
+            ->setMethods('__constructs')
+            ->getMock();
+        $session->expects($this->any())->method('__construct');
+
+        $converter->toOrder($quote, new OrderItem, $session, $order);
 
     }
 }
