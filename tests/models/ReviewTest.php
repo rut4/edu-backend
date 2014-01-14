@@ -44,13 +44,18 @@ class ReviewTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsProductEqualsGivenProduct()
     {
-        $product = new Product(['sku' => 13]);
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('save')
+            ->will($this->returnValue(42));
 
-        $review = new Review(['product' => $product]);
-        $this->assertEquals(true, $product === $review->getProduct());
+        $product = new Product(['sku' => 13], $resource);
 
-        $review = new Review(['product' => new Product(['sku' => 13])]);
-        $this->assertEquals(false, $product === $review->getProduct());
+        $review = new Review([], $resource, $product);
+        $this->assertTrue($product === $review->getProduct());
+
+        $review = new Review([], $resource, new Product(['sku' => 13], $resource));
+        $this->assertFalse($product === $review->getProduct());
     }
 
     /**
@@ -73,11 +78,16 @@ class ReviewTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnsTrueIfReviewBelongsToProduct()
     {
-        $review = new Review(['product' => new Product(['sku' => 123])]);
-        $this->assertEquals(true, $review->belongsToProduct(new Product(['sku' => 123])));
+        $resource = $this->getMock('\App\Model\Resource\IResourceEntity');
+        $resource->expects($this->any())
+            ->method('save')
+            ->will($this->returnValue(42));
 
-        $review = new Review(['product' => new Product(['name' => 'Nokio'])]);
-        $this->assertEquals(false, $review->belongsToProduct(new Product(['name' => 'Motorobla'])));
+        $review = new Review([], $resource, new Product(['sku' => 123], $resource));
+        $this->assertTrue($review->belongsToProduct(new Product(['sku' => 123, 'product_id' => 42], $resource)));
+
+        $review = new Review([], $resource, new Product(['name' => 'Nokio'], $resource));
+        $this->assertFalse($review->belongsToProduct(new Product(['name' => 'Motorobla', 'product_id' => 42, $resource])));
     }
 
     public function testLoadsDataFromResource()

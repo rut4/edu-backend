@@ -9,12 +9,14 @@ class Review extends CollectionElement
 
     private $_product;
 
-    public function __construct(array $data = [],  Resource\IResourceEntity $resource = null, Product $product)
+    public function __construct(array $data = [], Resource\IResourceEntity $resource = null, Product $product = null)
     {
         if (isset($data['rating']) && !in_array($data['rating'], [1, 2, 3, 4, 5])) {
             throw new \InvalidArgumentException('Rating value mast be in range [1, 5] and integer');
         }
-        $this->_product = $product;
+        if ($product) {
+            $this->_product = $product;
+        }
         parent::__construct($data, $resource);
     }
 
@@ -49,7 +51,7 @@ class Review extends CollectionElement
             $this->_product->load($productId);
         } else {
             $this->_product->save();
-            $this['product_id'] = $this->_product->getId();
+            $this->_data['product_id'] = $this->_product->getId();
             $this->save();
         }
         return $this->_product;
@@ -57,7 +59,7 @@ class Review extends CollectionElement
 
     public function belongsToProduct(Product $product)
     {
-        return $this->getProductId() == $product->getId();
+        return $this->getProduct() == $product;
     }
 
     public function save(IResourceEntity $resource = null)

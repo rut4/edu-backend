@@ -1,6 +1,7 @@
 <?php
 namespace Test\Model;
 
+use App\Model\Product;
 use App\Model\Quote;
 
 class QuoteTest
@@ -143,7 +144,9 @@ class QuoteTest
             'shipping' => $this->_createTotal(21),
             'grand_total' => $this->_createTotal(63)
         ];
-        $totalsFactory = $this->getMock('\App\Model\Quote\CollectorsFactory', ['getCollectors']);
+        $totalsFactory = $this->getMockBuilder('\App\Model\Quote\CollectorsFactory', ['getCollectors'])
+            ->setConstructorArgs([new Product])
+            ->getMock();
         $totalsFactory->expects($this->once())
             ->method('getCollectors')
             ->will($this->returnValue($collectors));

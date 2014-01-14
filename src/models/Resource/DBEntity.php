@@ -36,6 +36,7 @@ class DBEntity
     public function save(array $data)
     {
         $fields = array_keys($data);
+        $id = null;
         if ($this->_itemExists($data)) {
             $stmt = $this->_updateItem($fields);
             $id = $data[$this->_table->getPrimaryKey()];

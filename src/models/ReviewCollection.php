@@ -22,7 +22,7 @@ class ReviewCollection
     {
         return array_map(
             function ($data) {
-                return new Review($data);
+                return new Review($data, null, new Product);
             },
             $this->_resource->fetch()
         );
