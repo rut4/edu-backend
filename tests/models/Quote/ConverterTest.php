@@ -8,7 +8,7 @@ use App\Model\Session;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConverterQuoteToOrderUsingConverters()
+    public function testConvertQuoteToOrderUsingConverters()
     {
         $quote = new \App\Model\Quote;
         $order = new \App\Model\Order;
