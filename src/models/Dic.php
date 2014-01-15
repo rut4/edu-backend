@@ -185,4 +185,11 @@ class DiC
 
         $this->_im->addAlias('PaymentFactory', 'App\Model\Payment\Factory');
     }
+
+    private function _assembleSmtp()
+    {
+        $this->_im->addAlias('SmtpOptions', 'Zend\Mail\Transport\SmtpOptions');
+        $this->_im->addAlias('Smtp', 'Zend\Mail\Transport\Smtp');
+        $this->_im->addAlias('ZendMessage', '\Zend\Mail\Message');
+    }
 }

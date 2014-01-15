@@ -1,11 +1,19 @@
 <?php
 namespace App\Controller;
 
+use App\Model\ISessionUser;
 use App\Model\Quote;
+use App\Model\Session;
+use Zend\Mail\Transport\Smtp;
+use Zend\Mail\Transport\SmtpOptions;
 
 class CheckoutController
     extends SalesController
+    implements ISessionUser
 {
+
+    private $_session;
+
     public function addressAction()
     {
         if (isset($_POST['address'])) {
@@ -86,6 +94,11 @@ class CheckoutController
 
     public function orderAction()
     {
+        if (!$this->_session) {
+            $session = $this->_di->get('Session');
+            $this->setSession($session);
+        }
+
         $quote = $this->_initQuote();
         $quote->collectTotals();
         $quote->save();
@@ -94,7 +107,22 @@ class CheckoutController
             $this->_di->get('QuoteConverter')
                 ->toOrder($quote, $order);
             $order->save();
-            $order->sendEmail();
+
+            $smtpOptions = $this->_di->get('SmtpOptions', [
+                'host' => 'smtp.gmail.com',
+                'connection_class' => 'plain',
+                'connection_config' => [
+                    'username' => 'vagrant@gmail.com',
+                    'password' => 'vagrant',
+                    'ssl' => 'tls'
+                ]
+            ]);
+
+            $order->sendEmail(
+                $this->_session->getCustomer(),
+                $this->_di->get('Smtp', ['options' => $smtpOptions]),
+                $this->_di->get('ZendMessage')
+            );
         } else {
             return $this->_di->get('View', [
                 'template' => 'checkout_order',
@@ -115,5 +143,10 @@ class CheckoutController
     private function _isPost()
     {
         return strtoupper($_SERVER['REQUEST_METHOD']) == 'POST';
+    }
+
+    public function setSession(Session $session)
+    {
+        $this->_session = $session;
     }
 }

@@ -20,7 +20,7 @@ class Order
         $this->_data = array_merge($this->_data, $data);
     }
 
-    public function sendEmail(Customer $customer)
+    public function sendEmail(Customer $customer, Smtp $transport, \Zend\Mail\Message $messagePrototype)
     {
         $messageText = "Customer ID: {$customer->getId()}\nName: {$customer->getName()}\nEmail: {$customer->getEmail()}\n\n";
         $messageText .= "Products\n";
@@ -36,25 +36,14 @@ class Order
         $messageText .= "Street: {$this['street']}\nHome number: {$this['home_number']}\nFlat: {$this['flat']}\n";
         $messageText .= "Shipping method code: {$this['shipping_method_code']}\nPayment method code: {$this['payment_method_code']}\n";
         $messageText .= "Subtotal: {$this['subtotal']}\nShipping: {$this['shipping']}\nGrand total: {$this['grand_total']}\n";
-        $smtpOptions = new SmtpOptions([
-            'host' => 'smtp.gmail.com',
-            'connection_class' => 'plain',
-            'connection_config' => [
-                'username' => 'vagrant@gmail.com',
-                'password' => 'vagrant',
-                'ssl' => 'tls'
-            ]
-        ]);
-        $smtpTransport = new Smtp($smtpOptions);
 
-        $message = new \Zend\Mail\Message();
-        $message
+        $messagePrototype
             ->addTo('vagrant@gmail.com')
             ->addFrom('vagrant@gmail.com')
             ->setSubject('Order from student shop')
             ->setBody($messageText);
 
-        $smtpTransport->send($message);
+        $transport->send($messagePrototype);
 
 
     }
