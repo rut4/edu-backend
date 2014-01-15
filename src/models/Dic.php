@@ -89,6 +89,7 @@ class DiC
     {
         $this->_im->setParameters('App\Model\Address', [
             'table' => 'App\Model\Resource\Table\Address',
+            'addressResource' => 'App\Model\Resource\DBEntity',
             'region' => 'App\Model\Region',
             'city' => 'App\Model\City'
         ]);
