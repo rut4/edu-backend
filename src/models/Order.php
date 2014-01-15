@@ -10,10 +10,10 @@ class Order
 {
     private $_orderItemCollection;
 
-    public function __construct(OrderItemCollection $orderItemCollection = null)
+    public function __construct(OrderItemCollection $orderItemCollection = null, array $data = [], Resource\IResourceEntity $resource = null)
     {
         $this->_orderItemCollection = $orderItemCollection;
-        parent::__construct();
+        parent::__construct($data, $resource);
     }
     public function setOrderData($data)
     {

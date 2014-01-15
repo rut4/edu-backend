@@ -8,11 +8,11 @@ class Address extends CollectionElement
     private $_region;
     private $_city;
 
-    public function __construct($data = [], Resource\IResourceEntity $resource = null, Region $region = null, City $city = null)
+    public function __construct($data = [], Resource\IResourceEntity $addressResource = null, Region $region = null, City $city = null)
     {
         $this->_region = $region;
         $this->_city = $city;
-        parent::__construct($data, $resource);
+        parent::__construct($data, $addressResource);
     }
 
     public function getCity()

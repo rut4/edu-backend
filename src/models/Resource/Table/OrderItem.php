@@ -11,7 +11,7 @@ class OrderItem
 
     public function getPrimaryKey()
     {
-        return 'order_items_id';
+        return 'order_item_id';
     }
 }
   
