@@ -31,7 +31,7 @@ CREATE TABLE `addresses` (
   `home_number` varchar(10) DEFAULT NULL,
   `flat` int(4) DEFAULT NULL,
   PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `addresses` (
 
 LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-INSERT INTO `addresses` VALUES (1,1,1,123123,'qeqwe','123',123),(2,1,1,123123,'qeqwe','123',123);
+INSERT INTO `addresses` VALUES (1,1,1,123123,'qeqwe','123',123),(2,1,1,123123,'qeqwe','123',123),(3,1,1,234234,'23','23',23);
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,6 +149,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
+INSERT INTO `order_items` VALUES (0,0,1,'Sumsung',234628374,99);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,7 +286,7 @@ CREATE TABLE `quote_items` (
   `product_id` int(11) NOT NULL,
   `quantity` int(7) NOT NULL,
   PRIMARY KEY (`quote_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +295,7 @@ CREATE TABLE `quote_items` (
 
 LOCK TABLES `quote_items` WRITE;
 /*!40000 ALTER TABLE `quote_items` DISABLE KEYS */;
-INSERT INTO `quote_items` VALUES (1,1,8,2);
+INSERT INTO `quote_items` VALUES (1,1,8,2),(2,5,6,1),(3,5,7,1);
 /*!40000 ALTER TABLE `quote_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,8 +311,11 @@ CREATE TABLE `quotes` (
   `shipping_method_code` varchar(25) DEFAULT NULL,
   `address_id` int(11) DEFAULT NULL,
   `payment_method_code` varchar(25) DEFAULT NULL,
+  `subtotal` varchar(255) DEFAULT NULL,
+  `shipping` varchar(255) DEFAULT NULL,
+  `grand_total` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`quote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +324,7 @@ CREATE TABLE `quotes` (
 
 LOCK TABLES `quotes` WRITE;
 /*!40000 ALTER TABLE `quotes` DISABLE KEYS */;
-INSERT INTO `quotes` VALUES (1,'table_rate',1,'cash_on_delivery'),(2,'fixed',18,'cash_on_delivery'),(3,'table_rate',19,'cash_on_delivery'),(4,'table_rate',21,'cash_on_delivery');
+INSERT INTO `quotes` VALUES (1,'table_rate',1,'cash_on_delivery',NULL,NULL,NULL),(2,'fixed',18,'cash_on_delivery',NULL,NULL,NULL),(3,'table_rate',19,'cash_on_delivery',NULL,NULL,NULL),(4,'table_rate',21,'cash_on_delivery',NULL,NULL,NULL),(5,'table_rate',3,'cash_on_delivery','1099','12','1111');
 /*!40000 ALTER TABLE `quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-14 14:12:59
+-- Dump completed on 2014-01-17 14:52:43
