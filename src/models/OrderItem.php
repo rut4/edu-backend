@@ -9,6 +9,8 @@ class OrderItem
     public function assignToOrder(Order $order)
     {
         $this->_order = $order;
+        $this->_data['order_id'] = $order->getId();
+        $this->save();
     }
 
     public function getOrder()

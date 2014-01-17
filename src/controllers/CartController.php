@@ -33,24 +33,6 @@ class CartController
 
     public function changeCountAction()
     {
-//        $session = $this->_di->get('Session');
-//        $quote = $this->_di->get('Quote');
-//        $productResource = $this->_di->get('ResourceEntity', ['table' => new ProductTable]);
-//        if ($session->isLoggedIn()) {
-//            $quote->loadByCustomer($session->getCustomer());
-//        } else {
-//            $quote->loadBySession($session);
-//        }
-//        $product = $this->_di->get('Product', ['resource' => $productResource]);
-//        $product->load($_POST['product_id']);
-//
-//        $quoteItemResource = $this->_di->get('ResourceEntity', ['table' => new QuoteItemTable]);
-//        $quoteItem = $quote->getItemForProduct($product);
-//        if ($_POST['action'] == 'Add') {
-//            $quoteItem->addQuantity($_POST['count']);
-//        } else {
-//            $quoteItem->deleteQuantity($_POST['count']);
-//        }
         $quoteItem = $this->_initQuoteItem();
 
         if ($_POST['action'] == 'Add') {
@@ -69,7 +51,6 @@ class CartController
         if (isset($_POST['product_id'])) {
             $quoteItem = $this->_initQuoteItem();
             $quoteItem->addQuantity(1);
-
             $quoteItem->save();
         }
         $this->_redirect('product_list');

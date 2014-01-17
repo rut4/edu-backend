@@ -23,5 +23,6 @@ class AddressConverter
             'home_number' => $address->getHomeNumber(),
             'flat' => $address->getFlat()
         ]);
+        $order->save();
     }
 }

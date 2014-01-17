@@ -14,6 +14,7 @@ class Quote extends CollectionElement
     private $_items;
     private $_address;
     private $_collectorsFactory;
+    private $_customer;
 
     public function __construct(
         array $data = [],

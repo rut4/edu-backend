@@ -8,6 +8,12 @@ class QuoteItem
 {
     private $_product;
 
+    public function __construct($data = [], Resource\IResourceEntity $addressResource = null, Product $product = null)
+    {
+        $this->_product = $product;
+        parent::__construct($data, $addressResource);
+    }
+
     public function getId()
     {
         return $this['quote_item_id'];
@@ -71,6 +77,9 @@ class QuoteItem
 
     public function getProduct()
     {
+        if (isset($this['product_id'])) {
+            $this->_product->load($this->getProductId());
+        }
         return $this->_product;
     }
 }

@@ -26,8 +26,7 @@ class DiC
             }
         }
 
-        $this->_im->setShared('App\Model\Resource\DBCollection', false);
-        $this->_im->setShared('App\Model\Resource\DBEntity', false);
+
     }
 
     private function _assembleDbConnection()
@@ -48,6 +47,9 @@ class DiC
         $this->_im->addTypePreference('App\Model\Resource\IResourceEntity', 'App\Model\Resource\DBEntity');
         $this->_im->addAlias('ResourceCollection', 'App\Model\Resource\DBCollection');
         $this->_im->addAlias('ResourceEntity', 'App\Model\Resource\DBEntity');
+
+        $this->_im->setShared('App\Model\Resource\DBEntity', false);
+        $this->_im->setShared('App\Model\Resource\DBCollection', false);
     }
 
     private function _assembleProduct()
@@ -75,7 +77,11 @@ class DiC
 
     private function _assembleQuoteItem()
     {
-        $this->_im->setParameters('App\Model\QuoteItem', ['table' => 'App\Model\Resource\Table\QuoteItem']);
+        $this->_im->setParameters('App\Model\QuoteItem', [
+            'table' => 'App\Model\Resource\Table\QuoteItem',
+            'product' => $this->_di->get('App\Model\Product')
+        ]);
+
         $this->_im->addAlias('QuoteItem', 'App\Model\QuoteItem');
 
         $this->_im->setParameters('App\Model\QuoteItemCollection', [
@@ -83,6 +89,15 @@ class DiC
             'itemPrototype' => $this->_di->get('App\Model\QuoteItem')
         ]);
         $this->_im->addAlias('QuoteItemCollection', 'App\Model\QuoteItemCollection');
+    }
+
+    private function _assembleOrderItem()
+    {
+        $this->_im->setParameters('App\Model\OrderItem', ['table' => 'App\Model\Resource\Table\OrderItem']);
+        $this->_im->addAlias('OrderItem', 'App\Model\OrderItem');
+
+        $this->_im->setParameters('App\Model\OrderItemCollection', ['table' => 'App\Model\Resource\Table\OrderItem']);
+        $this->_im->addAlias('OrderItemCollection', 'App\Model\OrderItemCollection');
     }
 
     private function _assembleAddress()
@@ -100,9 +115,9 @@ class DiC
     private function _assembleQuote()
     {
         $this->_im->setParameters('App\Model\Quote', [
-            'address' => $this->_di->get('App\Model\Address'),
             'table' => 'App\Model\Resource\Table\Quote',
             'items' => $this->_di->get('App\Model\QuoteItemCollection'),
+            'address' => $this->_di->get('App\Model\Address'),
             'collectorsFactory' => $this->_di->get('App\Model\Quote\CollectorsFactory')
         ]);
         $this->_im->addAlias('Quote', 'App\Model\Quote');
@@ -117,7 +132,10 @@ class DiC
 
     private function _assembleOrder()
     {
-        $this->_im->setParameters('App\Model\Order', ['orderItemCollection' => 'App\Model\OrderItemCollection']);
+        $this->_im->setParameters('App\Model\Order', [
+            'orderItemCollection' => $this->_di->get('App\Model\OrderItemCollection'),
+            'table' => 'App\Model\Resource\Table\Order'
+        ]);
         $this->_im->addAlias('Order', 'App\Model\Order');
     }
 
@@ -140,15 +158,6 @@ class DiC
 
         $this->_im->setParameters('App\Model\CityCollection', ['table' => 'App\Model\Resource\Table\City']);
         $this->_im->addAlias('CityCollection', 'App\Model\CityCollection');
-    }
-
-    private function _assembleOrderItem()
-    {
-        $this->_im->setParameters('App\Model\OrderItem', ['table' => 'App\Model\Resource\Table\OrderItem']);
-        $this->_im->addAlias('OrderItem', 'App\Model\OrderItem');
-
-        $this->_im->setParameters('App\Model\OrderItemCollection', ['table' => 'App\Model\Resource\Table\OrderItem']);
-        $this->_im->addAlias('OrderItemCollection', 'App\Model\OrderItemCollection');
     }
 
     private function _assembleRegion()
@@ -179,14 +188,21 @@ class DiC
         ]);
     }
 
-    private function _assembleFactory()
+    private function _assembleFactories()
     {
         $this->_im->addAlias('ShippingFactory', 'App\Model\Shipping\Factory');
 
         $this->_im->addAlias('PaymentFactory', 'App\Model\Payment\Factory');
+
+        $this->_im->addAlias('ConverterFactory', 'App\Model\Quote\ConverterFactory');
     }
 
-    private function _assembleSmtp()
+    private function _assembleConverters()
+    {
+        $this->_im->addAlias('QuoteConverter', 'App\Model\Quote\Converter');
+    }
+
+    private function _assembleSmtpAndMail()
     {
         $this->_im->addAlias('SmtpOptions', 'Zend\Mail\Transport\SmtpOptions');
         $this->_im->addAlias('Smtp', 'Zend\Mail\Transport\Smtp');

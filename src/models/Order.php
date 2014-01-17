@@ -20,13 +20,17 @@ class Order
         $this->_data = array_merge($this->_data, $data);
     }
 
-    public function sendEmail(Customer $customer, Smtp $transport, \Zend\Mail\Message $messagePrototype)
+    public function sendEmail(Smtp $transport, \Zend\Mail\Message $messagePrototype, Customer $customer = null)
     {
-        $messageText = "Customer ID: {$customer->getId()}\nName: {$customer->getName()}\nEmail: {$customer->getEmail()}\n\n";
+        if ($customer) {
+            $messageText = "Customer ID: {$customer->getId()}\nName: {$customer->getName()}\nEmail: {$customer->getEmail()}\n\n";
+        } else {
+            $messageText = "From guest\n\n";
+        }
         $messageText .= "Products\n";
+
         $this->_orderItemCollection->filterByOrder($this);
         $orderItems = $this->_orderItemCollection->getOrderItems();
-
         foreach($orderItems as $orderItem) {
             $messageText .= "Sku: {$orderItem['sku']}\nName: {$orderItem['product_name']}\nQuantity: {$orderItem['quantity']}\n";
             $messageText .= "Cost: {$orderItem['cost']}\n----------------------------\n";
@@ -37,10 +41,12 @@ class Order
         $messageText .= "Shipping method code: {$this['shipping_method_code']}\nPayment method code: {$this['payment_method_code']}\n";
         $messageText .= "Subtotal: {$this['subtotal']}\nShipping: {$this['shipping']}\nGrand total: {$this['grand_total']}\n";
 
+        date_default_timezone_set('Europe/Moscow');
+
         $messagePrototype
-            ->addTo('vagrant@gmail.com')
-            ->addFrom('vagrant@gmail.com')
-            ->setSubject('Order from student shop')
+            ->addTo('vagr-ant@yandex.ru')
+            ->addFrom('vagr-ant@yandex.ru')
+            ->setSubject('Order from student webstore')
             ->setBody($messageText);
 
         $transport->send($messagePrototype);

@@ -4,8 +4,6 @@ namespace App\Controller;
 use App\Model\ISessionUser;
 use App\Model\Quote;
 use App\Model\Session;
-use Zend\Mail\Transport\Smtp;
-use Zend\Mail\Transport\SmtpOptions;
 
 class CheckoutController
     extends SalesController
@@ -100,30 +98,34 @@ class CheckoutController
         }
 
         $quote = $this->_initQuote();
-        $quote->collectTotals();
-        $quote->save();
+
         if ($this->_isPost()) {
             $order = $this->_di->get('Order');
             $this->_di->get('QuoteConverter')
-                ->toOrder($quote, $order);
+                ->toOrder($quote, $this->_di->get('OrderItem'), $this->_session, $order);
             $order->save();
 
             $smtpOptions = $this->_di->get('SmtpOptions', [
-                'host' => 'smtp.gmail.com',
-                'connection_class' => 'plain',
-                'connection_config' => [
-                    'username' => 'vagrant@gmail.com',
-                    'password' => 'vagrant',
-                    'ssl' => 'tls'
+                'options' => [
+                    'host' => 'smtp.yandex.ru',
+                    'connection_class' => 'plain',
+                    'connection_config' => [
+                        'port' => 25,
+                        'auth' => 'login',
+                        'username' => 'vagr-ant@yandex.ru',
+                        'password' => '122333221'
+                    ]
                 ]
             ]);
 
             $order->sendEmail(
-                $this->_session->getCustomer(),
                 $this->_di->get('Smtp', ['options' => $smtpOptions]),
-                $this->_di->get('ZendMessage')
+                $this->_di->get('Zend\Mail\Message'),
+                $this->_session->getCustomer()
             );
         } else {
+            $quote->collectTotals();
+            $quote->save();
             return $this->_di->get('View', [
                 'template' => 'checkout_order',
                 'params' => [

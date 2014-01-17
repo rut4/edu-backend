@@ -3,7 +3,8 @@ namespace App\Model;
 
 use App\Model\Resource\IResourceEntity;
 
-class Product extends CollectionElement
+class Product
+    extends CollectionElement
 {
     public function getSku()
     {
