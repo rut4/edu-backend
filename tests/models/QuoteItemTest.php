@@ -79,9 +79,11 @@ class QuoteItemTest extends \PHPUnit_Framework_TestCase
 
     public function testAssignProductSetsProductInstance()
     {
-        $product = $this->getMock('App\Model\Product', ['getId']);
-        $product->expects($this->any())->method('getId')
+        $product = $this->getMock('App\Model\Product', ['getId', 'load']);
+        $product->expects($this->at(0))->method('getId')
             ->will($this->returnValue(42));
+        $product->expects($this->at(1))->method('load')
+            ->with($this->equalTo(42));
         $item = new QuoteItem;
         $item->assignToProduct($product);
 

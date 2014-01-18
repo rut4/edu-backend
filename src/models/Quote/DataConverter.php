@@ -21,6 +21,5 @@ class DataConverter
             'shipping' => $quote->getShipping(),
             'grand_total' => $quote->getGrandTotal()
         ]);
-        $order->save();
     }
 }

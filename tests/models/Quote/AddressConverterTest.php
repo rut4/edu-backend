@@ -44,7 +44,7 @@ class AddressConverterTest extends \PHPUnit_Framework_TestCase
 
         $converter = new \App\Model\Quote\Converter($converterFactory);
 
-        $converter->toOrder($quote, new OrderItem, $session, $order);
+        $converter->toOrder($quote,$orderItem, $session, $order);
 
         $expectedOrder = new Order();
         $expectedOrder->setOrderData([
