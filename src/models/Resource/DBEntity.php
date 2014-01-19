@@ -94,7 +94,6 @@ class DBEntity
         $stmt = $this->_connection->prepare(
             "INSERT INTO {$this->_table->getName()} ({$fieldsList}) VALUES ({$bindsList})"
         );
-
         return $stmt;
     }
 

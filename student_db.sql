@@ -31,7 +31,7 @@ CREATE TABLE `addresses` (
   `home_number` varchar(10) DEFAULT NULL,
   `flat` int(4) DEFAULT NULL,
   PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `addresses` (
 
 LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-INSERT INTO `addresses` VALUES (1,1,1,123123,'qeqwe','123',123),(2,1,1,123123,'qeqwe','123',123),(3,1,1,234234,'23','23',23);
+INSERT INTO `addresses` VALUES (1,1,1,123123,'qeqwe','123',123),(2,1,1,123123,'qeqwe','123',123),(3,1,1,234234,'23','23',23),(4,1,1,123,'123','123',123);
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,6 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (0,0,1,'Sumsung',234628374,99);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,11 +197,16 @@ CREATE TABLE `orders` (
   `payment_method_code` varchar(255) DEFAULT NULL,
   `shipping` decimal(5,2) DEFAULT NULL,
   `subtotal` decimal(10,2) DEFAULT NULL,
+  `region_name` varchar(255) DEFAULT NULL,
+  `city_name` varchar(255) DEFAULT NULL,
+  `postal_code` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
+  `home_number` int(7) DEFAULT NULL,
+  `flat` int(7) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   KEY `CUSTOMER_ID_INDEX` (`customer_id`),
-  KEY `seller_id` (`seller_id`),
-  CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `sellers` (`seller_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  KEY `seller_id` (`seller_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +215,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'2013-11-20 14:19:38',100.00,1,1,NULL,NULL,NULL,NULL),(3,'2013-11-20 14:19:54',1400.20,2,1,NULL,NULL,NULL,NULL),(4,'2013-11-20 14:20:05',400.00,3,1,NULL,NULL,NULL,NULL),(5,'2013-11-20 14:20:19',10.00,1,2,NULL,NULL,NULL,NULL),(6,'2013-11-20 14:23:44',10000.00,1,2,NULL,NULL,NULL,NULL);
+INSERT INTO `orders` VALUES (1,'2013-11-20 14:19:38',100.00,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'2013-11-20 14:19:54',1400.20,2,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'2013-11-20 14:20:05',400.00,3,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,'2013-11-20 14:20:19',10.00,1,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(6,'2013-11-20 14:23:44',10000.00,1,2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(8,NULL,1021.98,11,0,'table_rate','cash_on_delivery',12.00,1009.98,NULL,NULL,'123','123',123,123);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +290,7 @@ CREATE TABLE `quote_items` (
   `product_id` int(11) NOT NULL,
   `quantity` int(7) NOT NULL,
   PRIMARY KEY (`quote_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,7 +299,7 @@ CREATE TABLE `quote_items` (
 
 LOCK TABLES `quote_items` WRITE;
 /*!40000 ALTER TABLE `quote_items` DISABLE KEYS */;
-INSERT INTO `quote_items` VALUES (1,1,8,2),(2,5,6,1),(3,5,7,1);
+INSERT INTO `quote_items` VALUES (1,1,8,2),(2,5,6,1),(3,5,7,1),(4,6,8,1),(5,6,11,1);
 /*!40000 ALTER TABLE `quote_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,7 +319,7 @@ CREATE TABLE `quotes` (
   `shipping` varchar(255) DEFAULT NULL,
   `grand_total` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`quote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +328,7 @@ CREATE TABLE `quotes` (
 
 LOCK TABLES `quotes` WRITE;
 /*!40000 ALTER TABLE `quotes` DISABLE KEYS */;
-INSERT INTO `quotes` VALUES (1,'table_rate',1,'cash_on_delivery',NULL,NULL,NULL),(2,'fixed',18,'cash_on_delivery',NULL,NULL,NULL),(3,'table_rate',19,'cash_on_delivery',NULL,NULL,NULL),(4,'table_rate',21,'cash_on_delivery',NULL,NULL,NULL),(5,'table_rate',3,'cash_on_delivery','1099','12','1111');
+INSERT INTO `quotes` VALUES (1,'table_rate',1,'cash_on_delivery',NULL,NULL,NULL),(2,'fixed',18,'cash_on_delivery',NULL,NULL,NULL),(3,'table_rate',19,'cash_on_delivery',NULL,NULL,NULL),(4,'table_rate',21,'cash_on_delivery',NULL,NULL,NULL),(5,'table_rate',3,'cash_on_delivery','1099','12','1111'),(6,'table_rate',4,'cash_on_delivery','1009.98','12','1021.98');
 /*!40000 ALTER TABLE `quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -415,4 +419,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-17 14:52:43
+-- Dump completed on 2014-01-19 16:22:41
