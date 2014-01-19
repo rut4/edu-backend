@@ -12,9 +12,7 @@ class ItemsConverter
 
     public function toOrder(Quote $quote, OrderItem $orderItemPrototype, Session $session, Order $order)
     {
-        var_dump($order);
         $order->save();
-        var_dump($order);die;
         foreach ($quote->getItems() as $quoteItem) {
             $product = $quoteItem->getProduct();
             $orderItem = clone $orderItemPrototype;

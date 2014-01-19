@@ -43,7 +43,6 @@ class DBEntity
         } else {
             $stmt = $this->_insertItem($fields);
         }
-
         $stmt->execute(array_combine($this->_prepareBind($fields), $data));
         return $id ? $id : $this->_connection->lastInsertId($this->_table->getPrimaryKey());
     }
