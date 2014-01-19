@@ -1,0 +1,31 @@
+<form class="form" action="/?page=admin_editReview" method="post">
+    <div class="form__row">
+        <label for="product">Product</label>
+        <select name="review[product_id]" id="product" required>
+            <?php foreach ($this->get('productCollection') as $_product): ?>
+                <option value="<?php echo $_product->getId(); ?>">
+                    <?php echo $_product->getName(); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form__row">
+        <label for="name">Name</label>
+        <input type="text" name="review[name]" id="name" required>
+    </div>
+    <div class="form__row">
+        <label for="email">Email</label>
+        <input type="email" name="review[email]" id="email" required>
+    </div>
+    <div class="form__row">
+        <label for="rating">Rating</label>
+        <input type="number" name="review[rating]" id="rating" required>
+    </div>
+    <div class="form__row">
+        <textarea name="review[text]" id="text" cols="30" rows="10" required></textarea>
+    </div>
+    <div class="form__row">
+        <input name="action" type="submit" value="Add">
+    </div>
+</form>

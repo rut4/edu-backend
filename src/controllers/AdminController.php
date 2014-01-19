@@ -85,6 +85,24 @@ class AdminController
 
     }
 
+    public function addReviewAction() {
+        $this->_isAdminLoggedIn();
+
+        if (isset($_POST['review'])) {
+            $review = $this->_di->get('Review', ['data' => $_POST['review']]);
+            $review->save();
+            $this->_redirect('admin_reviews');
+        } else {
+            return $this->_di->get('View', [
+                'template' => 'admin_addReview',
+                'params' => [
+                    'header' => 'Admin Panel - Add Review',
+                    'view' => 'admin_addReview'
+                ]
+            ]);
+        }
+    }
+
     private function _isAdminLoggedIn()
     {
         $session = $this->_di->get('Session');
