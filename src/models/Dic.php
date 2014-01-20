@@ -100,13 +100,38 @@ class DiC
         $this->_im->addAlias('OrderItemCollection', 'App\Model\OrderItemCollection');
     }
 
+    private function _assembleAdmin()
+    {
+        $this->_im->setParameters('App\Model\Admin', ['table' => 'App\Model\Resource\Table\Admin']);
+        $this->_im->addAlias('Admin', 'App\Model\Admin');
+    }
+
+    private function _assembleCity()
+    {
+        $this->_im->setParameters('App\Model\City', ['table' => 'App\Model\Resource\Table\City']);
+        $this->_im->addAlias('City', 'App\Model\City');
+
+        $this->_im->setParameters('App\Model\CityCollection', ['table' => 'App\Model\Resource\Table\City']);
+        $this->_im->addAlias('CityCollection', 'App\Model\CityCollection');
+    }
+
+    private function _assembleRegion()
+    {
+        $this->_im->setParameters('App\Model\Region', ['table' => 'App\Model\Resource\Table\Region']);
+        $this->_im->addAlias('Region', 'App\Model\Region');
+
+        $this->_im->setParameters('App\Model\RegionCollection', ['table' => 'App\Model\Resource\Table\Region']);
+        $this->_im->addAlias('RegionCollection', 'App\Model\RegionCollection');
+    }
+
+
     private function _assembleAddress()
     {
         $this->_im->setParameters('App\Model\Address', [
             'table' => 'App\Model\Resource\Table\Address',
             'addressResource' => 'App\Model\Resource\DBEntity',
-            'region' => 'App\Model\Region',
-            'city' => 'App\Model\City'
+            'region' => $this->_di->get('App\Model\Region'),
+            'city' => $this->_di->get('App\Model\City')
         ]);
 
         $this->_im->addAlias('Address', 'App\Model\Address');
@@ -145,29 +170,8 @@ class DiC
         $this->_im->addAlias('Customer', 'App\Model\Customer');
     }
 
-    private function _assembleAdmin()
-    {
-        $this->_im->setParameters('App\Model\Admin', ['table' => 'App\Model\Resource\Table\Admin']);
-        $this->_im->addAlias('Admin', 'App\Model\Admin');
-    }
 
-    private function _assembleCity()
-    {
-        $this->_im->setParameters('App\Model\City', ['table' => 'App\Model\Resource\Table\City']);
-        $this->_im->addAlias('City', 'App\Model\City');
 
-        $this->_im->setParameters('App\Model\CityCollection', ['table' => 'App\Model\Resource\Table\City']);
-        $this->_im->addAlias('CityCollection', 'App\Model\CityCollection');
-    }
-
-    private function _assembleRegion()
-    {
-        $this->_im->setParameters('App\Model\Region', ['table' => 'App\Model\Resource\Table\Region']);
-        $this->_im->addAlias('Region', 'App\Model\Region');
-
-        $this->_im->setParameters('App\Model\RegionCollection', ['table' => 'App\Model\Resource\Table\Region']);
-        $this->_im->addAlias('RegionCollection', 'App\Model\RegionCollection');
-    }
 
 
     private function _assembleView()
