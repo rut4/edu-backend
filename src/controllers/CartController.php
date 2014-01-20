@@ -43,6 +43,9 @@ class CartController
 
         $quoteItem->save();
 
+        if ($quoteItem->getQuantity() == 0) {
+            $quoteItem->remove();
+        }
         $this->_redirect('cart_list');
     }
 
