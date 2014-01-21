@@ -12,6 +12,13 @@ body {
 
 .admin-panel {
     position: absolute;
+    left: 30px;
+    top: 100px;
+}
+
+.admin-panel__list {
+    list-style-type: none;
+    padding: 0;
 }
 
 .back-to-product-list {

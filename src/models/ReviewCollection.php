@@ -12,17 +12,25 @@ class ReviewCollection
     implements \IteratorAggregate
 {
     private $_resource;
+    private $_product;
+    private $_reviewResource;
 
-    public function __construct(Resource\IResourceCollection $resource)
+    public function __construct(
+        Resource\IResourceCollection $resource,
+        Product $productPrototype = null,
+        Resource\IResourceEntity $reviewResource = null
+    )
     {
         $this->_resource = $resource;
+        $this->_product = $productPrototype;
+        $this->_reviewResource = $reviewResource;
     }
 
     public function getReviews()
     {
         return array_map(
             function ($data) {
-                return new Review($data, null, new Product);
+                return new Review($data, $this->_reviewResource, $this->_product ? $this->_product : new Product);
             },
             $this->_resource->fetch()
         );

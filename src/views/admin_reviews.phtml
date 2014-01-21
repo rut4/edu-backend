@@ -5,7 +5,7 @@
         <th>Email</th>
         <th>Rating</th>
     </tr>
-    <?php foreach ($this->get('reviewCollection') as $_review): ?>
+    <?php foreach ($this->get('reviewCollection')->getReviews() as $_review): ?>
         <tr>
             <td>
                 <a href="/?page=admin_editReview&review_id=<?php echo $_review->getId(); ?>">
@@ -39,7 +39,7 @@
                 </li>
             <?php else: ?>
                 <li class="pagination__item">
-                    <a href="/?p=<?php echo $page; ?>"><?php echo $page; ?></a>
+                    <a href="/?page=admin_reviews&p=<?php echo $page; ?>"><?php echo $page; ?></a>
                 </li>
             <?php endif; ?>
         <?php endfor; ?>
