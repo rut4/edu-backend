@@ -76,7 +76,7 @@ class AdminController
                 $this->_redirect('admin_reviews');
             }
         } else {
-            $review = $this->_di->get('Review');
+            $review = $this->_di->get('Review', ['table' => new \App\Model\Resource\Table\Review]);
             $review->load($_GET['review_id']);
             $productResource = $this->_di->get('ResourceCollection', ['table' => new \App\Model\Resource\Table\Product]);
             $productCollection = $this->_di->get('ProductCollection', ['resource' => $productResource]);

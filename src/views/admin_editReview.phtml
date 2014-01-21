@@ -1,4 +1,4 @@
-<?php $review = $this->get('review'); ?>
+<?php $review = $this->get('review');?>
 <form class="form" action="/?page=admin_editReview" method="post">
     <div class="form__row">
         <label for="product">Product</label>
@@ -11,22 +11,22 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <input name="review[review_id]" type="hidden" value="<?php $review->getId(); ?>">
+    <input name="review[review_id]" type="hidden" value="<?php echo $review->getId(); ?>">
 
     <div class="form__row">
         <label for="name">Name</label>
-        <input type="text" name="review[name]" id="name" value="<?php $review->getName(); ?>">
+        <input type="text" name="review[name]" id="name" value="<?php echo $review->getName(); ?>">
     </div>
     <div class="form__row">
         <label for="email">Email</label>
-        <input type="email" name="review[email]" id="email" value="<?php $review->getEmail(); ?>">
+        <input type="email" name="review[email]" id="email" value="<?php echo $review->getEmail(); ?>">
     </div>
     <div class="form__row">
         <label for="rating">Rating</label>
-        <input type="number" name="review[rating]" id="rating" value="<?php $review->getRating(); ?>">
+        <input type="number" name="review[rating]" id="rating" value="<?php echo $review->getRating(); ?>">
     </div>
     <div class="form__row">
-        <textarea name="review[text]" id="text" cols="30" rows="10"><?php $review->getText(); ?></textarea>
+        <textarea name="review[text]" id="text" cols="30" rows="10"><?php echo $review->getText(); ?></textarea>
     </div>
     <div class="form__row">
         <input name="action" type="submit" value="Save">
