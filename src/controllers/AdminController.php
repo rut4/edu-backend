@@ -71,7 +71,7 @@ class AdminController
                 $this->_redirect('admin_reviews');
             } elseif (isset($_POST['action']) && $_POST['action'] == 'Remove') {
                 $review = $this->_di->get('Review');
-                $review->load($_POST['review[review_id']);
+                $review->load($_POST['review']['review_id']);
                 $review->remove();
                 $this->_redirect('admin_reviews');
             }
